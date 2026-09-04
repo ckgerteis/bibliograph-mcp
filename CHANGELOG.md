@@ -4,6 +4,26 @@ Versions are the thing to cite. The suite version fixes a set of six server
 release tags through its dependency pins; a count produced under one set is not
 reproducible under another.
 
+## 1.0.1 — 2026-09-04
+
+Pins moved; nothing else. Three of the six servers were re-released the same
+afternoon after a claim-by-claim check against live answers found defects in
+what they returned, and a suite that still named the earlier tags would have
+installed them:
+
+- cinii-mcp v3.0.0 → **v3.0.1**: `cinii_get_record` now reads the single-record
+  JSON-LD correctly (authors, NAID and ISSN were dropped; an untagged Japanese
+  title was also reported as its own English title).
+- jstage-mcp v3.0.0 → **v3.0.1**: an HTTP error status from J-STAGE is
+  `API_ERROR`, not `TRANSPORT_ERROR`, as in the rest of the family.
+- ndl-mcp v1.1.0 → **v1.1.3**: 雑誌記事索引 records are typed as articles and
+  carry their periodical, issue and pages; the 1.1.1 notes introduce the tool.
+
+korea-scholarship-mcp v0.5.0, semantic-scholar-mcp v2.0.0 and openalex-mcp
+v2.0.0 are unchanged. A count produced under 1.0.0's pin set is not the same
+evidence as one produced under 1.0.1's; cite the suite version actually
+installed.
+
 ## 1.0.0 — 2026-09-04
 
 First release of the suite package.

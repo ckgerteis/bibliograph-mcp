@@ -1,6 +1,6 @@
 [project]
 name = "bibliograph-mcp"
-version = "1.0.0"
+version = "1.0.1"
 description = "The bibliograph suite: six MCP servers for scholarly search (CiNii, J-STAGE, NDL, KCI/OAK, OpenAlex, Semantic Scholar) with one typed envelope and one receipts ledger, installed and registered together."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -44,9 +44,9 @@ classifiers = [
 # of these pins is a suite release, versioned and cited as such: a count
 # produced under one pin set is not reproducible under another.
 dependencies = [
-    "cinii-mcp @ git+https://github.com/ckgerteis/cinii-mcp@v3.0.0",
-    "jstage-mcp @ git+https://github.com/ckgerteis/jstage-mcp@v3.0.0",
-    "ndl-mcp @ git+https://github.com/ckgerteis/ndl-mcp@v1.1.0",
+    "cinii-mcp @ git+https://github.com/ckgerteis/cinii-mcp@v3.0.1",
+    "jstage-mcp @ git+https://github.com/ckgerteis/jstage-mcp@v3.0.1",
+    "ndl-mcp @ git+https://github.com/ckgerteis/ndl-mcp@v1.1.3",
     "korea-scholarship-mcp @ git+https://github.com/ckgerteis/korea-scholarship-mcp@v0.5.0",
     "semantic-scholar-mcp @ git+https://github.com/ckgerteis/semantic-scholar-mcp@v2.0.0",
     "openalex-mcp @ git+https://github.com/ckgerteis/openalex-mcp@v2.0.0",
