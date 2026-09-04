@@ -1,0 +1,79 @@
+[project]
+name = "bibliograph-mcp"
+version = "1.0.0"
+description = "The bibliograph suite: six MCP servers for scholarly search (CiNii, J-STAGE, NDL, KCI/OAK, OpenAlex, Semantic Scholar) with one typed envelope and one receipts ledger, installed and registered together."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Christopher Gerteis", email = "christopher.gerteis@gmail.com" },
+]
+keywords = [
+    "bibliographic-search",
+    "bibliometrics",
+    "cinii",
+    "digital-humanities",
+    "japanese-studies",
+    "jstage",
+    "kci",
+    "korean-studies",
+    "mcp",
+    "model-context-protocol",
+    "ndl",
+    "openalex",
+    "query-receipts",
+    "scholarly-metadata",
+    "semantic-scholar",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Text Processing :: Indexing",
+]
+
+# The six, each pinned to a release tag on GitHub by a PEP 508 direct
+# reference — nothing is on a package index. A suite release that moves one
+# of these pins is a suite release, versioned and cited as such: a count
+# produced under one pin set is not reproducible under another.
+dependencies = [
+    "cinii-mcp @ git+https://github.com/ckgerteis/cinii-mcp@v3.0.0",
+    "jstage-mcp @ git+https://github.com/ckgerteis/jstage-mcp@v3.0.0",
+    "ndl-mcp @ git+https://github.com/ckgerteis/ndl-mcp@v1.1.0",
+    "korea-scholarship-mcp @ git+https://github.com/ckgerteis/korea-scholarship-mcp@v0.5.0",
+    "semantic-scholar-mcp @ git+https://github.com/ckgerteis/semantic-scholar-mcp@v2.0.0",
+    "openalex-mcp @ git+https://github.com/ckgerteis/openalex-mcp@v2.0.0",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+
+[project.scripts]
+bibliograph = "bibliograph.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/ckgerteis/bibliograph-mcp"
+Repository = "https://github.com/ckgerteis/bibliograph-mcp"
+Changelog = "https://github.com/ckgerteis/bibliograph-mcp/blob/main/CHANGELOG.md"
+Issues = "https://github.com/ckgerteis/bibliograph-mcp/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# Direct (git) references in dependencies are refused by hatchling unless said so.
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/bibliograph"]
+
+[tool.hatch.build.targets.sdist]
+include = ["/src", "/tests", "/README.md", "/LICENSE", "/CITATION.cff", "/CHANGELOG.md"]

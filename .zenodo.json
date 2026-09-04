@@ -1,0 +1,26 @@
+{
+  "title": "bibliograph-mcp: a suite of MCP servers for scholarly search with typed envelopes and query receipts",
+  "upload_type": "software",
+  "access_right": "open",
+  "license": "MIT",
+  "version": "1.0.0",
+  "description": "The suite package for six Model Context Protocol servers (CiNii Research, J-STAGE, NDL Search, KCI/Open Access Korea, OpenAlex, Semantic Scholar) that answer with one typed JSON envelope and deposit hash-chained query receipts to one ledger. Installs the six at pinned release tags from GitHub and registers them in Claude Desktop together; verifies a receipts folder as one deposit.",
+  "creators": [
+    {
+      "name": "Gerteis, Christopher",
+      "affiliation": "SOAS University of London",
+      "orcid": "0000-0003-4977-6152"
+    }
+  ],
+  "keywords": [
+    "Model Context Protocol",
+    "MCP",
+    "Japanese studies",
+    "Korean studies",
+    "East Asian studies",
+    "digital humanities",
+    "bibliographic search",
+    "scholarly metadata",
+    "query receipts"
+  ]
+}
