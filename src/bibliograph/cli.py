@@ -17,6 +17,7 @@ from __future__ import annotations
 import argparse
 import importlib
 import json
+import shutil
 import subprocess
 import sys
 import time
@@ -31,7 +32,11 @@ SERVERS = I.SERVERS
 # ---------------------------------------------------------------- helpers
 
 def _scripts_dir() -> Path:
-    return Path(sys.executable).parent
+    """Where this interpreter's console scripts live. Not the interpreter's own
+    folder: a Windows install outside a venv keeps them in Scripts\\."""
+    import sysconfig
+    p = sysconfig.get_path("scripts")
+    return Path(p) if p else Path(sys.executable).parent
 
 
 def _installed() -> dict[str, dict]:
@@ -127,6 +132,10 @@ def cmd_doctor(args: argparse.Namespace) -> int:
             ok = False
             continue
         exe = inst[name]["exe"]
+        if not Path(exe).exists():
+            found = shutil.which(m["cmd"])
+            if found:
+                exe = inst[name]["exe"] = found
         if not Path(exe).exists():
             print(f"  FAIL {name}: console script missing at {exe}")
             ok = False
