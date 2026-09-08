@@ -4,6 +4,14 @@ Versions are the thing to cite. The suite version fixes a set of six server
 release tags through its dependency pins; a count produced under one set is not
 reproducible under another.
 
+## 1.0.3 — 2026-09-08
+
+- Pins moved to cinii-mcp v3.1.1, jstage-mcp v3.1.1, ndl-mcp v1.2.1,
+  korea-scholarship-mcp v0.6.1, openalex-mcp v2.1.1, semantic-scholar-mcp
+  v2.1.1: the releases whose Claude Desktop bundles no longer pin Python
+  3.13 and use an installed 3.10 or later instead, downloading one only
+  where there is none. No change to this package.
+
 ## 1.0.2 — 2026-09-08
 
 - **Pins moved to the releases whose Claude Desktop bundles run:** cinii-mcp

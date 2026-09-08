@@ -3,7 +3,7 @@
   "upload_type": "software",
   "access_right": "open",
   "license": "MIT",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "The suite package for six Model Context Protocol servers (CiNii Research, J-STAGE, NDL Search, KCI/Open Access Korea, OpenAlex, Semantic Scholar) that answer with one typed JSON envelope and deposit hash-chained query receipts to one ledger. Installs the six at pinned release tags from GitHub and registers them in Claude Desktop together; verifies a receipts folder as one deposit.",
   "creators": [
     {

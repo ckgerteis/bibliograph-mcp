@@ -6,4 +6,4 @@ korea-scholarship-mcp, semantic-scholar-graph-mcp and openalex-mcp. The
 their vendored envelope and ledger modules are byte-identical, and verifies a
 receipts folder as one deposit.
 """
-__version__ = "1.0.2"
+__version__ = "1.0.3"
