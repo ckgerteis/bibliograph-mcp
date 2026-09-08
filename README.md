@@ -1,5 +1,7 @@
 # bibliograph-mcp
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22307233.svg)](https://doi.org/10.5281/zenodo.22307233)
+
 Six MCP servers for scholarly search, installed and registered as one suite. Each answers with the same typed JSON envelope — the term actually sent and its script, how the source matched it, how broad the set is, typed diagnostics, a receipt hash, the provider's attribution — and each can deposit its receipts to one append-only, hash-chained ledger, so a search standing behind a footnote can be named, cited, and run again by someone else.
 
 | Server | Source | Coverage |
@@ -15,19 +17,37 @@ Six repositories, six packages, six independent releases. This seventh repositor
 
 ## Install
 
+### Getting Python
+
+The Claude Desktop bundle needs no Python of your own. The other routes need Python 3.10 to 3.14
+and its `venv` module, which the official installers include.
+
+- **Windows.** Download the 64-bit installer from [python.org/downloads](https://www.python.org/downloads/)
+  and run it; tick "Add python.exe to PATH" on the first screen. Afterwards `py --version` (the
+  launcher the installer adds) or `python --version` in a new terminal should print 3.1x. If typing
+  `python` opens the Microsoft Store instead, Windows has no Python yet: that Store page is a stub,
+  and it is also what "'python' is not recognized" usually means.
+- **macOS.** The [python.org installer](https://www.python.org/downloads/macos/), or
+  `brew install python@3.13` with [Homebrew](https://brew.sh). The `/usr/bin/python3` that Xcode's
+  command-line tools provide may be older than 3.10; `python3 --version` says.
+- **Linux.** Your distribution's package: `sudo apt install python3 python3-venv` on Debian and
+  Ubuntu, `sudo dnf install python3` on Fedora. Or let uv provide one (next line).
+- **Any platform, with uv.** [uv](https://docs.astral.sh/uv/getting-started/installation/)
+  installs Python itself: `uv python install 3.13`, then `uv venv` or the `uvx` route below.
+
 ### The suite
 
 ```bash
 python3 -m venv ~/bibliograph
-~/bibliograph/bin/pip install "git+https://github.com/ckgerteis/bibliograph-mcp@v1.0.1"
+~/bibliograph/bin/pip install "git+https://github.com/ckgerteis/bibliograph-mcp@v1.0.2"
 ~/bibliograph/bin/bibliograph install
 ```
 
-On Windows, `py -3 -m venv %USERPROFILE%\bibliograph`, then `%USERPROFILE%\bibliograph\Scripts\pip install "git+https://github.com/ckgerteis/bibliograph-mcp@v1.0.1"` and `…\Scripts\bibliograph install`. Git must be on PATH: the suite's dependencies are the six repositories at their release tags, fetched by pip from GitHub. Nothing is on a package index; the tag is the thing to cite.
+On Windows, `py -3 -m venv %USERPROFILE%\bibliograph`, then `%USERPROFILE%\bibliograph\Scripts\pip install "git+https://github.com/ckgerteis/bibliograph-mcp@v1.0.2"` and `…\Scripts\bibliograph install`. Git must be on PATH: the suite's dependencies are the six repositories at their release tags, fetched by pip from GitHub. Nothing is on a package index; the tag is the thing to cite.
 
 `bibliograph install` registers every server the interpreter can import, asks once for a receipts folder and a session slug, asks once for each credential a server needs (CiNii application ID; the others are optional), backs up `claude_desktop_config.json`, and writes the entries. Servers already registered under other names are left alone. Restart Claude Desktop afterwards.
 
-Or `uvx --from "git+https://github.com/ckgerteis/bibliograph-mcp@v1.0.1" bibliograph install` for a throwaway environment; note that Claude Desktop will then be pointed at uv's cache, which uv may prune.
+Or `uvx --from "git+https://github.com/ckgerteis/bibliograph-mcp@v1.0.2" bibliograph install` for a throwaway environment; note that Claude Desktop will then be pointed at uv's cache, which uv may prune.
 
 ### One server
 
@@ -42,6 +62,50 @@ Each repository's README gives three routes for that server alone: a Claude Desk
 | openalex | `OPENALEX_API_KEY` | Optional but recommended; keyless access is metered per IP per day |
 | semantic_scholar | `SEMANTIC_SCHOLAR_API_KEY` | Optional but recommended; keyless calls share one throttled pool |
 | jstage, ndl | — | None |
+
+### Any other MCP client
+
+Nothing in the six servers is specific to Claude: each is a Model Context Protocol server over
+stdio, usable from Claude Code, Cursor, VS Code, Zed or any client that can start a process and
+speak JSON-RPC to it. `bibliograph install` writes Claude Desktop's configuration file because that
+is the client with no command line; for any other client, point it at the console scripts this
+package installs (`cinii-mcp`, `jstage-mcp`, `ndl-mcp`, `korea-scholarship-mcp`, `openalex-mcp`,
+`semantic-scholar-mcp`, in the environment's `bin/` or `Scripts\`) with `MCP_RECEIPT_DIR` and
+`MCP_RECEIPT_SESSION` in the environment. Each server's own README shows the JSON and the
+`claude mcp add` line.
+
+## What the receipts are for
+
+A search you cannot re-run is a claim you cannot check. When a footnote rests on a database
+query, say that no article in this index uses a term before a certain year, the reader is asked to
+take the search on trust: which term, in which script, on what date, against which index and which
+version of it, and how far down the results the author went. Ordinary searching leaves none of
+that behind. Each of these servers leaves all of it. Every
+query-answering tool returns its envelope through the ledger, which appends one line to an
+append-only file: the term actually sent and its script, how the source matched it, how many
+records existed and how many came back, the diagnostics, the tool and its parameters, the server
+version, a timestamp, and the hash of the previous line. The hash makes the file a chain: a line
+cannot be altered, removed or reordered afterwards without the verifier saying so.
+
+What that gives a researcher:
+
+- **A citable search.** Name the receipt in the footnote (session slug, server, date, line hash)
+  and a reader can see exactly what was asked and run it again against the same version.
+- **Negative findings that carry weight.** "Not found" is evidence only if the search that
+  produced it is on record, with its term, its script and its breadth.
+- **A method section that writes itself.** the server's `<name>-ledger` command `manifest <folder>` summarises every
+  query a project made, by server, script and session: the disclosure a journal, a
+  data-availability statement or a research-integrity review asks for.
+- **A record of AI-mediated research.** When a model chose the term, the receipt shows the term
+  it chose and what came back, which is the thing to disclose about work done with an assistant.
+- **Nothing interpreted.** The receipt is the source's own answer with credentials removed. The
+  server does not summarise, rank or paraphrase, so the record is of the source, not of the tool.
+
+Receipts are off until you name a folder (`MCP_RECEIPT_DIR`); each server then writes its own
+`<server>.jsonl` inside it, and `MCP_RECEIPT_SESSION` stamps a project or article slug on every
+line so one folder can serve several projects. the server's `<name>-ledger` command `verify-dir <folder>` checks the chains.
+The mechanics, the variables and what the envelope says when nothing is deposited are in the
+receipts section below.
 
 ## The command
 
