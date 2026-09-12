@@ -4,6 +4,18 @@ Versions are the thing to cite. The suite version fixes a set of six server
 release tags through its dependency pins; a count produced under one set is not
 reproducible under another.
 
+## 1.0.4 — 2026-09-12
+
+- Pins moved to cinii-mcp v3.1.2, jstage-mcp v3.1.2, ndl-mcp v1.2.2,
+  korea-scholarship-mcp v0.6.2, openalex-mcp v2.1.2, semantic-scholar-mcp
+  v2.1.2: the releases whose Claude Desktop bundles keep `pyproject.toml`,
+  `uv.lock` and the entry point at the bundle root, so the app builds the
+  environment when the extension is installed rather than during the first
+  connection attempt. The 1.0.3 bundles skipped that install step on every
+  machine and could not connect on a network where the first launch ran past
+  the app's timeout (reported from macOS 26 on 7 September 2026). No change
+  to this package.
+
 ## 1.0.3 — 2026-09-08
 
 - Pins moved to cinii-mcp v3.1.1, jstage-mcp v3.1.1, ndl-mcp v1.2.1,

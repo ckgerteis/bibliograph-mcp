@@ -39,15 +39,15 @@ and its `venv` module, which the official installers include.
 
 ```bash
 python3 -m venv ~/bibliograph
-~/bibliograph/bin/pip install "git+https://github.com/ckgerteis/bibliograph-mcp@v1.0.3"
+~/bibliograph/bin/pip install "git+https://github.com/ckgerteis/bibliograph-mcp@v1.0.4"
 ~/bibliograph/bin/bibliograph install
 ```
 
-On Windows, `py -3 -m venv %USERPROFILE%\bibliograph`, then `%USERPROFILE%\bibliograph\Scripts\pip install "git+https://github.com/ckgerteis/bibliograph-mcp@v1.0.3"` and `…\Scripts\bibliograph install`. Git must be on PATH: the suite's dependencies are the six repositories at their release tags, fetched by pip from GitHub. Nothing is on a package index; the tag is the thing to cite.
+On Windows, `py -3 -m venv %USERPROFILE%\bibliograph`, then `%USERPROFILE%\bibliograph\Scripts\pip install "git+https://github.com/ckgerteis/bibliograph-mcp@v1.0.4"` and `…\Scripts\bibliograph install`. Git must be on PATH: the suite's dependencies are the six repositories at their release tags, fetched by pip from GitHub. Nothing is on a package index; the tag is the thing to cite.
 
 `bibliograph install` registers every server the interpreter can import, asks once for a receipts folder and a session slug, asks once for each credential a server needs (CiNii application ID; the others are optional), backs up `claude_desktop_config.json`, and writes the entries. Servers already registered under other names are left alone. Restart Claude Desktop afterwards.
 
-Or `uvx --from "git+https://github.com/ckgerteis/bibliograph-mcp@v1.0.3" bibliograph install` for a throwaway environment; note that Claude Desktop will then be pointed at uv's cache, which uv may prune.
+Or `uvx --from "git+https://github.com/ckgerteis/bibliograph-mcp@v1.0.4" bibliograph install` for a throwaway environment; note that Claude Desktop will then be pointed at uv's cache, which uv may prune.
 
 ### One server
 
