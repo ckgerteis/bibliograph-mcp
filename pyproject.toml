@@ -3,7 +3,7 @@ name = "bibliograph-mcp"
 version = "1.0.4"
 description = "The bibliograph suite: six MCP servers for scholarly search (CiNii, J-STAGE, NDL, KCI/OAK, OpenAlex, Semantic Scholar) with one typed envelope and one receipts ledger, installed and registered together."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.10,<3.15"
 license = { text = "MIT" }
 authors = [
     { name = "Christopher Gerteis", email = "christopher.gerteis@gmail.com" },
