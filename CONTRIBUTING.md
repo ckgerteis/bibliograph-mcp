@@ -41,8 +41,8 @@ reports the envelope's diagnostic codes.
 ### The suite and the six
 
 This package pins the six servers by release tag in `pyproject.toml` and carries a copy of the
-family's `install.py` as `src/bibliograph/installer.py`; CI checks that copy against
-`VENDORED.sha256`. Changes to the installer belong in the six server repositories first (it is
+family's `install.py` as `src/bibliograph/installer.py`, together with the family's `set_version.py`
+and `tests/test_release_metadata.py`; CI checks all three against `VENDORED.sha256`. Changes to the installer belong in the six server repositories first (it is
 vendored byte-identical there), and are copied here when their releases are pinned.
 
 ## What a pull request should carry
