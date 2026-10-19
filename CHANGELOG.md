@@ -4,6 +4,17 @@ Versions are the thing to cite. The suite version fixes a set of six server
 release tags through its dependency pins; a count produced under one set is not
 reproducible under another.
 
+## 1.0.5 — 2026-10-12
+
+- Pins moved to cinii-mcp v3.2.0, jstage-mcp v3.1.3, ndl-mcp v1.2.3,
+  korea-scholarship-mcp v0.6.3, openalex-mcp v2.2.0, semantic-scholar-mcp
+  v2.2.0: the maintenance releases from the stress test of 12 October 2026.
+  Each server's CHANGELOG lists what changed; the new diagnostic
+  `RECORD_UNREADABLE` appears in OpenAlex, Semantic Scholar and CiNii.
+- `set_version.py` and `tests/test_release_metadata.py`, carried byte-identical
+  from the family, now also set and check `__version__`.
+- Python: CI tests 3.11 as well; `requires-python` is capped below 3.15.
+
 ## 1.0.4 — 2026-09-12
 
 - Pins moved to cinii-mcp v3.1.2, jstage-mcp v3.1.2, ndl-mcp v1.2.2,
