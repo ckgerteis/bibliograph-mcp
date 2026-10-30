@@ -4,6 +4,17 @@ Versions are the thing to cite. The suite version fixes a set of six server
 release tags through its dependency pins; a count produced under one set is not
 reproducible under another.
 
+## 1.0.6 — 2026-10-30
+
+- Pins moved to cinii-mcp v3.3.0, jstage-mcp v3.1.4 and korea-scholarship-mcp
+  v0.7.0; ndl-mcp, openalex-mcp and semantic-scholar-mcp are unchanged.
+  cinii-mcp adds four tools (NACSIS-CAT holdings and library search, research
+  data, projects with their products), CiNii's v2 filters and sort orders,
+  and fixes a `journal` filter that CiNii never applied; jstage-mcp no longer
+  fails a page on one unreadable entry; korea-scholarship-mcp adds
+  `dbpia_links`. Each server's CHANGELOG lists what changed. Counts made
+  through cinii-mcp with a journal filter before v3.3.0 were unfiltered.
+
 ## 1.0.5 — 2026-10-12
 
 - Pins moved to cinii-mcp v3.2.0, jstage-mcp v3.1.3, ndl-mcp v1.2.3,
