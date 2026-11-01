@@ -1,0 +1,112 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+  <version>1.2</version>
+  <numberOfRecords>41</numberOfRecords>
+  <nextRecordPosition>3</nextRecordPosition>
+  <extraResponseData>
+    <facets>
+      <lst name="REPOSITORY_NO">
+        <int name="R000000020">41</int>
+      </lst>
+      <lst name="NDC">
+        <int name="3">5</int>
+        <int name="4">9</int>
+        <int name="5">1</int>
+      </lst>
+      <lst name="ISSUED_DATE">
+      </lst>
+      <lst name="LIBRARY">
+      </lst>
+    </facets>
+  </extraResponseData>
+  <records>
+    <record>
+      <recordSchema>info:srw/schema/1/dc-v1.1</recordSchema>
+      <recordPacking>xml</recordPacking>
+      <recordData>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcndl="http://ndl.go.jp/dcndl/terms/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#">
+          <dcndl:BibAdminResource rdf:about="https://ndlsearch.ndl.go.jp/books/R000000020-I50602">
+            <dcterms:description>type : book</dcterms:description>
+            <dcndl:bibRecordCategory>R000000020</dcndl:bibRecordCategory>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R000000020-I50602#material"/>
+          </dcndl:BibAdminResource>
+          <dcndl:BibResource rdf:about="https://ndlsearch.ndl.go.jp/books/R000000020-I50602#material">
+            <dcterms:title>科学技術・学術審議会関係資料</dcterms:title>
+            <dc:title>
+              <rdf:Description>
+                <rdf:value>科学技術・学術審議会関係資料</rdf:value>
+              </rdf:Description>
+            </dc:title>
+            <dcterms:creator>
+              <foaf:Agent>
+                <foaf:name>科学技術・学術審議会</foaf:name>
+              </foaf:Agent>
+            </dcterms:creator>
+            <dc:creator>科学技術・学術審議会</dc:creator>
+            <dcterms:publisher>
+              <foaf:Agent>
+                <foaf:name>文部科学省</foaf:name>
+                <dcndl:transcription>モンブカガクショウ</dcndl:transcription>
+              </foaf:Agent>
+            </dcterms:publisher>
+            <dcterms:description>設置年月日: 平成13年1月6日</dcterms:description>
+            <dcterms:description>コレクション種別（組織種別）: 国の機関</dcterms:description>
+            <dcterms:description>コレクション種別（テーマ）: 審議会資料</dcterms:description>
+            <dcterms:description>起点URL: https://www.mext.go.jp/b_menu/shingi/gijyutu/gijyutu0/index.htm</dcterms:description>
+            <dcterms:description>本資料は、国立国会図書館インターネット資料収集保存事業（WARP）において収集・保存したwebサイトです。</dcterms:description>
+            <dcndl:materialType rdf:resource="http://ndl.go.jp/ndltype/OnlineResource" rdfs:label="オンライン資料"/>
+            <dcterms:audience>一般</dcterms:audience>
+            <rdfs:seeAlso rdf:resource="https://warp.ndl.go.jp/waid/50602"/>
+            <dcterms:isPartOf rdf:resource="https://ndlsearch.ndl.go.jp/books/R000000020-I3475" rdfs:label="文部科学省"/>
+          </dcndl:BibResource>
+          <dcndl:BibResource rdf:about="https://ndlsearch.ndl.go.jp/books/R000000020-I50602#material">
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R000000020-I50602#item"/>
+          </dcndl:BibResource>
+        </rdf:RDF>
+      </recordData>
+      <recordPosition>1</recordPosition>
+    </record>
+    <record>
+      <recordSchema>info:srw/schema/1/dc-v1.1</recordSchema>
+      <recordPacking>xml</recordPacking>
+      <recordData>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcndl="http://ndl.go.jp/dcndl/terms/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#">
+          <dcndl:BibAdminResource rdf:about="https://ndlsearch.ndl.go.jp/books/R000000020-I52180">
+            <dcterms:description>type : book</dcterms:description>
+            <dcndl:bibRecordCategory>R000000020</dcndl:bibRecordCategory>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R000000020-I52180#material"/>
+          </dcndl:BibAdminResource>
+          <dcndl:BibResource rdf:about="https://ndlsearch.ndl.go.jp/books/R000000020-I52180#material">
+            <dcterms:title>科学技術要覧</dcterms:title>
+            <dc:title>
+              <rdf:Description>
+                <rdf:value>科学技術要覧</rdf:value>
+              </rdf:Description>
+            </dc:title>
+            <dcterms:publisher>
+              <foaf:Agent>
+                <foaf:name>文部科学省</foaf:name>
+                <dcndl:transcription>モンブカガクショウ</dcndl:transcription>
+              </foaf:Agent>
+            </dcterms:publisher>
+            <dcterms:description>コレクション種別（組織種別）: 国の機関</dcterms:description>
+            <dcterms:description>コレクション種別（テーマ）: 電子雑誌</dcterms:description>
+            <dcterms:description>起点URL: https://www.mext.go.jp/b_menu/toukei/006/006b/koumoku.htm</dcterms:description>
+            <dcterms:description>本資料は、国立国会図書館インターネット資料収集保存事業（WARP）において収集・保存したwebサイトです。</dcterms:description>
+            <dcndl:materialType rdf:resource="http://ndl.go.jp/ndltype/OnlineResource" rdfs:label="オンライン資料"/>
+            <dcndl:publicationPeriodicity>年刊</dcndl:publicationPeriodicity>
+            <dcterms:audience>一般</dcterms:audience>
+            <rdfs:seeAlso rdf:resource="https://warp.ndl.go.jp/waid/52180"/>
+            <dcterms:relation rdf:resource="https://dl.ndl.go.jp/pid/10315597"/>
+            <dcterms:isPartOf rdf:resource="https://ndlsearch.ndl.go.jp/books/R000000020-I3475" rdfs:label="文部科学省"/>
+            <dcterms:isFormatOf rdf:resource="https://id.ndl.go.jp/bib/000000046010"/>
+            <dcterms:isFormatOf rdf:resource="https://id.ndl.go.jp/bib/000000065024"/>
+          </dcndl:BibResource>
+          <dcndl:BibResource rdf:about="https://ndlsearch.ndl.go.jp/books/R000000020-I52180#material">
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R000000020-I52180#item"/>
+          </dcndl:BibResource>
+        </rdf:RDF>
+      </recordData>
+      <recordPosition>2</recordPosition>
+    </record>
+  </records>
+</searchRetrieveResponse>

@@ -1,0 +1,179 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+  <responseDate>2026-10-07T07:04:40Z</responseDate>
+  <request metadataPrefix="jpcoar_2.0" verb="GetRecord" identifier="oai:jdcat.jsps.go.jp:00007058">https://jdcat.jsps.go.jp/oai</request>
+  <GetRecord>
+    <record>
+      <header>
+        <identifier>oai:jdcat.jsps.go.jp:00007058</identifier>
+        <datestamp>2023-03-13T02:07:22Z</datestamp>
+        <setSpec>1611812620518</setSpec>
+      </header>
+      <metadata>
+        <jpcoar:jpcoar xmlns:datacite="https://schema.datacite.org/meta/kernel-4/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcndl="http://ndl.go.jp/dcndl/terms/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:jpcoar="https://github.com/JPCOAR/schema/blob/master/2.0/" xmlns:oaire="http://namespace.openaire.eu/schema/oaire/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rioxxterms="http://www.rioxx.net/schema/v2.0/rioxxterms/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="https://github.com/JPCOAR/schema/blob/master/2.0/" xsi:schemaLocation="https://github.com/JPCOAR/schema/blob/master/2.0/jpcoar_scm.xsd">
+          <dc:title xml:lang="ja">犯罪検挙件数 (昭和11年) : 大日本帝国統計年鑑 57 (昭和13年) 表288</dc:title>
+          <dc:title xml:lang="en">Criminal Arrests (1936) : Statistical Yearbook of Imperial Japan 57 (1938) Table 288</dc:title>
+          <jpcoar:creator>
+            <jpcoar:creatorName xml:lang="ja">内務省</jpcoar:creatorName>
+            <jpcoar:creatorName xml:lang="en">Japan. Ministry of Home Affairs</jpcoar:creatorName>
+          </jpcoar:creator>
+          <jpcoar:creator>
+            <jpcoar:creatorName xml:lang="ja">朝鮮総督府</jpcoar:creatorName>
+            <jpcoar:creatorName xml:lang="en">Office of the Governor-General of Korea</jpcoar:creatorName>
+          </jpcoar:creator>
+          <jpcoar:creator>
+            <jpcoar:creatorName xml:lang="ja">台湾総督府</jpcoar:creatorName>
+            <jpcoar:creatorName xml:lang="en">Office of the Governor-General of Taiwan</jpcoar:creatorName>
+          </jpcoar:creator>
+          <jpcoar:creator>
+            <jpcoar:creatorName xml:lang="ja">樺太庁</jpcoar:creatorName>
+            <jpcoar:creatorName xml:lang="en">Japan. Sakhalin Agency</jpcoar:creatorName>
+          </jpcoar:creator>
+          <jpcoar:creator>
+            <jpcoar:creatorName xml:lang="ja">関東局</jpcoar:creatorName>
+            <jpcoar:creatorName xml:lang="en">Japan. Kwantung Bureau</jpcoar:creatorName>
+          </jpcoar:creator>
+          <jpcoar:creator>
+            <jpcoar:creatorName xml:lang="ja">南洋庁</jpcoar:creatorName>
+            <jpcoar:creatorName xml:lang="en">Japan. South Pacific Agency</jpcoar:creatorName>
+          </jpcoar:creator>
+          <jpcoar:contributor contributorType="Distributor">
+            <jpcoar:contributorName xml:lang="ja">一橋大学経済研究所</jpcoar:contributorName>
+            <jpcoar:affiliation>
+              <jpcoar:affiliationName>Hitotsubashi University</jpcoar:affiliationName>
+            </jpcoar:affiliation>
+          </jpcoar:contributor>
+          <jpcoar:contributor contributorType="Distributor">
+            <jpcoar:contributorName xml:lang="en">Institute of Economic Research, Hitotsubashi University</jpcoar:contributorName>
+            <jpcoar:affiliation>
+              <jpcoar:affiliationName>Hitotsubashi University</jpcoar:affiliationName>
+            </jpcoar:affiliation>
+          </jpcoar:contributor>
+          <dcterms:accessRights>オープンアクセス</dcterms:accessRights>
+          <dcterms:accessRights>open access</dcterms:accessRights>
+          <dc:rights>https://d-repo.ier.hit-u.ac.jp/statistical-yb</dc:rights>
+          <dc:rights xml:lang="ja">本統計表を著作物に引用 (転載) する場合は, 必ず原本の書名を明記してください。例: 出典 内閣統計局「第57回 (昭和13年)大日本帝国統計年鑑」</dc:rights>
+          <dc:rights xml:lang="en">When this table is to be quoted or copied in other publication, it is requested to refer to the title of the original Yearbook as follows; Source: Statistical Yearbook of Imperial Japan, 57th (1938), Statistics Bureau, Imperial Cabinet.</dc:rights>
+          <jpcoar:subject xml:lang="ja" subjectURI="https://vocabularies.cessda.eu/urn/urn:ddi:int.cessda.cv:TopicClassification">犯罪と法の執行</jpcoar:subject>
+          <jpcoar:subject xml:lang="ja">統計</jpcoar:subject>
+          <jpcoar:subject xml:lang="ja">法律</jpcoar:subject>
+          <jpcoar:subject xml:lang="ja">司法・警察</jpcoar:subject>
+          <jpcoar:subject xml:lang="en">Statistics</jpcoar:subject>
+          <jpcoar:subject xml:lang="en">Law</jpcoar:subject>
+          <jpcoar:subject xml:lang="en" subjectURI="https://vocabularies.cessda.eu/urn/urn:ddi:int.cessda.cv:TopicClassification">Crime and law enforcement</jpcoar:subject>
+          <jpcoar:subject xml:lang="en">Justice and Police</jpcoar:subject>
+          <datacite:description xml:lang="ja" descriptionType="Abstract">【対象期間】昭和7年-昭和11年 地方別 (昭和11年)【注】【計数出所】内務省統計報告、外地各庁統計書</datacite:description>
+          <datacite:description xml:lang="en" descriptionType="Abstract">PERIOD: 1932-1936. By region for 1936. SOURCE: [Statistical Report of the Ministry for Home Affairs; Statistics by government offices, overseas territories of Japan].</datacite:description>
+          <datacite:description xml:lang="ja" descriptionType="Methods">集計</datacite:description>
+          <datacite:description xml:lang="en" descriptionType="Methods">Aggregation</datacite:description>
+          <datacite:description xml:lang="ja" descriptionType="Other">公的統計: 集計データ、統計表</datacite:description>
+          <datacite:description xml:lang="en" descriptionType="Other">official statistics: aggregate data</datacite:description>
+          <dc:publisher xml:lang="ja">内閣統計局</dc:publisher>
+          <dc:publisher xml:lang="en">Japan. Imperial Cabinet. Statistics Bureau</dc:publisher>
+          <datacite:date dateType="pubdate">2023-02-21</datacite:date>
+          <dc:language>jpn</dc:language>
+          <dc:type>dataset</dc:type>
+          <datacite:version>2.0</datacite:version>
+          <jpcoar:identifier identifierType="URI">https://jdcat.jsps.go.jp/records/7058</jpcoar:identifier>
+          <jpcoar:relation>
+            <jpcoar:relatedIdentifier identifierType="Local">Y1938T11288</jpcoar:relatedIdentifier>
+          </jpcoar:relation>
+          <jpcoar:relation>
+            <jpcoar:relatedIdentifier identifierType="Local">10.50914/0002001104</jpcoar:relatedIdentifier>
+          </jpcoar:relation>
+          <jpcoar:relation/>
+          <jpcoar:relation/>
+          <dcterms:temporal>1932</dcterms:temporal>
+          <dcterms:temporal>1936</dcterms:temporal>
+          <dcterms:temporal>1936</dcterms:temporal>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>日本</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>朝鮮</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>台湾</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>南樺太</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>関東州</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>南洋群島</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>韓国</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>北朝鮮</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>ロシア</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>中国</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>パラオ</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>ミクロネシア</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>北マリアナ諸島</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>マーシャル</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>Japan</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>Korea</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>Taiwan, Province of China</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>South Sakhalin</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>Kwantung Province</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>South Pacific Mandate</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>Korea, Republic of</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>Korea, Democratic People's Republic of</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>Russian Federation</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>China</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>Palau</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>Micronesia, Federated States of</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>Northern Mariana Islands</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>Marshall Islands</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <jpcoar:file/>
+          <system_file/>
+        </jpcoar:jpcoar>
+      </metadata>
+    </record>
+  </GetRecord>
+</OAI-PMH>

@@ -1,0 +1,196 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+  <version>1.2</version>
+  <numberOfRecords>705</numberOfRecords>
+  <nextRecordPosition>3</nextRecordPosition>
+  <extraResponseData>
+    <facets>
+      <lst name="REPOSITORY_NO">
+        <int name="R100000039">705</int>
+      </lst>
+      <lst name="NDC">
+        <int name="3">2</int>
+      </lst>
+      <lst name="ISSUED_DATE">
+        <int name="1941">1</int>
+        <int name="1942">1</int>
+        <int name="1951">1</int>
+        <int name="1952">2</int>
+        <int name="1953">5</int>
+        <int name="1954">6</int>
+        <int name="1955">3</int>
+        <int name="1956">1</int>
+        <int name="1957">3</int>
+        <int name="1958">6</int>
+        <int name="1959">5</int>
+        <int name="1960">3</int>
+        <int name="1961">1</int>
+        <int name="1962">5</int>
+        <int name="1963">10</int>
+        <int name="1964">18</int>
+        <int name="1965">1</int>
+        <int name="1966">2</int>
+        <int name="1967">18</int>
+        <int name="1968">2</int>
+        <int name="1969">11</int>
+        <int name="1970">3</int>
+        <int name="1971">1</int>
+        <int name="1972">11</int>
+        <int name="1973">4</int>
+        <int name="1974">7</int>
+        <int name="1975">4</int>
+        <int name="1976">8</int>
+        <int name="1977">9</int>
+        <int name="1978">5</int>
+        <int name="1979">5</int>
+        <int name="1980">5</int>
+        <int name="1981">9</int>
+        <int name="1982">14</int>
+        <int name="1983">11</int>
+        <int name="1984">5</int>
+        <int name="1985">6</int>
+        <int name="1986">8</int>
+        <int name="1987">13</int>
+        <int name="1988">8</int>
+        <int name="1989">9</int>
+        <int name="1990">13</int>
+        <int name="1991">6</int>
+        <int name="1992">4</int>
+        <int name="1993">5</int>
+        <int name="1994">16</int>
+        <int name="1995">20</int>
+        <int name="1996">8</int>
+        <int name="1997">15</int>
+        <int name="1998">12</int>
+      </lst>
+      <lst name="LIBRARY">
+      </lst>
+    </facets>
+  </extraResponseData>
+  <records>
+    <record>
+      <recordSchema>info:srw/schema/1/dc-v1.1</recordSchema>
+      <recordPacking>xml</recordPacking>
+      <recordData>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcndl="http://ndl.go.jp/dcndl/terms/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#">
+          <dcndl:BibAdminResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000039-I3490251">
+            <dcterms:description>type : article</dcterms:description>
+            <dcndl:bibRecordCategory>R100000039</dcndl:bibRecordCategory>
+            <dcndl:bibRecordSubCategory>B00033</dcndl:bibRecordSubCategory>
+            <dcndl:bibRecordSubCategory>B00000</dcndl:bibRecordSubCategory>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000039-I3490251#material"/>
+          </dcndl:BibAdminResource>
+          <dcndl:BibResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000039-I3490251#material">
+            <rdfs:seeAlso rdf:resource="http://id.ndl.go.jp/digimeta/3490251"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLJP">info:ndljp/pid/3490251</dcterms:identifier>
+            <dcterms:title>愛知県の地域青年集団の動向 : 県内市町村青年教育担当者アンケートより</dcterms:title>
+            <dc:title>
+              <rdf:Description>
+                <rdf:value>愛知県の地域青年集団の動向 : 県内市町村青年教育担当者アンケートより</rdf:value>
+              </rdf:Description>
+            </dc:title>
+            <dcndl:alternative>
+              <rdf:Description>
+                <rdf:value>Youth party trends in Aichi : the enquete by person in charge of youth education of self-goverening administration</rdf:value>
+              </rdf:Description>
+            </dcndl:alternative>
+            <dc:creator>成田周吾</dc:creator>
+            <dcterms:publisher>
+              <foaf:Agent>
+                <foaf:name>国立オリンピック記念青年総合センター</foaf:name>
+                <dcndl:location>日本</dcndl:location>
+              </foaf:Agent>
+            </dcterms:publisher>
+            <dcterms:date>2001-03</dcterms:date>
+            <dcterms:date>(創刊号)</dcterms:date>
+            <dcterms:issued rdf:datatype="http://purl.org/dc/terms/W3CDTF">2001-03</dcterms:issued>
+            <dcterms:dateAccepted rdf:datatype="http://purl.org/dc/terms/W3CDTF">2012-05-03T00:53:01+09:00</dcterms:dateAccepted>
+            <dcterms:description>収集根拠 : インターネット資料収集保存事業（WARP）</dcterms:description>
+            <dcterms:description>資料形態 : テキストデータ</dcterms:description>
+            <dcterms:description>コレクション : 国立国会図書館デジタルコレクション &gt; 電子書籍・電子雑誌 &gt; 独立行政法人</dcterms:description>
+            <dcterms:language rdf:datatype="http://purl.org/dc/terms/ISO639-2">jpn</dcterms:language>
+            <dcterms:extent>容量 : kenkyu14.pdf(323941bytes)</dcterms:extent>
+            <dcterms:format rdf:datatype="http://purl.org/dc/terms/IMT">application/pdf</dcterms:format>
+            <dcndl:materialType rdf:resource="http://ndl.go.jp/ndltype/Article" rdfs:label="記事・論文"/>
+            <dcndl:materialType rdf:resource="http://ndl.go.jp/ndltype/OnlineResource" rdfs:label="オンライン資料"/>
+            <dcndl:materialType rdf:resource="http://ndl.go.jp/ndltype/MaterialsForVisuallyHandicappedPeople" rdfs:label="視覚障害者向け資料"/>
+            <dcndl:publicationName>国立オリンピック記念青少年総合センター研究紀要 : 青少年教育フォーラム</dcndl:publicationName>
+            <dcndl:publicationVolume>(創刊号)</dcndl:publicationVolume>
+            <dcterms:accessRights>インターネット公開</dcterms:accessRights>
+            <rdfs:seeAlso rdf:resource="https://dl.ndl.go.jp/pid/3490251"/>
+            <foaf:thumbnail rdf:resource="https://dl.ndl.go.jp/titleThumb/info:ndljp/pid/3490251"/>
+            <dcterms:isPartOf rdf:resource="https://dl.ndl.go.jp/pid/3490237"/>
+            <dcterms:isFormatOf rdf:resource="https://id.ndl.go.jp/bib/6035579" rdfs:label="article"/>
+          </dcndl:BibResource>
+          <dcndl:BibResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000039-I3490251#material">
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000039-I3490251#item"/>
+          </dcndl:BibResource>
+        </rdf:RDF>
+      </recordData>
+      <recordPosition>1</recordPosition>
+    </record>
+    <record>
+      <recordSchema>info:srw/schema/1/dc-v1.1</recordSchema>
+      <recordPacking>xml</recordPacking>
+      <recordData>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcndl="http://ndl.go.jp/dcndl/terms/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#">
+          <dcndl:BibAdminResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000039-I12311234">
+            <dcterms:description>type : article</dcterms:description>
+            <dcndl:bibRecordCategory>R100000039</dcndl:bibRecordCategory>
+            <dcndl:bibRecordSubCategory>B00041</dcndl:bibRecordSubCategory>
+            <dcndl:bibRecordSubCategory>B00030</dcndl:bibRecordSubCategory>
+            <dcndl:bibRecordSubCategory>B00000</dcndl:bibRecordSubCategory>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000039-I12311234#material"/>
+          </dcndl:BibAdminResource>
+          <dcndl:BibResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000039-I12311234#material">
+            <rdfs:seeAlso rdf:resource="http://id.ndl.go.jp/digimeta/12311234"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLJP">info:ndljp/pid/12311234</dcterms:identifier>
+            <dcterms:title>アクション・リサーチによる知的障害のある青年のコンピュータ教育とコンピュータ・ワークの可能性</dcterms:title>
+            <dc:title>
+              <rdf:Description>
+                <rdf:value>アクション・リサーチによる知的障害のある青年のコンピュータ教育とコンピュータ・ワークの可能性</rdf:value>
+              </rdf:Description>
+            </dc:title>
+            <dcndl:alternative>
+              <rdf:Description>
+                <rdf:value>Study of a young person with intellectual disabilities based on Action Research : the feasibility to learn computer skills and to do computer work</rdf:value>
+              </rdf:Description>
+            </dcndl:alternative>
+            <dc:creator>目黒輝美</dc:creator>
+            <dc:creator>大下和之</dc:creator>
+            <dc:creator>平尾竜一</dc:creator>
+            <dcterms:publisher>
+              <foaf:Agent>
+                <foaf:name>広島国際学院大学現代社会学部</foaf:name>
+                <dcndl:location>日本</dcndl:location>
+              </foaf:Agent>
+            </dcterms:publisher>
+            <dcterms:date>2006</dcterms:date>
+            <dcterms:date>(7)</dcterms:date>
+            <dcterms:issued rdf:datatype="http://purl.org/dc/terms/W3CDTF">2006</dcterms:issued>
+            <dcterms:dateAccepted rdf:datatype="http://purl.org/dc/terms/W3CDTF">2022-07-21T16:31:11+09:00</dcterms:dateAccepted>
+            <dcterms:description>収集根拠 : オンライン資料収集制度</dcterms:description>
+            <dcterms:description>資料形態 : テキストデータ</dcterms:description>
+            <dcterms:description>コレクション : 国立国会図書館デジタルコレクション &gt; 電子書籍・電子雑誌 &gt; 学術機関 &gt; 私立大学</dcterms:description>
+            <dcterms:language rdf:datatype="http://purl.org/dc/terms/ISO639-2">jpn</dcterms:language>
+            <dcterms:format rdf:datatype="http://purl.org/dc/terms/IMT">application/pdf</dcterms:format>
+            <dcndl:materialType rdf:resource="http://ndl.go.jp/ndltype/Article" rdfs:label="記事・論文"/>
+            <dcndl:materialType rdf:resource="http://ndl.go.jp/ndltype/OnlineResource" rdfs:label="オンライン資料"/>
+            <dcndl:materialType rdf:resource="http://ndl.go.jp/ndltype/MaterialsForVisuallyHandicappedPeople" rdfs:label="視覚障害者向け資料"/>
+            <dcndl:publicationName>現代社会学</dcndl:publicationName>
+            <dcndl:publicationVolume>(7)</dcndl:publicationVolume>
+            <dcterms:accessRights>国立国会図書館内限定公開</dcterms:accessRights>
+            <dcterms:accessRights>図書館・個人送信対象外</dcterms:accessRights>
+            <rdfs:seeAlso rdf:resource="https://dl.ndl.go.jp/pid/12311234"/>
+            <foaf:thumbnail rdf:resource="https://dl.ndl.go.jp/titleThumb/info:ndljp/pid/12311234"/>
+            <dcterms:isPartOf rdf:resource="https://dl.ndl.go.jp/pid/12311230"/>
+            <dcterms:isFormatOf rdf:resource="https://id.ndl.go.jp/bib/8611718" rdfs:label="article"/>
+          </dcndl:BibResource>
+          <dcndl:BibResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000039-I12311234#material">
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000039-I12311234#item"/>
+          </dcndl:BibResource>
+        </rdf:RDF>
+      </recordData>
+      <recordPosition>2</recordPosition>
+    </record>
+  </records>
+</searchRetrieveResponse>

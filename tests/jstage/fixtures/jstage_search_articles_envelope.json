@@ -1,0 +1,117 @@
+{
+  "server": "jstage",
+  "schema_version": "2.3.0",
+  "operation": "search_articles",
+  "searched_for": {
+    "term": "反戦青年委員会",
+    "script": "han",
+    "matching": "full_text_broad"
+  },
+  "query": {
+    "input_terms": "反戦青年委員会",
+    "normalized": "反戦青年委員会",
+    "script": "han",
+    "params": { "text": "反戦青年委員会", "count": 5, "start": 1 }
+  },
+  "matching_mode": "full_text_broad",
+  "result": { "total": 18, "returned": 5, "start": 1, "breadth": "narrow" },
+  "items": [
+    {
+      "title": { "ko": null, "ja": "ベ平連と女たち", "en": "Beheiren and Women:", "romanized": null },
+      "authors": [ { "ja": "港 那央", "en": "Nao MINATO" } ],
+      "source": {
+        "journal_ko": null, "journal_ja": "ジェンダー史学", "journal_en": "jenda shigaku",
+        "volume": "18", "issue": "0", "pages": "47-61", "year": 2022, "holding_org": null
+      },
+      "ids": {
+        "doi": "10.11365/genderhistory.18.47", "crid": null, "naid": null, "kci_id": null,
+        "uci": null, "issn": null, "oai_id": null, "url_ko": null,
+        "url_ja": "https://www.jstage.jst.go.jp/article/genderhistory/18/0/18_47/_article/-char/ja/",
+        "url_en": "https://www.jstage.jst.go.jp/article/genderhistory/18/0/18_47/_article",
+        "fulltext_url": null
+      },
+      "matched_in": "fulltext", "record_type": "article", "extra": {}
+    },
+    {
+      "title": { "ko": null, "ja": "労働組合組織論", "en": null, "romanized": null },
+      "authors": [ { "ja": "藤田 若雄", "en": null } ],
+      "source": {
+        "journal_ko": null, "journal_ja": "組織科学", "journal_en": "Organizational Science",
+        "volume": "3", "issue": "4", "pages": "4-11", "year": 1970, "holding_org": null
+      },
+      "ids": {
+        "doi": "10.11207/soshikikagaku.20240710-40", "crid": null, "naid": null, "kci_id": null,
+        "uci": null, "issn": null, "oai_id": null, "url_ko": null,
+        "url_ja": "https://www.jstage.jst.go.jp/article/soshikikagaku/3/4/3_20240710-40/_article/-char/ja/",
+        "url_en": "https://www.jstage.jst.go.jp/article/soshikikagaku/3/4/3_20240710-40/_article",
+        "fulltext_url": null
+      },
+      "matched_in": "fulltext", "record_type": "article", "extra": {}
+    },
+    {
+      "title": { "ko": null, "ja": "萩元晴彦・村木良彦・今野勉著『お前はただの現在にすぎない』(田畑書店)", "en": null, "romanized": null },
+      "authors": [ { "ja": "早川 善治郎", "en": null } ],
+      "source": {
+        "journal_ko": null, "journal_ja": "新聞学評論", "journal_en": "Japanese journalism review",
+        "volume": "19", "issue": "0", "pages": "157-158", "year": 1970, "holding_org": null
+      },
+      "ids": {
+        "doi": "10.24460/shinbungaku.19.0_157", "crid": null, "naid": null, "kci_id": null,
+        "uci": null, "issn": null, "oai_id": null, "url_ko": null,
+        "url_ja": "https://www.jstage.jst.go.jp/article/shinbungaku/19/0/19_KJ00003738947/_article/-char/ja/",
+        "url_en": "https://www.jstage.jst.go.jp/article/shinbungaku/19/0/19_KJ00003738947/_article",
+        "fulltext_url": null
+      },
+      "matched_in": "fulltext", "record_type": "article", "extra": {}
+    },
+    {
+      "title": { "ko": null, "ja": "3　戦後日本平和運動の意義と課題", "en": "Unfulfilled Pacifism: Peace Movements in Postwar Japan", "romanized": null },
+      "authors": [ { "ja": "藤原 修", "en": "Osamu FUJIWARA" } ],
+      "source": {
+        "journal_ko": null, "journal_ja": "平和研究", "journal_en": "Peace Studies",
+        "volume": "45", "issue": "0", "pages": "43-63", "year": 2015, "holding_org": null
+      },
+      "ids": {
+        "doi": "10.50848/psaj.45004", "crid": null, "naid": null, "kci_id": null,
+        "uci": null, "issn": null, "oai_id": null, "url_ko": null,
+        "url_ja": "https://www.jstage.jst.go.jp/article/psaj/45/0/45_45004/_article/-char/ja/",
+        "url_en": "https://www.jstage.jst.go.jp/article/psaj/45/0/45_45004/_article",
+        "fulltext_url": null
+      },
+      "matched_in": "fulltext", "record_type": "article", "extra": {}
+    },
+    {
+      "title": { "ko": null, "ja": "6.討議(I シンポジュウム「『高校生問題』と社会科教育」,第一部 中等社会科教育の諸問題)", "en": null, "romanized": null },
+      "authors": [ { "ja": "田中", "en": null } ],
+      "source": {
+        "journal_ko": null, "journal_ja": "社会科教育論叢", "journal_en": "Bulletin of Japanese Educatinal Research Associaon for the Social Studies",
+        "volume": "18", "issue": "0", "pages": "24-30", "year": 1971, "holding_org": null
+      },
+      "ids": {
+        "doi": "10.20799/jerassb.18.0_24", "crid": null, "naid": null, "kci_id": null,
+        "uci": null, "issn": null, "oai_id": null, "url_ko": null,
+        "url_ja": "https://www.jstage.jst.go.jp/article/jerassb/18/0/18_KJ00006694628/_article/-char/ja/",
+        "url_en": "https://www.jstage.jst.go.jp/article/jerassb/18/0/18_KJ00006694628/_article",
+        "fulltext_url": null
+      },
+      "matched_in": "fulltext", "record_type": "article", "extra": {}
+    }
+  ],
+  "diagnostics": [
+    { "level": "info", "code": "OK", "message": "18 record(s) on this match.", "hint": null },
+    { "level": "info", "code": "RECEIPT_NOT_DEPOSITED", "message": "not deposited", "hint": null }
+  ],
+  "coverage_note": "J-STAGE coverage reflects which learned societies deposit full text; absence here is not absence in the field.",
+  "receipt": {
+    "issued_at": "2026-09-24T14:12:46+01:00",
+    "query_hash": "sha256:9d27d9e5ec2c945fb94719faf47f366b3d1bff94cde25a7e0df5d4f4ca3c3c37",
+    "result_ids": [
+      "10.11365/genderhistory.18.47",
+      "10.11207/soshikikagaku.20240710-40",
+      "10.24460/shinbungaku.19.0_157",
+      "10.50848/psaj.45004",
+      "10.20799/jerassb.18.0_24"
+    ]
+  },
+  "attribution": "Powered by J-STAGE (https://www.jstage.jst.go.jp/)"
+}

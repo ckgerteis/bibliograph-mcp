@@ -2,10 +2,9 @@
 
 pyproject.toml is the source. mcpb/build.py already refuses to build when
 manifest.template.json disagrees with it, so that pair is covered. This test
-covers the files nothing else checked: .zenodo.json, which Zenodo reads at the
-tagged commit when it mints the DOI; CITATION.cff, which GitHub parses for
-the "Cite this repository" button; and `__version__` under src/, which the
-server reports when a client connects.
+covers the two files nothing checked: .zenodo.json, which Zenodo reads at the
+tagged commit when it mints the DOI, and CITATION.cff, which GitHub parses for
+the "Cite this repository" button.
 
 Both are maintained by hand, and on 2026-09-08 ndl-mcp released v1.2.1 with
 `version: 1.2.0` and `cff-version: 1.2.1` in CITATION.cff — the two numbers
@@ -19,8 +18,8 @@ Running here rather than only in the release workflow is deliberate: this
 executes on every push and pull request as well as on the tagged commit, so the
 mismatch is caught when it is introduced rather than when it ships.
 
-Stdlib only, and textual rather than parsed. Adding a YAML dependency to seven
-repositories to read three scalars would cost more than it verifies, and the
+Stdlib only, and textual rather than parsed. Adding a YAML dependency to this
+repository to read three scalars would cost more than it verifies, and the
 regexes below are anchored to line starts, so they read top-level keys only.
 """
 
@@ -75,6 +74,15 @@ def test_citation_version_matches_pyproject() -> None:
     )
 
 
+def test_manifest_version_matches_pyproject() -> None:
+    """mcpb/build.py refuses to build against a mismatch; this catches it before that point too."""
+    manifest = _one(r'^\s*"version"\s*:\s*"([^"]+)"', _read("mcpb/manifest.template.json"),
+                     "version", "mcpb/manifest.template.json")
+    assert manifest == project_version(), (
+        f"mcpb/manifest.template.json says {manifest}, pyproject says {project_version()}."
+    )
+
+
 def test_citation_declares_a_released_specification() -> None:
     """cff-version names the format specification, not this software's version."""
     spec = _one(r'^cff-version:\s*"?([^"\n]+)"?\s*$', _read("CITATION.cff"), "cff-version", "CITATION.cff")
@@ -89,18 +97,30 @@ def test_citation_release_date_is_a_date() -> None:
     _dt.date.fromisoformat(raw)  # raises ValueError on anything that is not YYYY-MM-DD
 
 
-def test_reported_version_matches_pyproject() -> None:
-    """The server answers a client with __version__. The bundle handshake fails a
-    server that reports another version, but only when a bundle is built; the
-    12 October 2026 bumps reached CI with __version__ still on the old release."""
-    found = {}
-    for path in sorted((ROOT / "src").glob("*/*.py")):
-        values = re.findall(r'^__version__\s*=\s*"([^"]+)"', path.read_text(encoding="utf-8"), re.MULTILINE)
-        if values:
-            found[path.relative_to(ROOT).as_posix()] = values
-    assert found, "no module under src/ declares __version__"
-    for where, values in found.items():
-        assert values == [project_version()], (
-            f"{where} says {values}, pyproject says {project_version()}. "
-            "The server would report a version that is not the one released."
-        )
+def test_package_version_matches_pyproject() -> None:
+    """bibliograph_status reports this; a stale value misnames the release a count was made under.
+
+    bibliograph 1.4.0 was committed on 2026-10-09 with __version__ still 1.3.0, because
+    set_version.py did not touch it and nothing here read it.
+    """
+    pkg = _one(r'^__version__\s*=\s*"([^"]+)"', _read("src/bibliograph/__init__.py"),
+               "__version__", "src/bibliograph/__init__.py")
+    assert pkg == project_version(), (
+        f"src/bibliograph/__init__.py says {pkg}, pyproject says {project_version()}."
+    )
+
+
+def test_readme_install_pins_match_pyproject() -> None:
+    """The README's pinned installs name the tag a reader gets; every pin must be this release."""
+    pins = re.findall(r"@v(\d+\.\d+\.\d+[^\"\s`]*)", _read("README.md"))
+    assert pins, "README.md: no pinned @vX.Y.Z install line found"
+    stale = sorted({p for p in pins if p != project_version()})
+    assert not stale, f"README.md pins {stale}, pyproject says {project_version()}."
+
+
+def test_changelog_has_a_section_for_this_version() -> None:
+    """set_version.py does not write the changelog; this stops a release without one."""
+    head = re.compile(r"^## " + re.escape(project_version()) + r"\b", re.MULTILINE)
+    assert head.search(_read("CHANGELOG.md")), (
+        f"CHANGELOG.md has no '## {project_version()}' section."
+    )

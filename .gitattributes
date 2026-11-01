@@ -1,1 +1,7 @@
+# Text files use LF line endings on every platform, including a Windows
+# checkout, so a hash of them (e.g. a bundle's VENDORED-style checks in the
+# sibling family repositories) is a claim about content, not the platform a
+# file was checked out on.
 * text=auto eol=lf
+*.mcpb binary
+*.png binary

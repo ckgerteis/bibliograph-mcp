@@ -1,0 +1,95 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+  <version>1.2</version>
+  <numberOfRecords>1</numberOfRecords>
+  <extraResponseData>
+    <facets>
+      <lst name="REPOSITORY_NO">
+        <int name="R100000002">1</int>
+      </lst>
+      <lst name="NDC">
+        <int name="3">1</int>
+      </lst>
+      <lst name="ISSUED_DATE">
+        <int name="1976">1</int>
+      </lst>
+      <lst name="LIBRARY">
+        <int name="京都府立図書館">1</int>
+        <int name="国立国会図書館">1</int>
+        <int name="大阪府立中央図書館">1</int>
+        <int name="東京都立中央図書館">1</int>
+        <int name="神奈川県立図書館">1</int>
+      </lst>
+    </facets>
+  </extraResponseData>
+  <records>
+    <record>
+      <recordSchema>info:srw/schema/1/dc-v1.1</recordSchema>
+      <recordPacking>xml</recordPacking>
+      <recordData>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcndl="http://ndl.go.jp/dcndl/terms/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#">
+          <dcndl:BibAdminResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000002-I000001185032">
+            <dcndl:catalogingStatus>C7</dcndl:catalogingStatus>
+            <dcndl:catalogingRule>ncr</dcndl:catalogingRule>
+            <dcterms:description>type : book</dcterms:description>
+            <dcndl:bibRecordCategory>R100000002</dcndl:bibRecordCategory>
+            <dcndl:bibRecordSubCategory>111</dcndl:bibRecordSubCategory>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000002-I000001185032#material"/>
+          </dcndl:BibAdminResource>
+          <dcndl:BibResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000002-I000001185032#material">
+            <rdfs:seeAlso rdf:resource="http://id.ndl.go.jp/jpno/71009951"/>
+            <rdfs:seeAlso rdf:resource="http://id.ndl.go.jp/bib/000001185032"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/JPNO">71009951</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLBibID">000001185032</dcterms:identifier>
+            <dcterms:title>IMF・JC10年の歩み : 新しい労働運動を求めて 1964-1974</dcterms:title>
+            <dc:title>
+              <rdf:Description>
+                <rdf:value>IMF・JC10年の歩み : 新しい労働運動を求めて 1964-1974</rdf:value>
+                <dcndl:transcription>アイエムエフ ジェイシー ジュウネン ノ アユミ</dcndl:transcription>
+              </rdf:Description>
+            </dc:title>
+            <dcterms:creator>
+              <foaf:Agent rdf:about="http://id.ndl.go.jp/auth/entity/00310092">
+                <foaf:name>全日本金属産業労働組合協議会</foaf:name>
+                <dcndl:transcription>ゼンニホン キンゾク サンギョウ ロウドウ クミアイ キョウギカイ</dcndl:transcription>
+              </foaf:Agent>
+            </dcterms:creator>
+            <dc:creator>IMF・JC10周年史編纂委員会 編</dc:creator>
+            <dcterms:publisher>
+              <foaf:Agent>
+                <foaf:name>全日本金属産業労働組合協議会</foaf:name>
+                <dcndl:location>東京</dcndl:location>
+              </foaf:Agent>
+            </dcterms:publisher>
+            <dcndl:publicationPlace rdf:datatype="http://purl.org/dc/terms/ISO3166">JP</dcndl:publicationPlace>
+            <dcterms:date>1976</dcterms:date>
+            <dcterms:issued rdf:datatype="http://purl.org/dc/terms/W3CDTF">1976</dcterms:issued>
+            <dcterms:description>年表: p.310-365</dcterms:description>
+            <dcterms:subject>
+              <rdf:Description rdf:about="http://id.ndl.go.jp/auth/ndlna/00288505">
+                <rdf:value>国際金属労働組合連盟日本協議会</rdf:value>
+                <dcndl:transcription>コクサイ キンゾク ロウドウ クミアイ レンメイ ニホン キョウギカイ</dcndl:transcription>
+              </rdf:Description>
+            </dcterms:subject>
+            <dcterms:subject rdf:resource="http://id.ndl.go.jp/class/ndlc/EL216"/>
+            <dc:subject rdf:datatype="http://ndl.go.jp/dcndl/terms/NDC">366.6</dc:subject>
+            <dcterms:language rdf:datatype="http://purl.org/dc/terms/ISO639-2">jpn</dcterms:language>
+            <dcterms:extent>366p 図 ; 27cm</dcterms:extent>
+            <dcndl:materialType rdf:resource="http://ndl.go.jp/ndltype/Book" rdfs:label="図書"/>
+            <dcterms:audience>一般</dcterms:audience>
+            <rdfs:seeAlso rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000002-I000001185032"/>
+          </dcndl:BibResource>
+          <dcndl:BibResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000002-I000001185032#material">
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I13111100357901#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I14111100110819#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I2611B10226952#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I2711B10510271#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000002-I000001185032#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000039-I12171469#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000136-I1970304959876907033#item"/>
+          </dcndl:BibResource>
+        </rdf:RDF>
+      </recordData>
+      <recordPosition>1</recordPosition>
+    </record>
+  </records>
+</searchRetrieveResponse>

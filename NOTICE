@@ -1,0 +1,69 @@
+bibliograph-mcp - third-party data and services notice
+
+The code in this repository is MIT-licensed (see LICENSE). bibliograph gathers
+several source modules that each speak to a different provider's own data or
+service, under that provider's own terms. Nothing from these providers is
+redistributed by this repository beyond what each source's own README
+states; most calls are made live, on request, from the machine running the
+server.
+
+  - NDL Search (ndl) and NDL Digital Collections metadata (ndl, dpid
+    ndl-dl/ndl-dl-online) - National Diet Library (NDL). Records under the
+    declared set are used under NDL's Permission-Free (PDL 1.0) terms,
+    compatible with CC BY 4.0. Digital Collections metadata (ndl-dl,
+    ndl-dl-online) carries no open licence and is display-only: it is shown
+    as returned and not accumulated or redistributed further.
+
+  - NDL Digital Collections full text (ndl_dl) - via NDL Lab
+    (lab.ndl.go.jp), National Diet Library. The corpus reached by
+    ndl_dl_fulltext_search / ndl_dl_book_fulltext is public domain
+    (pre-copyright or copyright-expired holdings digitised under the FY2021
+    and FY2022 OCR projects); this server does not accumulate it beyond
+    what a tool call returns.
+
+  - NDL Web Archiving Project (WARP, warp) - National Diet Library.
+    Archived pages remain the copyright of their original publishers; WARP's
+    own terms, not this server's, govern reuse of archived content. See
+    docs/sources/warp/README.md, "Terms of use and access".
+
+  - CiNii Research, KAKEN and the NRID researcher directory (cinii) -
+    National Institute of Informatics (NII). NRID lookups need a registered
+    application id (CINII_APPID); every other CiNii Research call runs
+    without one.
+
+  - J-STAGE WebAPI (jstage) - Japan Science and Technology Agency (JST).
+
+  - OpenAlex (openalex) - OurResearch, released under CC0. An OPENALEX_EMAIL
+    is recommended (OpenAlex's "polite pool"); OPENALEX_API_KEY is optional.
+
+  - Semantic Scholar Academic Graph API (semantic_scholar) - Allen
+    Institute for AI (AI2), under the Semantic Scholar API's own licence
+    terms. SEMANTIC_SCHOLAR_API_KEY is optional; keyless calls share one
+    throttled pool.
+
+  - Web NDL Authorities (names, name_authority tool) - National Diet
+    Library. Catalogue-verified personal-name headings, read live over the
+    NDLA SPARQL endpoint.
+
+  - JMnedict, JMdict (English), KANJIDIC2, and KRADFILE/RADKFILE (names),
+    all distributed as the `scriptin/jmdict-simplified` JSON release
+    (https://github.com/scriptin/jmdict-simplified). These are the property
+    of the Electronic Dictionary Research and Development Group (EDRDG),
+    https://www.edrdg.org/, and are used and redistributable only under the
+    EDRDG licence, which requires attribution and share-alike:
+    Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0),
+    https://www.edrdg.org/edrdg/licence.html
+
+  - Optionally, Wiktionary entries via wiktextract / kaikki.org
+    (https://kaikki.org/dictionary/Japanese,
+    https://github.com/tatuylonen/wiktextract), for the names source's
+    gloss_archaic tool. Wiktionary content is dual CC BY-SA 4.0 / GFDL;
+    cite Ylonen, "Wiktextract: Wiktionary as Machine-Readable Structured
+    Data", LREC 2022.
+
+bibliograph ships no dictionary or lexical data. Running the names source
+requires building a local index with `bibliograph-build-names`
+(src/bibliograph/sources/names/build_index.py), which downloads and reshapes the
+EDRDG and, optionally, Wiktionary sources listed above. The SQLite index it
+produces on your machine carries the same attribution and licence terms as
+its sources and is not distributed in, or by, this repository.

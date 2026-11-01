@@ -1,0 +1,195 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+  <version>1.2</version>
+  <numberOfRecords>226</numberOfRecords>
+  <nextRecordPosition>3</nextRecordPosition>
+  <extraResponseData>
+    <facets>
+      <lst name="REPOSITORY_NO">
+        <int name="R100000002">211</int>
+        <int name="R100000039">15</int>
+      </lst>
+      <lst name="NDC">
+      </lst>
+      <lst name="ISSUED_DATE">
+        <int name="1961">2</int>
+        <int name="1971">2</int>
+        <int name="1977">1</int>
+        <int name="1982">1</int>
+        <int name="1985">1</int>
+        <int name="1986">1</int>
+        <int name="1988">1</int>
+        <int name="1989">2</int>
+        <int name="1990">3</int>
+        <int name="1991">2</int>
+        <int name="1993">1</int>
+        <int name="1995">1</int>
+        <int name="1997">1</int>
+        <int name="1998">4</int>
+        <int name="1999">2</int>
+        <int name="2000">3</int>
+        <int name="2001">5</int>
+        <int name="2002">2</int>
+        <int name="2003">4</int>
+        <int name="2004">4</int>
+        <int name="2005">3</int>
+        <int name="2006">4</int>
+        <int name="2007">7</int>
+        <int name="2008">7</int>
+        <int name="2009">7</int>
+        <int name="2010">5</int>
+        <int name="2011">7</int>
+        <int name="2012">4</int>
+        <int name="2013">8</int>
+        <int name="2014">4</int>
+        <int name="2015">7</int>
+        <int name="2016">13</int>
+        <int name="2017">21</int>
+        <int name="2018">9</int>
+        <int name="2019">10</int>
+        <int name="2020">10</int>
+        <int name="2021">15</int>
+        <int name="2022">6</int>
+        <int name="2023">10</int>
+        <int name="2024">13</int>
+        <int name="2025">16</int>
+        <int name="2026">10</int>
+      </lst>
+      <lst name="LIBRARY">
+      </lst>
+    </facets>
+  </extraResponseData>
+  <records>
+    <record>
+      <recordSchema>info:srw/schema/1/dc-v1.1</recordSchema>
+      <recordPacking>xml</recordPacking>
+      <recordData>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcndl="http://ndl.go.jp/dcndl/terms/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#">
+          <dcndl:BibAdminResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000002-I028874342">
+            <dcndl:catalogingStatus>C7</dcndl:catalogingStatus>
+            <dcterms:description>type : title</dcterms:description>
+            <dcndl:bibRecordCategory>R100000002</dcndl:bibRecordCategory>
+            <dcndl:bibRecordSubCategory>412</dcndl:bibRecordSubCategory>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000002-I028874342#material"/>
+          </dcndl:BibAdminResource>
+          <dcndl:BibResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000002-I028874342#material">
+            <rdfs:seeAlso rdf:resource="http://id.ndl.go.jp/bib/028874342"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLBibID">028874342</dcterms:identifier>
+            <rdfs:seeAlso rdf:resource="http://iss.ndl.go.jp/issn/2433992X"/>
+            <rdfs:seeAlso rdf:resource="http://iss.ndl.go.jp/issnl/2433992X"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/ISSN">2433-992X</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/ISSNL">2433-992X</dcterms:identifier>
+            <dcterms:title>会津大学短期大学部研究紀要 = Bulletin of Junior College Division, the University of Aizu</dcterms:title>
+            <dc:title>
+              <rdf:Description>
+                <rdf:value>会津大学短期大学部研究紀要</rdf:value>
+                <dcndl:transcription>アイズ ダイガク タンキ ダイガクブ ケンキュウ キヨウ</dcndl:transcription>
+              </rdf:Description>
+            </dc:title>
+            <dcndl:alternative>
+              <rdf:Description>
+                <rdf:value>Bulletin of Junior College Division, the University of Aizu</rdf:value>
+                <dcndl:transcription>Bulletin of Junior College Division, the University of Aizu</dcndl:transcription>
+              </rdf:Description>
+            </dcndl:alternative>
+            <dcndl:alternative>
+              <rdf:Description>
+                <rdf:value>Bulletin of Junior College Division, the University of Aizu</rdf:value>
+              </rdf:Description>
+            </dcndl:alternative>
+            <dcndl:alternative>
+              <rdf:Description>
+                <rdf:value>会津大学短期大学部研究紀要 (電子版)</rdf:value>
+                <dcndl:transcription>アイズ ダイガク タンキ ダイガクブ ケンキュウ キヨウ デンシバン</dcndl:transcription>
+              </rdf:Description>
+            </dcndl:alternative>
+            <dcndl:alternative>
+              <rdf:Description>
+                <rdf:value>Aizu Daigaku Tanki Daigakubu kenkyu kiyo</rdf:value>
+              </rdf:Description>
+            </dcndl:alternative>
+            <dcndl:creatorAlternative>University of Aizu. Junior College Division</dcndl:creatorAlternative>
+            <dcterms:publisher>
+              <foaf:Agent>
+                <foaf:name>会津大学短期大学部</foaf:name>
+                <dcndl:transcription>アイズ ダイガク タンキ ダイガクブ</dcndl:transcription>
+                <dcndl:location>会津若松</dcndl:location>
+              </foaf:Agent>
+            </dcterms:publisher>
+            <dcndl:publicationPlace rdf:datatype="http://purl.org/dc/terms/ISO3166">JP</dcndl:publicationPlace>
+            <dcterms:issued rdf:datatype="http://purl.org/dc/terms/W3CDTF">2018</dcterms:issued>
+            <dcterms:description>コレクション : ISSN登録オンラインジャーナル</dcterms:description>
+            <dcterms:description>電子的内容 : オンライン・サービス</dcterms:description>
+            <dcterms:subject rdf:resource="http://id.ndl.go.jp/class/ndlc/ZV1"/>
+            <dcterms:language rdf:datatype="http://purl.org/dc/terms/ISO639-2">jpn</dcterms:language>
+            <dcterms:extent>冊</dcterms:extent>
+            <dcndl:materialType rdf:resource="http://ndl.go.jp/ndltype/OnlineResource" rdfs:label="オンライン資料"/>
+            <dcndl:materialType rdf:resource="http://ndl.go.jp/ndltype/OnlineJournal" rdfs:label="オンラインジャーナル"/>
+            <dcndl:volumeRange>75号 (2018)-</dcndl:volumeRange>
+            <dcndl:publicationPeriodicity>年刊</dcndl:publicationPeriodicity>
+            <dcndl:publicationStatus>継続刊行中</dcndl:publicationStatus>
+            <rdfs:seeAlso rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000002-I028874342"/>
+            <owl:sameAs rdf:resource="https://jc.u-aizu.repo.nii.ac.jp/?action=repository_opensearch&amp;index_id=1237"/>
+          </dcndl:BibResource>
+          <dcndl:BibResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000002-I028874342#material">
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000002-I028874342#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000136-I1971149384718977207#item"/>
+          </dcndl:BibResource>
+        </rdf:RDF>
+      </recordData>
+      <recordPosition>1</recordPosition>
+    </record>
+    <record>
+      <recordSchema>info:srw/schema/1/dc-v1.1</recordSchema>
+      <recordPacking>xml</recordPacking>
+      <recordData>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcndl="http://ndl.go.jp/dcndl/terms/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#">
+          <dcndl:BibAdminResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000039-I10312250">
+            <dcterms:description>type : title</dcterms:description>
+            <dcndl:bibRecordCategory>R100000039</dcndl:bibRecordCategory>
+            <dcndl:bibRecordSubCategory>B00069</dcndl:bibRecordSubCategory>
+            <dcndl:bibRecordSubCategory>B00028</dcndl:bibRecordSubCategory>
+            <dcndl:bibRecordSubCategory>B00027</dcndl:bibRecordSubCategory>
+            <dcndl:bibRecordSubCategory>B00000</dcndl:bibRecordSubCategory>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000039-I10312250#material"/>
+          </dcndl:BibAdminResource>
+          <dcndl:BibResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000039-I10312250#material">
+            <rdfs:seeAlso rdf:resource="http://id.ndl.go.jp/digimeta/10312250"/>
+            <rdfs:seeAlso rdf:resource="http://iss.ndl.go.jp/issn/21896038"/>
+            <rdfs:seeAlso rdf:resource="http://iss.ndl.go.jp/issnl/21896038"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/ISSN">2189-6038</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/ISSNL">2189-6038</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLJP">info:ndljp/pid/10312250</dcterms:identifier>
+            <dcterms:title>愛知県陶磁美術館研究紀要</dcterms:title>
+            <dc:title>
+              <rdf:Description>
+                <rdf:value>愛知県陶磁美術館研究紀要</rdf:value>
+              </rdf:Description>
+            </dc:title>
+            <dc:creator>愛知県陶磁美術館</dc:creator>
+            <dcterms:publisher>
+              <foaf:Agent>
+                <foaf:name>愛知県</foaf:name>
+                <dcndl:location>日本</dcndl:location>
+              </foaf:Agent>
+            </dcterms:publisher>
+            <dcterms:dateAccepted rdf:datatype="http://purl.org/dc/terms/W3CDTF">2017-03-09T10:20:22+09:00</dcterms:dateAccepted>
+            <dcterms:description>収集根拠 : インターネット資料収集保存事業（WARP）</dcterms:description>
+            <dcterms:description>資料形態 : テキストデータ</dcterms:description>
+            <dcterms:description>コレクション : 国立国会図書館デジタルコレクション &gt; 電子書籍・電子雑誌 &gt; 地方公共団体 &gt; 都道府県 &gt; 愛知県</dcterms:description>
+            <dcterms:language rdf:datatype="http://purl.org/dc/terms/ISO639-2">jpn</dcterms:language>
+            <dcndl:materialType rdf:resource="http://ndl.go.jp/ndltype/OnlineResource" rdfs:label="オンライン資料"/>
+            <dcterms:accessRights>インターネット公開</dcterms:accessRights>
+            <rdfs:seeAlso rdf:resource="https://dl.ndl.go.jp/pid/10312250"/>
+            <foaf:thumbnail rdf:resource="https://dl.ndl.go.jp/titleThumb/info:ndljp/pid/10312250"/>
+            <dcterms:hasFormat rdf:resource="http://iss.ndl.go.jp/issn/02868555"/>
+          </dcndl:BibResource>
+          <dcndl:BibResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000039-I10312250#material">
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000002-I026553881#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000039-I10312250#item"/>
+          </dcndl:BibResource>
+        </rdf:RDF>
+      </recordData>
+      <recordPosition>2</recordPosition>
+    </record>
+  </records>
+</searchRetrieveResponse>

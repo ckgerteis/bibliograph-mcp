@@ -1,0 +1,360 @@
+# Changelog
+
+Versions are the thing to cite. A count produced under one release is not
+reproducible against another, so the release actually used should be named in
+the text and, where a version DOI exists, cited by it.
+
+Releases earlier than those below are on the repository's releases page; this
+file begins where the record is precise enough to be worth writing down.
+
+## 3.3.1 — 2026-10-30
+
+Ports the public cinii-mcp 3.2.0 stress-test repairs (12 Oct 2026), which bibliograph's copy had missed, and closes a gap in 3.3.0.
+
+- **A 200 that is not the protocol is an error, not zero results.** A search body without `opensearch:totalResults` (null, `{}`, a gateway's error object) came back as `ZERO_CONJUNCTION`, an outage reported as an un-indexed compound; it is now `API_ERROR`. A record body without `@id` is `API_ERROR` instead of "Single record resolved."
+- **A CRID cannot rewrite the request.** `cinii_get_record` put the CRID into the path unencoded; it is now percent-encoded, a pasted URL's query string and fragment are dropped, and control characters and inputs over 2,000 characters are refused.
+- **The appid is redacted in raw and percent-encoded forms, before the 300-character cut**; an unformable URL is reported as such, not as a network error; redirects are not followed.
+- **Malformed records are named.** `RECORD_SHAPE_UNEXPECTED` now names each skipped record by position and CRID, and a page of only unreadable records is not reported as `ZERO_CONJUNCTION`. An infinite, negative or fractional `totalResults` no longer stands as the corpus size.
+- **Book results carry their NCID and ISBN** in `extra.ncid` and `extra.isbn`, so a book found by `cinii_search_books` can go straight to `cinii_get_holdings`.
+
+## 3.3.0 — 2026-10-30
+
+Ported from cinii-mcp PR #20 (public 3.3.0, unreleased at the time), released in bibliograph 1.5.0. One
+difference: holdings and library receipts name each library in `result_ids` as
+`nacsis-cat-library:<ID>`, through bibliograph's `receipt_ids`. The public 3.2.0 stress-test repairs
+(CRID path encoding, control-character refusal, shape checks on search pages and records) are
+not part of this port.
+
+**CiNii's 2025–26 API additions, and one filter that never worked.** Every
+existing call that uses none of the new inputs sends exactly what it sent
+under 3.2.0, so its receipt hash is unchanged.
+
+- **The `journal` filter on `cinii_search_articles` was ignored.** It was sent
+  as `publicationName`; CiNii reads `publicationTitle`. Every journal-filtered
+  article search before this release returned the unfiltered result (青年 with
+  教育学研究: 69,977 records either way; 518 with the right name, live, 28 Oct
+  2026). Receipts of such searches record the filter as asked, not as applied.
+- **Holdings and libraries.** `cinii_get_holdings` (by NCID, with ILL, service,
+  Japan–US and Japan–Korea ILL, and journal year/volume/number filters) and
+  `cinii_search_libraries`, on the `/opensearch/holder` and `/opensearch/library`
+  endpoints CiNii Research opened on 30 March 2026. New diagnostics
+  `HOLDINGS_NONE_REGISTERED` and `LIBRARY_NONE_MATCHED`.
+- **Two more search types.** `cinii_search_data` (research data, including KAKEN
+  research data from 21 April 2026) and `cinii_search_projects_and_products`.
+- **Filters.** `language` (languageType) on every search but researchers;
+  `has_fulltext`, `resource_type` and `researcher_id` where CiNii accepts them;
+  `data_source` on every search tool, not only articles; `ncid`, `category` and
+  `exact_title` for books; `award_institution` and `degree` for dissertations;
+  `project_id` for KAKEN.
+- **All eleven v2 sort orders**, each accepted only for the search type CiNii
+  honours it on. An out-of-scope sort, an unknown `data_source` and a malformed
+  language code are refused before sending, because CiNii answers each with a
+  plausible page rather than an error.
+- **`query` is optional** where another criterion is given (an NCID, a project
+  number, a researcher ID). The envelope records the criteria as sent.
+- **Mixed searches type each record** from its own `dc:type`: `cinii_search_all`
+  no longer reports books and projects as articles. A `Dataset` or `Data`
+  record is now `dataset`, also in `cinii_get_record` (formerly `article`).
+- **An HTML page served with 200 is `API_ERROR`.** CiNii sends its
+  "ただいまご利用いただけません" page for some malformed requests; it was
+  reported as `TRANSPORT_ERROR` ("Network error reaching CiNii").
+
+## 3.2.1 - 2026-10-07
+
+Repairs of 7 October 2026, released in bibliograph 1.2.0. See bibliograph's CHANGELOG for the detail.
+
+## 3.2.0 — 2026-09-24
+
+**F3: Researcher Number (NRID) exposed.** `cinii_search_researchers` never
+surfaced a citable identifier for a person — checked live (query "姜尚中")
+and confirmed CiNii's OpenSearch researcher item shape carries no
+`personIdentifier` field at all. `cinii_get_record`, on the other hand, was
+silently broken for a standalone Researcher-type CRID: `_item_from_record`
+only read `dc:title`/`creator`, fields a Researcher record does not have, so
+every field came back null (also confirmed live, same CRID).
+
+- `_item_from_record` now recognises `@type: "Researcher"`: name from
+  `foaf:name`, and `extra.researcher_number` (NRID) plus `extra.identifiers`
+  (every typed identifier, `{type, value}`) from `personIdentifier` — the
+  same field a Researcher node nested under an article's `creator` was
+  already observed to carry (`tests/cinii/fixtures/crid_1050002213762702720.json`).
+- `_item_from_cinii` (what `cinii_search_researchers` actually parses) reads
+  `personIdentifier` defensively for the same fields, and a new diagnostic,
+  `NRID_NOT_IN_SEARCH_RESULT`, tells the caller to fetch the full record with
+  `cinii_get_record` when the search result carries none — which, on the
+  live evidence above, is every result today. No number is fabricated.
+- `ids.*` (bibliographic identifiers) is untouched: a person's identifiers
+  are not one of those.
+
+## 3.1.2 — 2026-09-12
+
+**The bundle's environment is built when it is installed, not during the first
+connection.**
+
+- **What was wrong.** 3.1.0 and 3.1.1 kept `pyproject.toml`, `uv.lock` and the
+  entry point under `server/`. Claude Desktop's UV runtime looks for
+  `pyproject.toml` at the bundle root when an extension is installed; finding
+  it, it takes a uv already on the PATH or downloads its own (0.9.7 at the time
+  of writing) and runs `uv sync` there behind a progress bar, so the interpreter and the libraries arrive before the server is ever
+  launched. Not finding it, the app logs `missing pyproject.toml. Cannot
+  proceed with UV setup`, installs the extension anyway, and the first
+  connection attempt has to fetch uv, an interpreter and roughly 40 MB of
+  libraries inside the launch timeout. That took 26 to 46 seconds on the
+  author's connection against a limit of about sixty; on a Mac mini (M4,
+  macOS 26.6.2) it never completed, and the app showed "Unable to connect to
+  extension server" for this bundle, ndl and jstage alike (reported
+  7 September 2026). Read from the app's code, not inferred: the install
+  step, its root-path check and its log line, and the launch step that runs
+  the app's own uv with the manifest's arguments from the bundle folder.
+- **What changed.** `pyproject.toml`, `uv.lock` and `main.py` are at the
+  bundle root and the manifest launches `uv run --directory ${__dirname}
+  --frozen main.py`. The install-time `uv sync` now runs; measured on the
+  ndl bundle with the app's uv 0.9.7 on an empty cache, install took 3 s and
+  the launch answered `initialize` in 2.4 s, against 1.8 s for the same
+  launch warm. Where a host skips the install step the launch still builds
+  the environment itself.
+- **The gate that would have caught it.** `tests/bundle_handshake.py` now
+  runs the install phase before the launch, fails a bundle whose
+  `pyproject.toml` is not at the root, and fails a launch that takes longer
+  than thirty seconds to answer. The 3.1.1 bundle fails it. The previous gate
+  allowed 240 seconds and launched without the install phase, which is why
+  3.1.0 and 3.1.1 passed CI and did not run on the machine that reported them.
+- Observed in the app, not only reproduced: installed here under a test name,
+  `main.log` shows `Setting up UV environment`, `Found system UV`,
+  `Running uv sync` and `Setup completed successfully` six seconds later, then
+  a launch that connected with all tools eight seconds after the launch line,
+  and a live call answered. The same log's predecessor shows the 1.2.1 layout
+  installed on 8 September as `ndl-runtime-test` with the app recording
+  `missing pyproject.toml. Cannot proceed with UV setup`; the line was there
+  and went unread.
+
+## 3.1.1 — 2026-09-08
+
+- **The bundle no longer pins Python 3.13.** 3.1.0 shipped a `.python-version`
+  so that every user ran the interpreter the release gate had run; the cost
+  was a 20 MB interpreter download on first launch even where a usable Python
+  was already installed. The file is gone: uv now takes any interpreter on
+  the machine that satisfies `requires-python` (3.10 or later) and downloads
+  one only where there is none. The lock resolves for every version in that
+  range, and the handshake gate runs the bundle under 3.10 and 3.12 as well
+  as on a cold cache before each release. Nothing in the server changed.
+
+## 3.1.0 — 2026-09-08
+
+**The Claude Desktop bundle runs again, on every supported interpreter.** The
+same change as ndl-mcp 1.2.0, where it was proved before being copied here.
+
+- **What was wrong.** Every `.mcpb` published so far imported under CPython
+  3.12 and nothing else. `mcpb/build.py` vendored the dependencies with
+  `pip install --target` under the interpreter running the build, the release
+  workflow pinned that interpreter to 3.12, and `pydantic-core`, `rpds-py` and
+  `cffi` ship native wheels tagged for one interpreter. The manifest meanwhile
+  declared `runtimes.python >= 3.10` and launched bare `python` from the
+  user's PATH, so Claude Desktop picked whatever satisfied the range, the
+  import failed at module scope, and the user saw "Server disconnected".
+- **What changed.** The manifest now declares `server.type: "uv"` (manifest
+  0.4). Claude Desktop runs the bundle with uv, using a uv already on the
+  PATH and otherwise the copy the app ships, from `server/pyproject.toml`,
+  `server/.python-version` (3.13) and `server/uv.lock`. Nothing compiled is
+  in the bundle, so one bundle serves Windows, macOS and Linux and is about
+  100 KB instead of 10 to 17 MB. The first launch downloads Python 3.13 if the
+  machine lacks it and the locked libraries, roughly 60 MB; measured on
+  ndl-mcp at 26 s with a system 3.13 present and 46 s without, against Claude
+  Desktop's 60 s request limit. A first launch that runs past the limit
+  self-heals on restart, because uv caches what it fetched. Later launches
+  take under a second.
+- **`main.py` says what is wrong.** The import is guarded: on `ImportError`
+  the entry point writes one line naming the running interpreter, its path
+  and the supported range to stderr before re-raising. The `MCP_RECEIPT*`
+  blank-stripping and every `user_config` field are unchanged.
+- **A blank field in Claude Desktop's install dialog no longer becomes a
+  folder or a credential.** Claude Desktop substitutes `${user_config.KEY}`
+  only for fields that have a value and passes the placeholder verbatim
+  otherwise, so a blank receipts folder became a folder named after the
+  placeholder and a blank optional key would have been sent to the provider
+  as the key. The entry point now drops any variable whose value still
+  carries a placeholder before the package imports, and the handshake gate
+  checks that it does.
+- **A gate that would have caught this.** `tests/bundle_handshake.py`
+  (vendored across the family) unpacks the built bundle, runs it exactly as
+  the host would, and requires the `initialize` reply to name the manifest's
+  version, on a cold cache and under interpreters other than the bundle's
+  pin. The release workflow runs it on all three operating systems before
+  anything is attached to a release.
+- **CI matrix: 3.10, 3.12, 3.13 and 3.14.** 3.12 was the version the old
+  bundles shipped and was never tested. The reported `import mcp` failure on
+  3.14 (`TypeError: _eval_type() got an unexpected keyword argument
+  'prefer_fwd_module'`) was re-tested: it is pydantic ≥ 2.12.4 meeting a 3.14
+  interpreter built before the keyword landed (pydantic/pydantic#12544,
+  #12597); 3.14.2, 3.14.3 and 3.14.7 are clean with pydantic 2.13.5.
+  `requires-python` stays `>=3.10`; pre-release 3.14 builds are not
+  supported.
+- **The installers ask where to install, and never guess.** `install.py` and
+  `install.ps1` chose the virtual environment silently and, run without a
+  terminal, fell back to defaults for the receipts folder as well. Both now
+  ask for the install location, the receipts folder and the session slug,
+  offering a neutral suggestion that Enter accepts, and run without a
+  terminal they stop before touching anything unless `--venv` and
+  `--receipts-dir` (or `--no-receipts`; `-VenvDir`, `-ReceiptsDir`,
+  `-NoReceipts` for PowerShell) say so. The author's own project slugs, which
+  had served as examples in the installer help and the bundle's
+  `user_config` description, are replaced with neutral ones.
+- **A complete public repository.** `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`
+  (Contributor Covenant 2.1), `SECURITY.md`, issue forms that ask for the
+  install route, the interpreter and the log tail, a pull request template,
+  and Dependabot for the workflow actions and the Python dependencies.
+  Repository topics and homepage set on GitHub.
+- **The README says what the receipts are for.** A section after the opening
+  explains, for a researcher rather than a maintainer, why a hash-chained
+  record of every query matters: a citable search, negative findings that
+  carry weight, a method section the manifest writes, a record of what an
+  assistant actually asked, and nothing interpreted.
+- **The README says where to get Python.** A "Getting Python" subsection at
+  the head of Install: python.org on Windows with the PATH tick and the
+  Microsoft Store stub explained, python.org or Homebrew on macOS, the
+  distribution package on Linux, or uv on any of them.
+- **Nothing here is specific to Claude, and the README now says so.** The
+  server is a Model Context Protocol server over stdio; the bundle and the
+  installers are conveniences for one client. A new "Any other MCP client"
+  section gives the JSON any client takes and the `claude mcp add` line for
+  Claude Code, with the receipts variables as optional environment.
+- **The DOI is in the repository.** The Zenodo concept DOI is a badge under
+  the README title and an identifier in `CITATION.cff`; neither carried it
+  before, although every release has been archived.
+- `tests/smoke_stdio.py` finds the console script through `sysconfig` and
+  with its `.exe` suffix on Windows, so it no longer depends on the scripts
+  directory being on PATH. Vendored across the family.
+- `install.ps1` gains `-ConfigPath`, as `install.py` already had, and writes
+  the configuration file as UTF-8 without a byte-order mark.
+- README: how to read a "Server disconnected" log, where the log lives on
+  each platform, and how an `ImportError` differs from a missing interpreter.
+  Pins moved to v3.1.0.
+- The `attribution` line in every envelope now carries the CiNii Research
+  URL (https://cir.nii.ac.jp/) beside NII's name, as the J-STAGE and OpenAlex
+  servers' lines already did. Text only; the envelope schema is unchanged.
+- Workflow actions moved to their current majors; setup-uv is pinned exactly
+  (v10.0.1) because it publishes no moving major tag past v7.
+
+## 3.0.1 — 2026-09-04
+
+- **`cinii_get_record` returns what the record holds.** The single-record
+  JSON-LD was read with the OpenSearch schema's assumptions. An untagged
+  Japanese title was reported as its own English title as well (`_lit(v, "ja")`
+  and `_lit(v, "en")` both fell through to the same value); the `creator`
+  nodes, where CiNii puts authors as language-tagged `foaf:name` lists, were
+  not read at all, so a fetched record had no authors; NAID and ISSN were
+  dropped. Found on 2026-09-04 by fetching a record the search had just
+  returned and comparing the two. Language-tagged values now go where their
+  tag says and untagged values are routed by script once; authors come from
+  `creator` with `dc:creator` as fallback; NAID and ISSN are carried.
+  `tests/test_parse.py` checks two records captured from CiNii.
+- The MCP SDK's per-request INFO lines no longer reach stderr.
+- CI runs `pytest` as well as the stdio smoke test.
+- The 3.0.0 entry below no longer describes itself as unreleased; it was
+  tagged and released on 2026-09-04, and archived as 10.5281/zenodo.22304321.
+
+## 3.0.0 — 2026-09-04
+
+Tagged and released on GitHub on 2026-09-04; Zenodo 10.5281/zenodo.22304321. The
+version was first written on 2026-08-23 and held until the release pipeline
+existed.
+
+### Added on 2026-09-04, released with the tag
+
+- **Released on GitHub as a package.** `.github/workflows/release.yml` runs
+  on a `vX.Y.Z` tag: tests on three OSes, wheel and sdist, one Claude
+  Desktop `.mcpb` bundle per platform, then a GitHub release carrying all of
+  them. Installable pinned to the tag with `pip install
+  "git+https://github.com/ckgerteis/cinii-mcp@vX.Y.Z"` or `uvx --from`
+  the same URL. The release is what fires the Zenodo webhook. Nothing is
+  published to a package index.
+- **Suite install.** `install.py` is the cross-platform port of `install.ps1`
+  (Windows, macOS, Linux; same behaviour, importable). The family is also
+  installable as one package, `bibliograph-mcp`, whose `bibliograph install`
+  registers all six with one receipts folder.
+- **httpx request logging silenced.** The appid travels in the query string
+  and httpx logs the full URL at INFO, so a default logging configuration
+  wrote the credential to the stderr Claude Desktop captures. The rest of the
+  family already muted it; this server had not.
+- `tests/smoke_stdio.py`: stdio handshake, `tools/list` checked against the
+  README table, optional live call. Vendored byte-identical across the six.
+- `response-schema.json`'s self-description said 2.2.0 and named four
+  servers; it now says 2.3.0 and names six. Text only; the schema is unchanged.
+- Module docstring banner corrected from v2.0.0 to v3.0.0; README subset
+  example corrected (`-Servers cinii,ndl`, not `cinii,cinii`).
+
+- **A receipts folder, and one chain per server.** `ledger.py` 1.1.0 adds
+  `MCP_RECEIPT_DIR`: point it at a directory and each server writes its own
+  `<server>.jsonl` inside it. `MCP_RECEIPT_LOG` still names a single file and is
+  honoured when `MCP_RECEIPT_DIR` is unset, so nothing existing breaks.
+- **Why, precisely.** Appending is read-the-last-hash-then-write and `_LOCK` is a
+  `threading.Lock`, which holds within one process and not between several. Six
+  servers are six processes. Six of them writing 150 lines to one file produced
+  **fourteen forks** — two lines claiming the same predecessor, over and over.
+  That was measured, not inferred, and it means the family's shared log was never
+  safe to verify as one chain. One writer per file removes the race rather than
+  mitigating it.
+- **`verify_chain()` now types its failures.** It reported everything as
+  `prev_hash mismatch`. It distinguishes a **fork** (concurrent writers; every
+  line still present, and the file is several chains rather than one), a
+  **missing** line, a **reordering**, and **tamper** (a line that does not hash to
+  its own content). Only the last is a claim about honesty, and a reader given one
+  label for all four cannot tell a misconfiguration from interference.
+- **`verify_dir()` and a manifest.** One pass over a receipts folder returns
+  per-file verdicts, line counts, first and last timestamps and terminal hashes,
+  plus combined totals by server, script and session. `<dist>-ledger manifest
+  <dir>` writes it to `manifest.json`. That file is what a disclosure cites: one
+  description of the deposit rather than six assertions to reconcile.
+- `<dist>-ledger` gains `verify-dir` and `manifest`, and `verify` now exits
+  non-zero when a chain does not verify.
+- **`install.ps1` installs this server by default, not the family.** These are
+  six independent packages — none imports another, none depends on another, and
+  each installs alone. The installer defaulted to all six, so cloning one
+  repository and running it would have registered five servers nobody asked for
+  and fetched them from GitHub. It now resolves the default from the repository
+  it sits in; `-All` opts into the family and `-Servers` names a subset.
+- The verification step now **asserts that `ledger.py` and `mediation.py` are
+  byte-identical across everything it installed** and stops if they are not.
+  Nothing else enforces that invariant at install time, and two envelope
+  versions in one environment is precisely the sort of thing that would be found
+  later, in a deposit.
+- **`install.ps1` installs the family.** Vendored byte-identical into all six
+  repositories: it installs any or all of the six into one environment, asks once
+  for the receipts folder and the session slug, and registers every server against
+  the same pair. It prefers a sibling checkout to the network, carries across
+  credentials already registered rather than asking again, and stops rather than
+  guessing where the registered servers disagree about either value.
+- **`src/` layout. Breaking: the server is started by console script, not by
+  path.** `server.py`, `mediation.py` and `ledger.py` move to `src/cinii_mcp/` and install as a
+  package. The flat layout installed them as *top-level* modules, so any two
+  servers of this family in one environment overwrote each other — and
+  `pip check` reported nothing wrong. The later install simply won, silently,
+  and the survivor answered under the wrong server's name. All six now coexist:
+  verified by installing every wheel into one environment and driving each
+  through `initialize` and `tools/list`.
+- **Claude Desktop entries must change.** Replace
+  `"command": "…\\python.exe", "args": ["…\\server.py"]` with
+  `"command": "…\\Scripts\\cinii-mcp.exe"`. An existing entry keeps working
+  against an existing flat deployment and will fail against this one.
+- `python -m cinii_mcp` and a `cinii-mcp-ledger` console script are installed
+  alongside it.
+- **The server reports its build.** `initialize` was answered with an empty
+  `serverInfo.version`. It now carries `__version__` where the SDK accepts one
+  (mcp 2.x `MCPServer`). Under mcp 1.x, whose `FastMCP` takes no `version`, the
+  field still reports the SDK's version rather than the server's — the argument
+  is passed only where it is accepted.
+
+## 2.3.0 — 2026-08-22
+
+- `mediation.py` 2.3.0. `emit()` now reports whether the deposit happened:
+  `RECEIPT_NOT_DEPOSITED` (info) when `MCP_RECEIPT_LOG` is unset,
+  `RECEIPT_WRITE_FAILED` (warning) when it is set and the write did not land.
+  `deposit_enabled()` exposed beside `ledger_available()`.
+- Additive. No field removed or renamed; `response-schema.json` unchanged.
+
+## 2.2.0 — 2026-08-21
+
+- `mediation.py` unified at 2.2.0 and vendored byte-identically across the
+  server family: Hangul and CJK supplementary-plane script detection, ledger
+  persistence via `emit()`, and the `searched_for` headline restored.
+- `response-schema.json` published, with a Response format section in the README.

@@ -1,9 +1,12 @@
-"""bibliograph — the suite package for six scholarly-search MCP servers.
+"""Bibliograph (書誌): a single Model Context Protocol server gathering Japan-studies
+bibliographic and archival search over the National Diet Library (catalogue,
+national bibliography, magazine index, Digital Collections and its OCR full
+text, and the WARP web archive), CiNii Research (articles, books,
+dissertations, KAKEN and researchers), J-STAGE, the JDCat humanities and
+social-science data catalogue, OpenAlex, Semantic Scholar,
+and Japanese name and authority resolution (JMnedict/JMdict/KANJIDIC2 plus Web
+NDL Authorities), with open-access PDFs fetched into a named folder under the
+same receipts, each source keeping its own rate limits, credit lines and
+typed diagnostics inside one shared response envelope and receipt ledger."""
 
-Installing this package installs cinii-mcp, jstage-mcp, ndl-mcp,
-korea-scholarship-mcp, semantic-scholar-graph-mcp and openalex-mcp. The
-`bibliograph` command registers them in Claude Desktop together, checks that
-their vendored envelope and ledger modules are byte-identical, and verifies a
-receipts folder as one deposit.
-"""
-__version__ = "1.0.6"
+__version__ = "2.0.0"

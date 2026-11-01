@@ -1,0 +1,366 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+  <version>1.2</version>
+  <numberOfRecords>352</numberOfRecords>
+  <nextRecordPosition>3</nextRecordPosition>
+  <extraResponseData>
+    <facets>
+      <lst name="REPOSITORY_NO">
+        <int name="R100000002">311</int>
+        <int name="R100000039">41</int>
+      </lst>
+      <lst name="NDC">
+        <int name="0">5</int>
+        <int name="1">5</int>
+        <int name="2">18</int>
+        <int name="3">271</int>
+        <int name="5">2</int>
+        <int name="6">3</int>
+        <int name="7">4</int>
+        <int name="9">7</int>
+      </lst>
+      <lst name="ISSUED_DATE">
+        <int name="1901">1</int>
+        <int name="1909">1</int>
+        <int name="1910">10</int>
+        <int name="1911">3</int>
+        <int name="1913">1</int>
+        <int name="1914">2</int>
+        <int name="1915">5</int>
+        <int name="1916">7</int>
+        <int name="1917">9</int>
+        <int name="1918">10</int>
+        <int name="1919">1</int>
+        <int name="1920">7</int>
+        <int name="1921">5</int>
+        <int name="1922">6</int>
+        <int name="1923">3</int>
+        <int name="1924">2</int>
+        <int name="1925">2</int>
+        <int name="1926">5</int>
+        <int name="1927">5</int>
+        <int name="1928">5</int>
+        <int name="1929">1</int>
+        <int name="1930">6</int>
+        <int name="1931">5</int>
+        <int name="1932">4</int>
+        <int name="1933">6</int>
+        <int name="1934">15</int>
+        <int name="1935">14</int>
+        <int name="1936">16</int>
+        <int name="1937">11</int>
+        <int name="1938">10</int>
+        <int name="1939">4</int>
+        <int name="1940">7</int>
+        <int name="1941">6</int>
+        <int name="1942">1</int>
+        <int name="1943">3</int>
+        <int name="1946">2</int>
+        <int name="1947">2</int>
+        <int name="1948">6</int>
+        <int name="1949">5</int>
+        <int name="1951">1</int>
+        <int name="1952">2</int>
+        <int name="1953">1</int>
+        <int name="1954">1</int>
+        <int name="1955">3</int>
+        <int name="1956">2</int>
+        <int name="1957">5</int>
+        <int name="1958">1</int>
+        <int name="1959">2</int>
+        <int name="1960">2</int>
+        <int name="1961">1</int>
+      </lst>
+      <lst name="LIBRARY">
+        <int name="国立国会図書館">311</int>
+        <int name="大阪府立中央図書館">49</int>
+        <int name="東京都立中央図書館">41</int>
+        <int name="秋田県立図書館">35</int>
+        <int name="横浜市立図書館">32</int>
+        <int name="神奈川県立図書館">31</int>
+        <int name="北海道立図書館">29</int>
+        <int name="大分県立図書館">27</int>
+        <int name="山口県立山口図書館">27</int>
+        <int name="鳥取県立図書館">27</int>
+        <int name="兵庫県立図書館">26</int>
+        <int name="石川県立図書館">26</int>
+        <int name="京都府立図書館">25</int>
+        <int name="埼玉県立熊谷図書館">25</int>
+        <int name="県立長野図書館">24</int>
+        <int name="三重県立図書館">23</int>
+        <int name="佐賀県立図書館">23</int>
+        <int name="大阪市立図書館">23</int>
+        <int name="愛知県図書館">23</int>
+        <int name="香川県立図書館">23</int>
+        <int name="名古屋市図書館">22</int>
+        <int name="広島県立図書館">22</int>
+        <int name="岐阜県図書館">21</int>
+        <int name="鹿児島県立図書館">21</int>
+        <int name="岡山県立図書館">20</int>
+        <int name="新潟県立図書館">20</int>
+        <int name="福岡県立図書館">20</int>
+        <int name="岩手県立図書館">19</int>
+        <int name="福岡市総合図書館">19</int>
+        <int name="福島県立図書館">19</int>
+        <int name="宮城県図書館">18</int>
+        <int name="滋賀県立図書館">16</int>
+        <int name="群馬県立図書館">15</int>
+        <int name="長崎県立長崎図書館">15</int>
+        <int name="広島市立中央図書館">14</int>
+        <int name="青森県立図書館">13</int>
+        <int name="千葉県立西部図書館">12</int>
+        <int name="堺市立中央図書館">12</int>
+        <int name="山形県立図書館">12</int>
+        <int name="徳島県立図書館">12</int>
+        <int name="愛媛県立図書館">12</int>
+        <int name="熊本県立図書館">12</int>
+        <int name="和歌山県立図書館">11</int>
+        <int name="島根県立図書館">11</int>
+        <int name="東京都立多摩図書館">11</int>
+        <int name="宮崎県立図書館">10</int>
+        <int name="富山県立図書館">10</int>
+        <int name="高知県立図書館">10</int>
+        <int name="千葉県立中央図書館">9</int>
+        <int name="山梨県立図書館">9</int>
+      </lst>
+    </facets>
+  </extraResponseData>
+  <records>
+    <record>
+      <recordSchema>info:srw/schema/1/dc-v1.1</recordSchema>
+      <recordPacking>xml</recordPacking>
+      <recordData>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcndl="http://ndl.go.jp/dcndl/terms/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#">
+          <dcndl:BibAdminResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000002-I000002727275">
+            <dcndl:catalogingStatus>C7</dcndl:catalogingStatus>
+            <dcndl:catalogingRule>ncr/1987</dcndl:catalogingRule>
+            <dcterms:description>type : book</dcterms:description>
+            <dcndl:bibRecordCategory>R100000002</dcndl:bibRecordCategory>
+            <dcndl:bibRecordSubCategory>111</dcndl:bibRecordSubCategory>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000002-I000002727275#material"/>
+          </dcndl:BibAdminResource>
+          <dcndl:BibResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000002-I000002727275#material">
+            <rdfs:seeAlso rdf:resource="http://id.ndl.go.jp/jpno/99067780"/>
+            <rdfs:seeAlso rdf:resource="http://id.ndl.go.jp/bib/000002727275"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/JPNO">99067780</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLBibID">000002727275</dcterms:identifier>
+            <dcterms:title>嗚呼青年団</dcterms:title>
+            <dc:title>
+              <rdf:Description>
+                <rdf:value>嗚呼青年団</rdf:value>
+                <dcndl:transcription>アア セイネンダン</dcndl:transcription>
+              </rdf:Description>
+            </dc:title>
+            <dcndl:seriesTitle>
+              <rdf:Description>
+                <rdf:value>やまと昔語り ; 第6巻</rdf:value>
+                <dcndl:transcription>ヤマト ムカシガタリ ; 6</dcndl:transcription>
+              </rdf:Description>
+            </dcndl:seriesTitle>
+            <dcterms:creator>
+              <foaf:Agent rdf:about="http://id.ndl.go.jp/auth/entity/00308947">
+                <foaf:name>大和市教育委員会</foaf:name>
+                <dcndl:transcription>ヤマトシ キョウイク イインカイ</dcndl:transcription>
+              </foaf:Agent>
+            </dcterms:creator>
+            <dc:creator>大和市教育委員会社会教育部社会教育課 編</dc:creator>
+            <dcterms:publisher>
+              <foaf:Agent>
+                <foaf:name>大和市教育委員会</foaf:name>
+                <dcndl:location>大和</dcndl:location>
+              </foaf:Agent>
+            </dcterms:publisher>
+            <dcndl:publicationPlace rdf:datatype="http://purl.org/dc/terms/ISO3166">JP</dcndl:publicationPlace>
+            <dcterms:date>1998.1</dcterms:date>
+            <dcterms:issued rdf:datatype="http://purl.org/dc/terms/W3CDTF">1998</dcterms:issued>
+            <dcterms:subject>
+              <rdf:Description rdf:about="http://id.ndl.go.jp/auth/ndlsh/00616858">
+                <rdf:value>青年団</rdf:value>
+                <dcndl:transcription>セイネンダン</dcndl:transcription>
+              </rdf:Description>
+            </dcterms:subject>
+            <dcterms:subject rdf:resource="http://id.ndl.go.jp/class/ndlc/FH24"/>
+            <dcterms:subject rdf:resource="http://id.ndl.go.jp/class/ndc9/379.35"/>
+            <dcterms:language rdf:datatype="http://purl.org/dc/terms/ISO639-2">jpn</dcterms:language>
+            <dcterms:extent>92, 38p ; 19cm</dcterms:extent>
+            <dcndl:materialType rdf:resource="http://ndl.go.jp/ndltype/Book" rdfs:label="図書"/>
+            <dcndl:materialType rdf:resource="http://ndl.go.jp/ndltype/GovernmentPublication" rdfs:label="政府刊行物"/>
+            <dcndl:materialType rdf:resource="http://ndl.go.jp/ndltype/LocalPublication" rdfs:label="地方公共団体刊行物"/>
+            <dcterms:audience>一般</dcterms:audience>
+            <rdfs:seeAlso rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000002-I000002727275"/>
+          </dcndl:BibResource>
+          <dcndl:BibResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000002-I000002727275#material">
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I13111102594756#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I14111100595906#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I14223101301#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I1423398469#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000002-I000002727275#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000039-I13937109#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000136-I1971993809737726022#item"/>
+          </dcndl:BibResource>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I13111102594756#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>東京都立中央図書館</foaf:name>
+                <dcndl:transcription>とうきょうとりつちゅうおうとしょかん</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">1311</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://catalog.library.metro.tokyo.lg.jp/winj/opac/switch-detail-iccap.do?bibid=1102594756"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1102594756</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">1128693341</dcterms:identifier>
+            <dcndl:callNumber>3793-3131-98</dcndl:callNumber>
+            <dcndl:availability>閲可/個否/協可</dcndl:availability>
+            <dcterms:description>所蔵場所 : 2F社会閉</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I14111100595906#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>神奈川県立図書館</foaf:name>
+                <dcndl:transcription>カナガワケンリツトショカン</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">1411</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.klnet.pref.kanagawa.jp/winj/opac/switch-detail-iccap.do?bibid=1100595906"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1100595906</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">60240041</dcterms:identifier>
+            <dcndl:callNumber>K38.55-3-6b</dcndl:callNumber>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I14223101301#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>川崎市立図書館</foaf:name>
+                <dcndl:transcription>カワサキシリツトショカン</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">1422</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.library.city.kawasaki.jp/bookdetail?num=3101301&amp;ctg=1"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">3101301</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">413002376411</dcterms:identifier>
+            <dcndl:callNumber>K388.9 ﾔﾏ 6</dcndl:callNumber>
+            <dcndl:availability>帯出不可</dcndl:availability>
+            <dcterms:description>配置場所 : 書庫自動</dcterms:description>
+            <dcterms:description>郷土資料</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I1423398469#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>相模原市立図書館</foaf:name>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">1423</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.lib.sagamihara.kanagawa.jp/TOSHOW/asp/WwShousaiKen.aspx?FCode=398469"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">398469</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">15621972</dcterms:identifier>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000002-I000002727275#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>国立国会図書館</foaf:name>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">0000</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000002-I000002727275"/>
+            <rdfs:seeAlso rdf:resource="http://id.ndl.go.jp/bib/000002727275"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLBibID">000002727275</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/JPNO">99067780</dcterms:identifier>
+            <dcndl:callNumber>FH24-G31</dcndl:callNumber>
+            <dcndl:localCallNumber>さ25-472</dcndl:localCallNumber>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000039-I13937109#item">
+            <rdfs:seeAlso rdf:resource="https://dl.ndl.go.jp/pid/13937109"/>
+            <rdfs:seeAlso rdf:resource="http://id.ndl.go.jp/digimeta/13937109"/>
+            <rdfs:seeAlso rdf:resource="https://doi.org/10.11501/13937109"/>
+            <dcndl:callNumber>FH24-G31</dcndl:callNumber>
+            <dcterms:description>資料形態 : テキストデータ</dcterms:description>
+            <dcterms:description>資料形態 : プレーンテキスト</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000136-I1971993809737726022#item">
+            <rdfs:seeAlso rdf:resource="https://ci.nii.ac.jp/ncid/BA43373433"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NIIBibID">BA43373433</dcterms:identifier>
+          </dcndl:Item>
+        </rdf:RDF>
+      </recordData>
+      <recordPosition>1</recordPosition>
+    </record>
+    <record>
+      <recordSchema>info:srw/schema/1/dc-v1.1</recordSchema>
+      <recordPacking>xml</recordPacking>
+      <recordData>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcndl="http://ndl.go.jp/dcndl/terms/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#">
+          <dcndl:BibAdminResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000002-I000000636853">
+            <dcndl:catalogingStatus>C7</dcndl:catalogingStatus>
+            <dcndl:catalogingRule>ncr</dcndl:catalogingRule>
+            <dcterms:description>type : book</dcterms:description>
+            <dcndl:bibRecordCategory>R100000002</dcndl:bibRecordCategory>
+            <dcndl:bibRecordSubCategory>111</dcndl:bibRecordSubCategory>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000002-I000000636853#material"/>
+          </dcndl:BibAdminResource>
+          <dcndl:BibResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000002-I000000636853#material">
+            <rdfs:seeAlso rdf:resource="http://id.ndl.go.jp/jpno/44038128"/>
+            <rdfs:seeAlso rdf:resource="http://id.ndl.go.jp/bib/000000636853"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/JPNO">44038128</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLBibID">000000636853</dcterms:identifier>
+            <dcterms:title>愛国軍事劇集 : 高等小学・青年団・処女会用</dcterms:title>
+            <dc:title>
+              <rdf:Description>
+                <rdf:value>愛国軍事劇集 : 高等小学・青年団・処女会用</rdf:value>
+                <dcndl:transcription>アイコク グンジゲキ シュウ : コウトウ ショウガク セイネンダン ショジョカイヨウ</dcndl:transcription>
+              </rdf:Description>
+            </dc:title>
+            <dcterms:creator>
+              <foaf:Agent rdf:about="http://id.ndl.go.jp/auth/entity/00135501">
+                <foaf:name>松本, 亮二</foaf:name>
+                <dcndl:transcription>マツモト, リョウジ</dcndl:transcription>
+              </foaf:Agent>
+            </dcterms:creator>
+            <dc:creator>松本亮二 著</dc:creator>
+            <dcterms:publisher>
+              <foaf:Agent>
+                <foaf:name>大正書院</foaf:name>
+                <dcndl:transcription>タイショウ ショイン</dcndl:transcription>
+                <dcndl:location>東京</dcndl:location>
+              </foaf:Agent>
+            </dcterms:publisher>
+            <dcndl:publicationPlace rdf:datatype="http://purl.org/dc/terms/ISO3166">JP</dcndl:publicationPlace>
+            <dcterms:date>昭和9</dcterms:date>
+            <dcterms:issued rdf:datatype="http://purl.org/dc/terms/W3CDTF">1934</dcterms:issued>
+            <dc:subject rdf:datatype="http://ndl.go.jp/dcndl/terms/NDC">912</dc:subject>
+            <dcterms:language rdf:datatype="http://purl.org/dc/terms/ISO639-2">jpn</dcterms:language>
+            <dcterms:extent>206p ; 19cm</dcterms:extent>
+            <dcndl:materialType rdf:resource="http://ndl.go.jp/ndltype/Book" rdfs:label="図書"/>
+            <dcndl:materialType rdf:resource="http://ndl.go.jp/ndltype/MicroForm" rdfs:label="マイクロ資料"/>
+            <dcterms:audience>一般</dcterms:audience>
+            <rdfs:seeAlso rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000002-I000000636853"/>
+          </dcndl:BibResource>
+          <dcndl:BibResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000002-I000000636853#material">
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000002-I000000636853#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000039-I1052324#item"/>
+          </dcndl:BibResource>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000002-I000000636853#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>国立国会図書館</foaf:name>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">0000</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000002-I000000636853"/>
+            <rdfs:seeAlso rdf:resource="http://id.ndl.go.jp/bib/000000636853"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLBibID">000000636853</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/JPNO">44038128</dcterms:identifier>
+            <dcndl:callNumber>特224-99</dcndl:callNumber>
+            <dcndl:localCallNumber>YD5-H-特224-99</dcndl:localCallNumber>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000039-I1052324#item">
+            <rdfs:seeAlso rdf:resource="https://dl.ndl.go.jp/pid/1052324"/>
+            <rdfs:seeAlso rdf:resource="http://id.ndl.go.jp/digimeta/1052324"/>
+            <rdfs:seeAlso rdf:resource="https://doi.org/10.11501/1052324"/>
+            <dcndl:callNumber>特224-99</dcndl:callNumber>
+            <dcterms:description>資料形態 : テキストデータ</dcterms:description>
+            <dcterms:description>資料形態 : プレーンテキスト</dcterms:description>
+          </dcndl:Item>
+        </rdf:RDF>
+      </recordData>
+      <recordPosition>2</recordPosition>
+    </record>
+  </records>
+</searchRetrieveResponse>

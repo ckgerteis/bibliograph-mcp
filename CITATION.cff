@@ -1,20 +1,16 @@
 cff-version: 1.2.0
-message: "If this software supports your research, please cite it, and cite the six server versions it installed."
-title: "bibliograph-mcp: a suite of MCP servers for scholarly search with typed envelopes and query receipts"
+message: "If this software supports your research, please cite the release you used, and name the source versions bibliograph_status reports."
+title: "bibliograph-mcp: one MCP server for scholarly search with typed envelopes and query receipts"
 abstract: >-
-  The suite package for six Model Context Protocol servers — CiNii Research,
-  J-STAGE, NDL Search, KCI/Open Access Korea, OpenAlex and Semantic Scholar —
-  that answer with one typed JSON envelope and deposit hash-chained query
-  receipts to one ledger. Installs the six at pinned release tags from GitHub and registers
-  them in Claude Desktop together.
+  One Model Context Protocol server for scholarly search, Japan and Korea first: NDL Search and Digital Collections full text, the WARP web archive, CiNii Research, J-STAGE, JDCat, KCI and Open Access Korea, OpenAlex, Semantic Scholar, Crossref and Japanese name and authority resolution, answering with one typed JSON envelope and depositing hash-chained query receipts to one ledger. From 2.0.0 one server in one process; 1.x installed six separate servers at pinned tags.
 type: software
 authors:
   - family-names: Gerteis
     given-names: Christopher
     affiliation: SOAS University of London
     orcid: "https://orcid.org/0000-0003-4977-6152"
-version: 1.0.6
-date-released: "2026-10-30"
+version: 2.0.0
+date-released: "2026-11-01"
 license: MIT
 repository-code: "https://github.com/ckgerteis/bibliograph-mcp"
 url: "https://www.christophergerteis.net"

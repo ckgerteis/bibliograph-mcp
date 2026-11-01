@@ -1,0 +1,302 @@
+# Changelog
+
+Versions are the thing to cite. A count produced under one release is not
+reproducible against another, so the release actually used should be named in
+the text and, where a version DOI exists, cited by it.
+
+Releases earlier than those below are on the repository's releases page; this
+file begins where the record is precise enough to be worth writing down.
+
+## 3.2.2 — 2026-10-30
+
+- **One unreadable entry no longer fails the page.** The 7 Oct skip-and-count repair never reached jstage, whose feed was built in one pass: a single entry that raised turned the whole page into `API_ERROR`. Such an entry is now left out and named by position and DOI in `RECORD_SHAPE_UNEXPECTED`; a page of only unreadable entries is not reported as empty; a DOI lookup that skipped an entry says the DOI may be among them rather than claiming it absent.
+- **Count fields that are not counts** (a 5,000-digit `totalResults`, which `int()` refuses on Python 3.11+) no longer sink the page; an implausible `pubyear` is dropped.
+
+## 3.2.1 — 2026-10-30
+
+Ports the public jstage-mcp 3.1.3 stress-test repairs (12 Oct 2026).
+
+- **A 200 that is not an Atom feed is `API_ERROR`, not zero results** (an HTML maintenance page, a bare error object, a namespace-stripped feed). `jstage_list_issues` returns an error rather than `total_results` 0.
+- **`jstage_get_article_by_doi` reads up to five pages (500 entries) of the volume.** A DOI past the first 100 articles was reported as not found; at the cap the diagnostic says how many entries were checked.
+- **A publication year with a character such as `²` no longer turns the whole page into `API_ERROR`.**
+- Not yet in jstage: the 7 Oct skip-and-count repair for a single malformed entry, which still fails the page as `API_ERROR`.
+
+## 3.2.0 - 2026-10-07
+
+Repairs of 7 October 2026, released in bibliograph 1.2.0. See bibliograph's CHANGELOG for the detail.
+
+## 3.1.2 — 2026-09-12
+
+**The bundle's environment is built when it is installed, not during the first
+connection.**
+
+- **What was wrong.** 3.1.0 and 3.1.1 kept `pyproject.toml`, `uv.lock` and the
+  entry point under `server/`. Claude Desktop's UV runtime looks for
+  `pyproject.toml` at the bundle root when an extension is installed; finding
+  it, it takes a uv already on the PATH or downloads its own (0.9.7 at the time
+  of writing) and runs `uv sync` there behind a progress bar, so the interpreter and the libraries arrive before the server is ever
+  launched. Not finding it, the app logs `missing pyproject.toml. Cannot
+  proceed with UV setup`, installs the extension anyway, and the first
+  connection attempt has to fetch uv, an interpreter and roughly 40 MB of
+  libraries inside the launch timeout. That took 26 to 46 seconds on the
+  author's connection against a limit of about sixty; on a Mac mini (M4,
+  macOS 26.6.2) it never completed, and the app showed "Unable to connect to
+  extension server" for this bundle, ndl and cinii alike (reported
+  7 September 2026). Read from the app's code, not inferred: the install
+  step, its root-path check and its log line, and the launch step that runs
+  the app's own uv with the manifest's arguments from the bundle folder.
+- **What changed.** `pyproject.toml`, `uv.lock` and `main.py` are at the
+  bundle root and the manifest launches `uv run --directory ${__dirname}
+  --frozen main.py`. The install-time `uv sync` now runs; measured on the
+  ndl bundle with the app's uv 0.9.7 on an empty cache, install took 3 s and
+  the launch answered `initialize` in 2.4 s, against 1.8 s for the same
+  launch warm. Where a host skips the install step the launch still builds
+  the environment itself.
+- **The gate that would have caught it.** `tests/bundle_handshake.py` now
+  runs the install phase before the launch, fails a bundle whose
+  `pyproject.toml` is not at the root, and fails a launch that takes longer
+  than thirty seconds to answer. The 3.1.1 bundle fails it. The previous gate
+  allowed 240 seconds and launched without the install phase, which is why
+  3.1.0 and 3.1.1 passed CI and did not run on the machine that reported them.
+- Observed in the app, not only reproduced: installed here under a test name,
+  `main.log` shows `Setting up UV environment`, `Found system UV`,
+  `Running uv sync` and `Setup completed successfully` six seconds later, then
+  a launch that connected with all tools eight seconds after the launch line,
+  and a live call answered. The same log's predecessor shows the 1.2.1 layout
+  installed on 8 September as `ndl-runtime-test` with the app recording
+  `missing pyproject.toml. Cannot proceed with UV setup`; the line was there
+  and went unread.
+
+## 3.1.1 — 2026-09-08
+
+- **The bundle no longer pins Python 3.13.** 3.1.0 shipped a `.python-version`
+  so that every user ran the interpreter the release gate had run; the cost
+  was a 20 MB interpreter download on first launch even where a usable Python
+  was already installed. The file is gone: uv now takes any interpreter on
+  the machine that satisfies `requires-python` (3.10 or later) and downloads
+  one only where there is none. The lock resolves for every version in that
+  range, and the handshake gate runs the bundle under 3.10 and 3.12 as well
+  as on a cold cache before each release. Nothing in the server changed.
+
+## 3.1.0 — 2026-09-08
+
+**The Claude Desktop bundle runs again, on every supported interpreter.** The
+same change as ndl-mcp 1.2.0, where it was proved before being copied here.
+
+- **What was wrong.** Every `.mcpb` published so far imported under CPython
+  3.12 and nothing else. `mcpb/build.py` vendored the dependencies with
+  `pip install --target` under the interpreter running the build, the release
+  workflow pinned that interpreter to 3.12, and `pydantic-core`, `rpds-py` and
+  `cffi` ship native wheels tagged for one interpreter. The manifest meanwhile
+  declared `runtimes.python >= 3.10` and launched bare `python` from the
+  user's PATH, so Claude Desktop picked whatever satisfied the range, the
+  import failed at module scope, and the user saw "Server disconnected".
+- **What changed.** The manifest now declares `server.type: "uv"` (manifest
+  0.4). Claude Desktop runs the bundle with uv, using a uv already on the
+  PATH and otherwise the copy the app ships, from `server/pyproject.toml`,
+  `server/.python-version` (3.13) and `server/uv.lock`. Nothing compiled is
+  in the bundle, so one bundle serves Windows, macOS and Linux and is about
+  100 KB instead of 10 to 17 MB. The first launch downloads Python 3.13 if the
+  machine lacks it and the locked libraries, roughly 60 MB; measured on
+  ndl-mcp at 26 s with a system 3.13 present and 46 s without, against Claude
+  Desktop's 60 s request limit. A first launch that runs past the limit
+  self-heals on restart, because uv caches what it fetched. Later launches
+  take under a second.
+- **`main.py` says what is wrong.** The import is guarded: on `ImportError`
+  the entry point writes one line naming the running interpreter, its path
+  and the supported range to stderr before re-raising. The `MCP_RECEIPT*`
+  blank-stripping and every `user_config` field are unchanged.
+- **A blank field in Claude Desktop's install dialog no longer becomes a
+  folder or a credential.** Claude Desktop substitutes `${user_config.KEY}`
+  only for fields that have a value and passes the placeholder verbatim
+  otherwise, so a blank receipts folder became a folder named after the
+  placeholder and a blank optional key would have been sent to the provider
+  as the key. The entry point now drops any variable whose value still
+  carries a placeholder before the package imports, and the handshake gate
+  checks that it does.
+- **A gate that would have caught this.** `tests/bundle_handshake.py`
+  (vendored across the family) unpacks the built bundle, runs it exactly as
+  the host would, and requires the `initialize` reply to name the manifest's
+  version, on a cold cache and under interpreters other than the bundle's
+  pin. The release workflow runs it on all three operating systems before
+  anything is attached to a release.
+- **CI matrix: 3.10, 3.12, 3.13 and 3.14.** 3.12 was the version the old
+  bundles shipped and was never tested. The reported `import mcp` failure on
+  3.14 (`TypeError: _eval_type() got an unexpected keyword argument
+  'prefer_fwd_module'`) was re-tested: it is pydantic ≥ 2.12.4 meeting a 3.14
+  interpreter built before the keyword landed (pydantic/pydantic#12544,
+  #12597); 3.14.2, 3.14.3 and 3.14.7 are clean with pydantic 2.13.5.
+  `requires-python` stays `>=3.10`; pre-release 3.14 builds are not
+  supported.
+- **The installers ask where to install, and never guess.** `install.py` and
+  `install.ps1` chose the virtual environment silently and, run without a
+  terminal, fell back to defaults for the receipts folder as well. Both now
+  ask for the install location, the receipts folder and the session slug,
+  offering a neutral suggestion that Enter accepts, and run without a
+  terminal they stop before touching anything unless `--venv` and
+  `--receipts-dir` (or `--no-receipts`; `-VenvDir`, `-ReceiptsDir`,
+  `-NoReceipts` for PowerShell) say so. The author's own project slugs, which
+  had served as examples in the installer help and the bundle's
+  `user_config` description, are replaced with neutral ones.
+- **A complete public repository.** `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`
+  (Contributor Covenant 2.1), `SECURITY.md`, issue forms that ask for the
+  install route, the interpreter and the log tail, a pull request template,
+  and Dependabot for the workflow actions and the Python dependencies.
+  Repository topics and homepage set on GitHub.
+- **The README says what the receipts are for.** A section after the opening
+  explains, for a researcher rather than a maintainer, why a hash-chained
+  record of every query matters: a citable search, negative findings that
+  carry weight, a method section the manifest writes, a record of what an
+  assistant actually asked, and nothing interpreted.
+- **The README says where to get Python.** A "Getting Python" subsection at
+  the head of Install: python.org on Windows with the PATH tick and the
+  Microsoft Store stub explained, python.org or Homebrew on macOS, the
+  distribution package on Linux, or uv on any of them.
+- **Nothing here is specific to Claude, and the README now says so.** The
+  server is a Model Context Protocol server over stdio; the bundle and the
+  installers are conveniences for one client. A new "Any other MCP client"
+  section gives the JSON any client takes and the `claude mcp add` line for
+  Claude Code, with the receipts variables as optional environment.
+- **The DOI is in the repository.** The Zenodo concept DOI is a badge under
+  the README title and an identifier in `CITATION.cff`; neither carried it
+  before, although every release has been archived.
+- `tests/smoke_stdio.py` finds the console script through `sysconfig` and
+  with its `.exe` suffix on Windows, so it no longer depends on the scripts
+  directory being on PATH. Vendored across the family.
+- `install.ps1` gains `-ConfigPath`, as `install.py` already had, and writes
+  the configuration file as UTF-8 without a byte-order mark.
+- README: how to read a "Server disconnected" log, where the log lives on
+  each platform, and how an `ImportError` differs from a missing interpreter.
+  Pins moved to v3.1.0.
+- Workflow actions moved to their current majors; setup-uv is pinned exactly
+  (v10.0.1) because it publishes no moving major tag past v7.
+
+## 3.0.1 — 2026-09-04
+
+- **An HTTP error status is `API_ERROR`, not `TRANSPORT_ERROR`.** `_error_diag`
+  labelled every `httpx.HTTPStatusError` a transport failure. A 4xx or 5xx is
+  the service answering, and the family's rule (ndl-mcp since 2026-09-04) is
+  that only httpx transport exceptions — timeouts, connection failures — are
+  `TRANSPORT_ERROR`. The reader was told J-STAGE was unreachable when it had
+  replied. Both codes still mean "unknown result, not an absence"; they now
+  mean the right one each. `tests/test_diagnostics.py` pins the mapping.
+- The `SCRIPT_LATIN_QUERY` message said the query matched "romanized/English
+  metadata only". J-STAGE matches `text` against full text, and a Latin-script
+  query reaches English-language articles in full, so the message and the
+  README row now say "Latin-script text and metadata".
+- The MCP SDK's per-request INFO lines no longer reach stderr.
+- CI runs `pytest` as well as the stdio smoke test.
+- The 3.0.0 entry below no longer describes itself as unreleased; it was
+  tagged and released on 2026-09-04, and archived as 10.5281/zenodo.22304331.
+
+## 3.0.0 — 2026-09-04
+
+Tagged and released on GitHub on 2026-09-04; Zenodo 10.5281/zenodo.22304331. The
+version was first written on 2026-08-23 and held until the release pipeline
+existed.
+
+### Added on 2026-09-04, released with the tag
+
+- **Released on GitHub as a package.** `.github/workflows/release.yml` runs
+  on a `vX.Y.Z` tag: tests on three OSes, wheel and sdist, one Claude
+  Desktop `.mcpb` bundle per platform, then a GitHub release carrying all of
+  them. Installable pinned to the tag with `pip install
+  "git+https://github.com/ckgerteis/jstage-mcp@vX.Y.Z"` or `uvx --from`
+  the same URL. The release is what fires the Zenodo webhook. Nothing is
+  published to a package index.
+- **Suite install.** `install.py` is the cross-platform port of `install.ps1`
+  (Windows, macOS, Linux; same behaviour, importable). The family is also
+  installable as one package, `bibliograph-mcp`, whose `bibliograph install`
+  registers all six with one receipts folder.
+- httpx request logging silenced, as in the rest of the family: no credential
+  travels in a J-STAGE URL, but the search term does, onto captured stderr.
+- `tests/smoke_stdio.py`: stdio handshake, `tools/list` checked against the
+  README table, optional live call. Vendored byte-identical across the six.
+- `response-schema.json`'s self-description said 2.2.0 and named four
+  servers; it now says 2.3.0 and names six. Text only; the schema is unchanged.
+- Module docstring banner corrected from v2.0.0 to v3.0.0.
+
+- **A receipts folder, and one chain per server.** `ledger.py` 1.1.0 adds
+  `MCP_RECEIPT_DIR`: point it at a directory and each server writes its own
+  `<server>.jsonl` inside it. `MCP_RECEIPT_LOG` still names a single file and is
+  honoured when `MCP_RECEIPT_DIR` is unset, so nothing existing breaks.
+- **Why, precisely.** Appending is read-the-last-hash-then-write and `_LOCK` is a
+  `threading.Lock`, which holds within one process and not between several. Six
+  servers are six processes. Six of them writing 150 lines to one file produced
+  **fourteen forks** — two lines claiming the same predecessor, over and over.
+  That was measured, not inferred, and it means the family's shared log was never
+  safe to verify as one chain. One writer per file removes the race rather than
+  mitigating it.
+- **`verify_chain()` now types its failures.** It reported everything as
+  `prev_hash mismatch`. It distinguishes a **fork** (concurrent writers; every
+  line still present, and the file is several chains rather than one), a
+  **missing** line, a **reordering**, and **tamper** (a line that does not hash to
+  its own content). Only the last is a claim about honesty, and a reader given one
+  label for all four cannot tell a misconfiguration from interference.
+- **`verify_dir()` and a manifest.** One pass over a receipts folder returns
+  per-file verdicts, line counts, first and last timestamps and terminal hashes,
+  plus combined totals by server, script and session. `<dist>-ledger manifest
+  <dir>` writes it to `manifest.json`. That file is what a disclosure cites: one
+  description of the deposit rather than six assertions to reconcile.
+- `<dist>-ledger` gains `verify-dir` and `manifest`, and `verify` now exits
+  non-zero when a chain does not verify.
+- **`install.ps1` installs this server by default, not the family.** These are
+  six independent packages — none imports another, none depends on another, and
+  each installs alone. The installer defaulted to all six, so cloning one
+  repository and running it would have registered five servers nobody asked for
+  and fetched them from GitHub. It now resolves the default from the repository
+  it sits in; `-All` opts into the family and `-Servers` names a subset.
+- The verification step now **asserts that `ledger.py` and `mediation.py` are
+  byte-identical across everything it installed** and stops if they are not.
+  Nothing else enforces that invariant at install time, and two envelope
+  versions in one environment is precisely the sort of thing that would be found
+  later, in a deposit.
+- **`install.ps1` installs the family.** Vendored byte-identical into all six
+  repositories: it installs any or all of the six into one environment, asks once
+  for the receipts folder and the session slug, and registers every server against
+  the same pair. It prefers a sibling checkout to the network, carries across
+  credentials already registered rather than asking again, and stops rather than
+  guessing where the registered servers disagree about either value.
+- **`src/` layout. Breaking: the server is started by console script, not by
+  path.** `server.py`, `mediation.py` and `ledger.py` move to `src/jstage_mcp/` and install as a
+  package. The flat layout installed them as *top-level* modules, so any two
+  servers of this family in one environment overwrote each other — and
+  `pip check` reported nothing wrong. The later install simply won, silently,
+  and the survivor answered under the wrong server's name. All six now coexist:
+  verified by installing every wheel into one environment and driving each
+  through `initialize` and `tools/list`.
+- **Claude Desktop entries must change.** Replace
+  `"command": "…\\python.exe", "args": ["…\\server.py"]` with
+  `"command": "…\\Scripts\\jstage-mcp.exe"`. An existing entry keeps working
+  against an existing flat deployment and will fail against this one.
+- `python -m jstage_mcp` and a `jstage-mcp-ledger` console script are installed
+  alongside it.
+- **The server reports its build.** `initialize` was answered with an empty
+  `serverInfo.version`. It now carries `__version__` where the SDK accepts one
+  (mcp 2.x `MCPServer`). Under mcp 1.x, whose `FastMCP` takes no `version`, the
+  field still reports the SDK's version rather than the server's — the argument
+  is passed only where it is accepted.
+- **Documentation corrected: there are three tools, not four.**
+  `jstage_search_journals` was removed in v2.0.0 and the server docstring said
+  so on 19 August 2026, but `README.md`, `CITATION.cff` and `.zenodo.json` went
+  on advertising it — a tool table row, a *Limitations* entry describing its
+  fallback behaviour in detail, and two "four tools" counts. A reader had every
+  reason to believe it existed.
+- The README's boot check was `python server.py --help`. The flag is ignored,
+  the server starts, reads EOF and exits 0, so the check passed whatever the
+  state of the code. Replaced with one that fails when the install is broken.
+
+## 2.3.0 — 2026-08-22
+
+- `mediation.py` 2.3.0. `emit()` now reports whether the deposit happened:
+  `RECEIPT_NOT_DEPOSITED` (info) when `MCP_RECEIPT_LOG` is unset,
+  `RECEIPT_WRITE_FAILED` (warning) when it is set and the write did not land.
+  `deposit_enabled()` exposed beside `ledger_available()`.
+- Additive. No field removed or renamed; `response-schema.json` unchanged.
+
+## 2.2.0 — 2026-08-21
+
+- `mediation.py` unified at 2.2.0 and vendored byte-identically across the
+  server family; `response-schema.json` published with a README section.
+- The v1 `jstage_search_journals` tool, removed in v2, no longer advertised in
+  the module docstring.

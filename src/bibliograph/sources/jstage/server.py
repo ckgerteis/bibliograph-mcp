@@ -1,0 +1,707 @@
+"""J-STAGE MCP server (v3.2.0).
+
+A FastMCP stdio server exposing the J-STAGE WebAPI
+(https://api.jstage.jst.go.jp/searchapi/do) for searching Japanese
+academic articles and journals.
+
+v2.0.0 — clean replacement of the response format. The record-retrieval tools
+(jstage_search_articles, jstage_get_article_by_doi) now emit the unified
+response envelope shared with cinii-mcp (see mediation.py / response-schema.json):
+typed query/script, matching_mode, graduated breadth, per-item matched_in, typed
+diagnostics, a loggable receipt, and the JST attribution. The navigation tool
+jstage_list_issues returns structural JSON; it is not literature retrieval and is
+out of envelope scope. (v1 also exposed jstage_search_journals; it was removed in
+v2 and this note corrected on 19 Aug 2026, when the docstring was found still
+advertising it.)
+
+This is a breaking change from v1.x. J-STAGE attribution requirement: every
+response carries the JST acknowledgment.
+"""
+from __future__ import annotations
+
+import asyncio
+import html as _html
+import json
+import logging
+import re
+import sys
+import time
+from typing import Any, Optional
+from xml.etree import ElementTree as ET
+
+import httpx
+try:  # mcp SDK 1.x
+    from mcp.server.fastmcp import FastMCP as _MCPServer
+except ModuleNotFoundError:  # mcp SDK 2.x removed mcp.server.fastmcp
+    from mcp.server.mcpserver import MCPServer as _MCPServer
+from pydantic import BaseModel, ConfigDict, Field, field_validator
+
+from ... import ledger
+from ... import mediation as M
+from ... import receipt_ids as _rids
+
+
+def _emit(env: dict) -> str:
+    """mediation.emit, after conforming the envelope to the family schema."""
+    return M.emit(_rids.finish(env))
+from ... import namematch as NM
+
+__version__ = "3.2.2"
+
+# httpx logs every request URL at INFO. There is no credential in a J-STAGE
+# request, so nothing leaks — but a search term travels in that URL, and the
+# line lands on the stderr Claude Desktop captures. Mute it, as the rest of the
+# family does, and keep stdout for JSON-RPC alone.
+for _name in ("httpx", "httpcore", "httpx._client"):
+    logging.getLogger(_name).setLevel(logging.WARNING)
+    logging.getLogger(_name).propagate = False
+# The MCP SDK logs every request it handles at INFO. Noise, not a leak; still,
+# stderr should carry faults only.
+logging.getLogger("mcp").setLevel(logging.WARNING)
+for _h in list(logging.getLogger().handlers):
+    if getattr(_h, "stream", None) is sys.stdout:
+        logging.getLogger().removeHandler(_h)
+
+# ---------------------------------------------------------------------------
+# Constants
+# ---------------------------------------------------------------------------
+
+API_BASE = "https://api.jstage.jst.go.jp/searchapi/do"
+USER_AGENT = "jstage-mcp/2.0 (research; +https://www.jstage.jst.go.jp)"
+DEFAULT_TIMEOUT = 30.0
+MIN_REQUEST_INTERVAL = 1.0  # seconds — JST forbids bulk downloads
+ATTRIBUTION = "Powered by J-STAGE (https://www.jstage.jst.go.jp/)"
+MATCHING_MODE = "full_text_broad"
+COVERAGE_NOTE = (
+    "J-STAGE coverage reflects which learned societies deposit full text; "
+    "absence here is not absence in the field."
+)
+
+STATUS_HINTS = {
+    "WARN_002": (
+        "J-STAGE judged the query too broad to return a full result set. Add a "
+        "more specific term (a journal, author, or second keyword) to narrow it. "
+        "A truncated or empty result here does not mean the literature is absent."
+    ),
+    "ERR_001": (
+        "J-STAGE returned no usable result for this query. The term may be "
+        "unmatched as written; try an alternative rendering, a component term, "
+        "or a broader keyword before concluding the literature is absent."
+    ),
+}
+
+NS = {
+    "atom": "http://www.w3.org/2005/Atom",
+    "prism": "http://prismstandard.org/namespaces/basic/2.0/",
+    "opensearch": "http://a9.com/-/spec/opensearch/1.1/",
+}
+
+# A DOI lookup pages through the volume 100 entries at a time. Capped so that
+# one lookup is never a bulk download: past the cap the envelope says how far
+# it looked instead of reporting the DOI absent.
+DOI_LOOKUP_MAX_PAGES = 5
+
+JSTAGE_DOI_RE = re.compile(
+    r"^10\.\d+/(?P<cdjournal>[A-Za-z][A-Za-z0-9]*)"
+    r"\.(?P<vol>\d+)\.(?P<no>\d+)_(?P<page>\d+)$"
+)
+
+# ---------------------------------------------------------------------------
+# Polite rate limiter
+# ---------------------------------------------------------------------------
+
+_rate_lock = asyncio.Lock()
+_last_request_at = 0.0
+
+
+async def _throttle() -> None:
+    global _last_request_at
+    async with _rate_lock:
+        now = time.monotonic()
+        wait = MIN_REQUEST_INTERVAL - (now - _last_request_at)
+        if wait > 0:
+            await asyncio.sleep(wait)
+        _last_request_at = time.monotonic()
+
+
+# ---------------------------------------------------------------------------
+# HTTP + XML
+# ---------------------------------------------------------------------------
+
+
+async def _get(params: dict[str, Any]) -> str:
+    await _throttle()
+    clean = {k: v for k, v in params.items() if v is not None and v != ""}
+    headers = {"User-Agent": USER_AGENT, "Accept": "application/atom+xml"}
+    async with httpx.AsyncClient(timeout=DEFAULT_TIMEOUT) as client:
+        resp = await client.get(API_BASE, params=clean, headers=headers)
+        resp.raise_for_status()
+        return resp.text
+
+
+_ENTITY = re.compile(r"&(?:#\d+|#[xX][0-9A-Fa-f]+|[A-Za-z][A-Za-z0-9]*);")
+
+
+def _unescape(s: str) -> str:
+    """Decode complete character references only. html.unescape alone also decodes
+    legacy entities written without a semicolon, so a query string such as
+    ?a=1&region=2 would become ?a=1®ion=2 (second-model review, 7 Oct 2026)."""
+    return _ENTITY.sub(lambda m: _html.unescape(m.group(0)), s)
+
+
+def _text(elem: Optional[ET.Element]) -> Optional[str]:
+    if elem is None:
+        return None
+    txt = elem.text
+    # J-STAGE escapes markup twice, so a title arrives from the parser as
+    # (&lt;書評特集&gt;...) (seen 7 Oct 2026). One more unescape gives the title.
+    return _unescape(txt.strip()) if isinstance(txt, str) else None
+
+
+def _bilingual(parent: ET.Element, tag: str) -> dict[str, Optional[str]]:
+    block = parent.find(f"atom:{tag}", NS)
+    if block is None:
+        return {"en": None, "ja": None}
+    return {"en": _text(block.find("atom:en", NS)), "ja": _text(block.find("atom:ja", NS))}
+
+
+def _bilingual_link(parent: ET.Element, tag: str) -> dict[str, Optional[str]]:
+    block = parent.find(f"atom:{tag}", NS)
+    if block is None:
+        return {"en": None, "ja": None}
+    return {"en": _text(block.find("atom:en", NS)), "ja": _text(block.find("atom:ja", NS))}
+
+
+def _authors(entry: ET.Element) -> list[dict[str, Optional[str]]]:
+    authors: list[dict[str, Optional[str]]] = []
+    for author in entry.findall("atom:author", NS):
+        en_block = author.find("atom:en", NS)
+        ja_block = author.find("atom:ja", NS)
+        en_names = [_text(n) for n in en_block.findall("atom:name", NS)] if en_block is not None else []
+        ja_names = [_text(n) for n in ja_block.findall("atom:name", NS)] if ja_block is not None else []
+        n = max(len(en_names), len(ja_names), 1)
+        for i in range(n):
+            authors.append(
+                {
+                    "ja": ja_names[i] if i < len(ja_names) else None,
+                    "en": en_names[i] if i < len(en_names) else None,
+                }
+            )
+    return [a for a in authors if a["en"] or a["ja"]]
+
+
+def _check_status(root: ET.Element) -> Optional[dict[str, Any]]:
+    """Return None on success; a warning dict for WARN_*; raise ValueError on error."""
+    # A maintenance page served with status 200 is still well-formed XML. Not
+    # checked, it parsed as a feed with no entries: an outage reported as an
+    # empty literature, with a hint to try another rendering.
+    if root.tag != f"{{{NS['atom']}}}feed":
+        raise ValueError(
+            f"NOT_A_FEED|J-STAGE answered, but not with an Atom feed (root <{root.tag}>). "
+            "The search was not answered; this is not an empty result.")
+    result = root.find("atom:result", NS)
+    if result is None:
+        return None
+    status = _text(result.find("atom:status", NS))
+    message = _text(result.find("atom:message", NS))
+    if not status or status == "0":
+        return None
+    hint = STATUS_HINTS.get(status)
+    if status.startswith("WARN"):
+        return {"code": status, "message": message, "hint": hint}
+    msg = message if (message and message != status) else "(no message)"
+    detail = f"J-STAGE API {status}: {msg}"
+    if hint:
+        detail += f" — {hint}"
+    raise ValueError(f"{status}|{detail}")
+
+
+def _int_or(v: Optional[str], default: int) -> int:
+    """A count from the feed, or `default`. int() of a 5,000-digit string
+    raises on Python 3.11+, and a non-decimal one always did; either took the
+    whole page with it."""
+    try:
+        n = int(v) if v and v.strip().isdecimal() else default
+    except ValueError:
+        return default
+    return n if n >= 0 else default
+
+
+def _meta(root: ET.Element) -> dict[str, Any]:
+    return {
+        "total": _int_or(_text(root.find("opensearch:totalResults", NS)), 0),
+        "start": _int_or(_text(root.find("opensearch:startIndex", NS)), 1) or 1,
+    }
+
+
+def _entry_to_item(entry: ET.Element, matched_in: str) -> dict[str, Any]:
+    title = _bilingual(entry, "article_title")
+    url = _bilingual_link(entry, "article_link")
+    journal = _bilingual(entry, "material_title")
+    ps = _text(entry.find("prism:startingPage", NS))
+    pe = _text(entry.find("prism:endingPage", NS))
+    pages = f"{ps}-{pe}" if ps and pe else (ps or None)
+    pubyear = _text(entry.find("atom:pubyear", NS))
+    # isdecimal, not isdigit: '²' is a digit but not a decimal, and int()
+    # rejects it; one such year used to turn the whole page into API_ERROR.
+    year = _int_or(pubyear, -1) if pubyear and pubyear.isdecimal() and len(pubyear) <= 4 else None
+    year = None if year == -1 else year
+    return M.make_item(
+        title_ja=title["ja"],
+        title_en=title["en"],
+        authors=_authors(entry),
+        journal_ja=journal["ja"],
+        journal_en=journal["en"],
+        volume=_text(entry.find("prism:volume", NS)),
+        issue=_text(entry.find("prism:number", NS)),
+        pages=pages,
+        year=year,
+        doi=_text(entry.find("prism:doi", NS)),
+        url_ja=url["ja"],
+        url_en=url["en"],
+        matched_in=matched_in,
+        record_type="article",
+    )
+
+
+def _parse_articles(xml_text: str, matched_in: str) -> tuple[dict[str, Any], list[dict], Optional[dict]]:
+    """(meta, items, warning). An entry that will not build is left out and
+    named in meta["unreadable"] by position and DOI, so one bad entry no longer
+    turns the whole page into API_ERROR (the 7 Oct 2026 skip-and-count repair,
+    which reached the other sources but not this one)."""
+    root = ET.fromstring(xml_text)
+    warning = _check_status(root)  # raises on hard error
+    meta = _meta(root)
+    items, bad = [], []
+    for pos, e in enumerate(root.findall("atom:entry", NS), 1):
+        try:
+            items.append(_entry_to_item(e, matched_in))
+        except Exception:  # noqa: BLE001 - one entry must not cost the page
+            try:
+                doi = _text(e.find("prism:doi", NS))
+            except Exception:  # noqa: BLE001
+                doi = None
+            bad.append(f"#{pos}" + (f" ({doi[:100]})" if doi else ""))
+    # strip the single empty <entry/> the API returns on zero hits
+    items = [it for it in items if it["title"]["ja"] or it["title"]["en"] or it["ids"]["doi"]]
+    meta["unreadable"] = bad
+    return meta, items, warning
+
+
+def _unreadable_diag(bad: list[str], seen: int) -> Optional[dict]:
+    if not bad:
+        return None
+    named = "; ".join(bad[:10]) + ("; and more" if len(bad) > 10 else "")
+    return M.diag(
+        "warning", "RECORD_SHAPE_UNEXPECTED",
+        f"{len(bad)} of {seen} entr{'y' if seen == 1 else 'ies'} in J-STAGE's response could not be "
+        f"read and were left out: {named}.",
+        "The upstream entry is malformed, not absent. The other entries are complete; "
+        "look the omitted ones up by DOI or retry later.",
+    )
+
+
+# ---------------------------------------------------------------------------
+# Field resolution + diagnostics
+# ---------------------------------------------------------------------------
+
+# (param name, matched_in role) in priority order
+_FIELD_ROLES = [
+    ("text", "fulltext"),
+    ("article", "title"),
+    ("abst", "abstract"),
+    ("keyword", "metadata"),
+    ("author", "metadata"),
+    ("affil", "metadata"),
+    ("material", "metadata"),
+]
+
+
+def _resolve_fields(params: "SearchArticlesInput") -> tuple[str, str]:
+    """Return (normalized_query_string, matched_in) from the populated fields."""
+    present = [(name, role, getattr(params, name)) for name, role in _FIELD_ROLES if getattr(params, name)]
+    if not present:
+        return "", "metadata"
+    normalized = " ".join(v for _, _, v in present)
+    matched_in = "fulltext" if any(name == "text" for name, _, _ in present) else present[0][1]
+    return normalized, matched_in
+
+
+def _zero_diag(fields: Optional[list[str]]) -> dict:
+    """The zero-result diagnostic, naming the fields searched.
+
+    J-STAGE answers a zero with ERR_001 or with an empty feed; both arrive here.
+    7 Oct 2026: 占領期 労働運動 and 労働運動史 returned 0 in `keyword` and 252 and
+    815 in `text`. The zero was the field, not the literature, so a search that
+    left out `text` says which field it used and where to go next.
+    """
+    searched = ", ".join(f"`{f}`" for f in (fields or [])) or "the query"
+    if fields and "text" not in fields:
+        hint = (f"Only {searched} was searched. `keyword` is the authors' own keyword list and "
+                "`article` the title alone; re-run the same term in `text` (full text) "
+                "before concluding the literature is absent.")
+    else:
+        hint = ("Try an emic or component term, or an alternative Japanese rendering, "
+                "before concluding the literature is absent.")
+    return M.diag("warning", "LITERAL_COMPOUND_EMPTY", f"No records for this rendering in {searched}.", hint)
+
+
+def _diagnostics(
+    *, total: int, breadth: str, script: str, api_warning: Optional[dict], api_error: Optional[dict],
+    fields: Optional[list[str]] = None,
+) -> list[dict]:
+    ds: list[dict] = []
+    if api_error:
+        if api_error.get("code") == "LITERAL_COMPOUND_EMPTY":  # ERR_001: a zero, not a fault
+            api_error = _zero_diag(fields)
+        ds.append(api_error)
+    if script == "latin":
+        ds.append(
+            M.diag(
+                "warning",
+                "SCRIPT_LATIN_QUERY",
+                f"Query is Latin-script; this matched Latin-script text and metadata only "
+                f"({total} records). The Japanese-script form reaches a different, larger corpus.",
+                "Re-issue in kanji/kana (e.g. 暴走族) to search the Japanese-language literature.",
+            )
+        )
+    broad = bool(api_warning) or (not api_error and breadth in ("broad", "very_broad"))
+    if broad:
+        hint = (api_warning.get("hint") if api_warning else None) or (
+            "Read the count as noisy, not as the size of the literature; relevant records "
+            "may sit below the top. Narrow with a second term or inspect matched_in."
+        )
+        ds.append(
+            M.diag(
+                "warning",
+                "BROAD_FULLTEXT",
+                f"{total} records matched on full text; multi-word terms are matched loosely, "
+                f"so most results may be only incidentally related.",
+                hint,
+            )
+        )
+    if total == 0 and not api_error and not api_warning:
+        ds.append(_zero_diag(fields))
+    if not ds:
+        ds.append(M.diag("info", "OK", f"{total} record(s) on this match.", None))
+    return ds
+
+
+def _annotate_name_match(items: list[dict], author_query: str) -> Optional[dict]:
+    """Grade each item's author against `author_query` and set
+    extra.name_match. J-STAGE's `author` field is a substring match (a query
+    for 田中明 returns 田中明彦), so the server reports the grade rather than
+    filtering or reordering on it. Returns the LOOSE_NAME_MATCH diagnostic if
+    any item is not "exact", else None."""
+    counts = {"exact": 0, "partial": 0, "none": 0}
+    for it in items:
+        cands = []
+        for a in it["authors"]:
+            cands.append(a.get("ja"))
+            cands.append(a.get("en"))
+        best = NM.best_author_match(author_query, cands)
+        it["extra"]["name_match"] = best
+        counts[best] += 1
+    non_exact = counts["partial"] + counts["none"]
+    if non_exact == 0:
+        return None
+    parts = ", ".join(f"{v} {k}" for k, v in counts.items() if v)
+    return M.diag(
+        "info", "LOOSE_NAME_MATCH",
+        f"Author-name matching against '{author_query}' is not exact for "
+        f"{non_exact} of {len(items)} result(s) ({parts}). J-STAGE's `author` "
+        "field is a substring match.",
+        "Read extra.name_match on each item; treat 'partial' and 'none' as "
+        "other people until confirmed by affiliation, topic or other evidence.",
+    )
+
+
+def _error_diag(exc: Exception) -> dict:
+    """API_ERROR when J-STAGE answered, TRANSPORT_ERROR when it could not be
+    reached. An HTTP error status is an answer: until 3.0.1 it was labelled a
+    transport failure, which told the reader the service was unreachable when
+    it had in fact replied. Only httpx transport exceptions are TRANSPORT_ERROR."""
+    if isinstance(exc, httpx.HTTPStatusError):
+        return M.diag("error", "API_ERROR", f"J-STAGE returned HTTP {exc.response.status_code} for this query.",
+                      "Check the parameters; retry once before treating it as an outage. The result is unknown, not empty.")
+    if isinstance(exc, httpx.TimeoutException):
+        return M.diag("error", "TRANSPORT_ERROR", "Request to J-STAGE timed out.", "Retry shortly.")
+    if isinstance(exc, httpx.HTTPError):
+        return M.diag("error", "TRANSPORT_ERROR", f"Network error reaching J-STAGE: {exc}.", "Retry shortly.")
+    if isinstance(exc, ValueError):
+        code, _, detail = str(exc).partition("|")
+        if code == "ERR_001":
+            return M.diag("warning", "LITERAL_COMPOUND_EMPTY", "No records for this rendering.", STATUS_HINTS.get("ERR_001"))
+        return M.diag("error", "API_ERROR", detail or str(exc), None)
+    return M.diag("error", "API_ERROR", f"{type(exc).__name__}: {exc}", None)
+
+
+# ---------------------------------------------------------------------------
+# Pydantic input models
+# ---------------------------------------------------------------------------
+
+
+class _Base(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True, validate_assignment=True, extra="forbid")
+
+
+class SearchArticlesInput(_Base):
+    text: Optional[str] = Field(default=None, description="Full text (title, abstract, body), Japanese or English. The field for a topic search.")
+    article: Optional[str] = Field(default=None, description="Article title (substring).")
+    author: Optional[str] = Field(default=None, description="Author name, Japanese or romanized.")
+    affil: Optional[str] = Field(default=None, description="Author affiliation.")
+    keyword: Optional[str] = Field(default=None, description=(
+        "The authors' own keyword list only - the narrowest field. Compounds (労働運動史) and "
+        "several words usually return nothing here; for a topic search use `text`."))
+    abst: Optional[str] = Field(default=None, description="Abstract field only.")
+    material: Optional[str] = Field(default=None, description="Journal (material) title.")
+    issn: Optional[str] = Field(default=None, description="Journal ISSN (with or without hyphen).")
+    cdjournal: Optional[str] = Field(default=None, description="J-STAGE journal code (e.g. 'istd').")
+    vol: Optional[str] = Field(default=None, description="Volume filter.")
+    no: Optional[str] = Field(default=None, description="Issue filter.")
+    pubyearfrom: Optional[int] = Field(default=None, ge=1900, le=2100, description="Earliest year.")
+    pubyearto: Optional[int] = Field(default=None, ge=1900, le=2100, description="Latest year.")
+    count: int = Field(default=20, ge=1, le=100, description="Results per page (1–100).")
+    start: int = Field(default=1, ge=1, description="1-indexed start position.")
+
+    @field_validator("text", "article", "author", "affil", "keyword", "abst", "material")
+    @classmethod
+    def _non_empty(cls, v: Optional[str]) -> Optional[str]:
+        return v if (v and v.strip()) else None
+
+
+class ListIssuesInput(_Base):
+    material: Optional[str] = Field(default=None)
+    issn: Optional[str] = Field(default=None)
+    cdjournal: Optional[str] = Field(default=None)
+    pubyearfrom: Optional[int] = Field(default=None, ge=1900, le=2100)
+    pubyearto: Optional[int] = Field(default=None, ge=1900, le=2100)
+    count: int = Field(default=20, ge=1, le=100)
+    start: int = Field(default=1, ge=1)
+
+
+class GetArticleByDoiInput(_Base):
+    doi: str = Field(..., description="DOI, with or without doi.org prefix.", min_length=5)
+
+
+# ---------------------------------------------------------------------------
+# Server + tools
+# ---------------------------------------------------------------------------
+
+# mcp 1.x's FastMCP takes no `version`; 2.x's MCPServer does. Passed where it is
+# accepted, because a server that answers `initialize` with an empty version
+# string cannot be cited by the disclosure that has to name the build it ran.
+try:
+    mcp = _MCPServer("jstage_mcp", version=__version__)
+except TypeError:  # mcp SDK 1.x
+    mcp = _MCPServer("jstage_mcp")
+
+
+@mcp.tool(
+    name="jstage_search_articles",
+    annotations={"title": "Search J-STAGE articles", "readOnlyHint": True, "destructiveHint": False, "idempotentHint": True, "openWorldHint": True},
+)
+async def jstage_search_articles(params: SearchArticlesInput) -> str:
+    """Search articles on J-STAGE. Returns the unified response envelope.
+
+    J-STAGE matches `text` against full text and treats multi-word terms
+    loosely, so a high `result.total` is often noisy — read `matching_mode`
+    (full_text_broad), `result.breadth`, and the `diagnostics` before treating
+    a count as the size of a literature. A `SCRIPT_LATIN_QUERY` diagnostic means
+    the query matched Latin-script text and metadata only; re-issue in kanji/kana. The same
+    string can return very different totals on CiNii (metadata conjunction).
+
+    For a topic search use `text`. `keyword` searches only the authors' own
+    keyword lists and returns zero for most compounds and multi-word terms.
+    """
+    normalized, matched_in = _resolve_fields(params)
+    fields = [name for name, _ in _FIELD_ROLES if getattr(params, name)]
+    api_params = params.model_dump(exclude_none=True)
+    api_params["service"] = 3
+    issued = {k: v for k, v in api_params.items() if k != "service"}
+    script = M.detect_script(normalized)
+
+    try:
+        xml_text = await _get(api_params)
+        meta, items, warning = _parse_articles(xml_text, matched_in)
+        total, start = meta["total"], meta["start"]
+        bad = meta["unreadable"]
+        api_error = None
+    except Exception as exc:  # noqa: BLE001
+        items, warning, total, start, bad = [], None, 0, params.start, []
+        api_error = _error_diag(exc)
+
+    breadth = M.classify_breadth(total)
+    diags = _diagnostics(total=total, breadth=breadth, script=script, api_warning=warning,
+                         api_error=api_error, fields=fields)
+    unreadable = _unreadable_diag(bad, len(bad) + len(items))
+    if unreadable:
+        # A page of only unreadable entries is not an empty literature.
+        if not items:
+            diags = [d for d in diags if d["code"] != "LITERAL_COMPOUND_EMPTY"]
+        diags.insert(0, unreadable)
+    if params.author and items:
+        name_match_diag = _annotate_name_match(items, params.author)
+        if name_match_diag:
+            diags.append(name_match_diag)
+    coverage = COVERAGE_NOTE if (total == 0 or breadth == "narrow") else None
+
+    env = M.build_envelope(
+        server="jstage",
+        operation="search_articles",
+        input_terms=normalized,
+        normalized=normalized,
+        params=issued,
+        # full_text_broad describes `text` only; a search confined to title, abstract or
+        # metadata fields matched those fields, and the envelope says so (repairs of 7 Oct 2026).
+        matching_mode=MATCHING_MODE if "text" in fields else "field_restricted",
+        total=total,
+        start=start,
+        items=items,
+        diagnostics=diags,
+        attribution=ATTRIBUTION,
+        coverage_note=coverage,
+    )
+    return _emit(env)
+
+
+@mcp.tool(
+    name="jstage_get_article_by_doi",
+    annotations={"title": "Look up a J-STAGE article by DOI", "readOnlyHint": True, "destructiveHint": False, "idempotentHint": True, "openWorldHint": True},
+)
+async def jstage_get_article_by_doi(params: GetArticleByDoiInput) -> str:
+    """Resolve a J-STAGE DOI to its article record. Returns the unified envelope
+    (operation 'resolve_doi') with one item on success, or zero items plus a
+    diagnostic when the DOI is not in J-STAGE's issuance pattern or is unmatched.
+    """
+    doi = params.doi.strip()
+    for prefix in ("https://doi.org/", "http://doi.org/", "doi:", "DOI:"):
+        if doi.startswith(prefix):
+            doi = doi[len(prefix):]
+            break
+    issued = {"doi": doi}
+    match = JSTAGE_DOI_RE.match(doi)
+
+    if not match:
+        env = M.build_envelope(
+            server="jstage", operation="resolve_doi", input_terms=doi, normalized=doi,
+            params=issued, matching_mode=MATCHING_MODE, total=0, start=1, items=[],
+            diagnostics=[M.diag("warning", "LITERAL_COMPOUND_EMPTY",
+                "DOI is not in J-STAGE's issuance pattern (10.<registrant>/<cdjournal>.<vol>.<no>_<page>); "
+                "a direct API lookup is not possible.",
+                f"Resolve via https://doi.org/{doi}.")],
+            attribution=ATTRIBUTION,
+        )
+        return _emit(env)
+
+    # The volume is read a page at a time until the DOI turns up, the volume
+    # ends, or the cap is reached. One page used to be read and an article
+    # past the hundredth was reported as not matching.
+    hit, api_error, start, vol_total, skipped = [], None, 1, 0, []
+    try:
+        for _ in range(DOI_LOOKUP_MAX_PAGES):
+            xml_text = await _get({"service": 3, "cdjournal": match.group("cdjournal"),
+                                   "vol": match.group("vol"), "count": 100, "start": start})
+            meta, items, _warn = _parse_articles(xml_text, "metadata")
+            skipped += meta["unreadable"]
+            vol_total = meta["total"]
+            hit = [it for it in items if (it["ids"]["doi"] or "").strip() == doi]
+            start += 100
+            if hit or start > vol_total:
+                break
+    except Exception as exc:  # noqa: BLE001
+        api_error = _error_diag(exc)
+
+    if hit:
+        diags = [M.diag("info", "OK", "Resolved to one article record.", None)]
+        env_items, total = hit[:1], 1
+    elif api_error:
+        diags, env_items, total = [api_error], [], 0
+    else:
+        where = f"cdjournal='{match.group('cdjournal')}', vol='{match.group('vol')}'"
+        if start > vol_total:
+            said = f"none of the volume's {vol_total} entries matched exactly."
+        else:
+            said = (f"the first {start - 1} of the volume's {vol_total} entries were checked "
+                    "(the lookup is capped) and none matched exactly.")
+        diags = [M.diag("warning", "LITERAL_COMPOUND_EMPTY",
+            f"Decomposed the DOI to {where}; {said}", f"Resolve via https://doi.org/{doi}.")]
+        if skipped:
+            # An unreadable entry may be the one asked for: the absence is not established.
+            diags.insert(0, M.diag(
+                "warning", "RECORD_SHAPE_UNEXPECTED",
+                f"{len(skipped)} entr{'y' if len(skipped) == 1 else 'ies'} of the volume could not be read "
+                f"({'; '.join(skipped[:10])}); the DOI may be among them.",
+                f"Resolve via https://doi.org/{doi}."))
+        env_items, total = [], 0
+
+    env = M.build_envelope(
+        server="jstage", operation="resolve_doi", input_terms=doi, normalized=doi,
+        params=issued, matching_mode=MATCHING_MODE, total=total, start=1,
+        items=env_items, diagnostics=diags, attribution=ATTRIBUTION,
+    )
+    return _emit(env)
+
+
+# --- Navigation tools (structural JSON; out of envelope scope) --------------
+
+
+@mcp.tool(
+    name="jstage_list_issues",
+    annotations={"title": "List volumes & issues of a J-STAGE journal", "readOnlyHint": True, "destructiveHint": False, "idempotentHint": True, "openWorldHint": True},
+)
+async def jstage_list_issues(params: ListIssuesInput) -> str:
+    """Return the volume/issue spine of a journal (by material/issn/cdjournal).
+
+    Navigation aid, not literature retrieval: returns structural JSON (volumes
+    with publisher/journal metadata), not the record envelope.
+    """
+    api_params = params.model_dump(exclude_none=True)
+    api_params["service"] = 2
+    try:
+        xml_text = await _get(api_params)
+        root = ET.fromstring(xml_text)
+        warning = _check_status(root)
+        meta = _meta(root)
+        entries = root.findall("atom:entry", NS)
+        cap = min(params.count, 20)  # hard ceiling: a journal can list hundreds of volumes
+        vols = []
+        for entry in entries[:cap]:
+            jt = _bilingual(entry, "material_title")
+            vols.append({
+                "label": _bilingual(entry, "vols_title"),
+                "url": _bilingual_link(entry, "vols_link"),
+                "journal": {"title": jt, "cdjournal": _text(entry.find("atom:cdjournal", NS)),
+                            "issn": _text(entry.find("prism:issn", NS)), "eissn": _text(entry.find("prism:eIssn", NS))},
+                "volume": _text(entry.find("prism:volume", NS)),
+                "pubyear": _text(entry.find("atom:pubyear", NS)),
+            })
+        out = {"total_results": meta["total"], "returned": len(vols),
+               "truncated": len(entries) > len(vols),
+               "volumes": vols, "powered_by": ATTRIBUTION,
+               "query": {k: v for k, v in api_params.items() if k != "service"}}
+        if warning:
+            out["warning"] = warning["code"]
+            out["hint"] = warning.get("hint")
+        ledger.record_request(
+            server="jstage", operation="list_issues", endpoint=API_BASE,
+            params={k: v for k, v in api_params.items() if k != "service"},
+            response={"total": meta["total"], "results": vols},
+        )
+        return json.dumps(out, ensure_ascii=False, indent=2)
+    except Exception as exc:  # noqa: BLE001
+        ledger.record_request(
+            server="jstage", operation="list_issues", endpoint=API_BASE,
+            params={k: v for k, v in api_params.items() if k != "service"},
+            error=str(exc)[:300],
+        )
+        return json.dumps({"error": str(exc), "powered_by": ATTRIBUTION}, ensure_ascii=False, indent=2)
+
+
+def main() -> None:
+    """Console-script entry point (`jstage-mcp`)."""
+    mcp.run()
+
+
+if __name__ == "__main__":
+    main()

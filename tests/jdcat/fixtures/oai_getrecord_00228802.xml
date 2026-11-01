@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+  <responseDate>2026-10-07T07:04:36Z</responseDate>
+  <request metadataPrefix="jpcoar_2.0" verb="GetRecord" identifier="oai:jdcat.jsps.go.jp:00228802">https://jdcat.jsps.go.jp/oai</request>
+  <GetRecord>
+    <record>
+      <header>
+        <identifier>oai:jdcat.jsps.go.jp:00228802</identifier>
+        <datestamp>2026-05-18T04:56:49Z</datestamp>
+        <setSpec>1768558306011</setSpec>
+      </header>
+      <metadata>
+        <jpcoar:jpcoar xmlns:datacite="https://schema.datacite.org/meta/kernel-4/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcndl="http://ndl.go.jp/dcndl/terms/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:jpcoar="https://github.com/JPCOAR/schema/blob/master/2.0/" xmlns:oaire="http://namespace.openaire.eu/schema/oaire/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rioxxterms="http://www.rioxx.net/schema/v2.0/rioxxterms/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="https://github.com/JPCOAR/schema/blob/master/2.0/" xsi:schemaLocation="https://github.com/JPCOAR/schema/blob/master/2.0/jpcoar_scm.xsd">
+          <dc:title xml:lang="ja">教育重役の設置要望 : 勤労青少年指導の協力会議</dc:title>
+          <dc:title xml:lang="en">Request for establishment of education director: Cooperation Council for Guidance of Working Youth</dc:title>
+          <jpcoar:creator>
+            <jpcoar:creatorName xml:lang="ja">大阪朝日新聞</jpcoar:creatorName>
+          </jpcoar:creator>
+          <jpcoar:contributor contributorType="Distributor">
+            <jpcoar:contributorName xml:lang="ja">神戸大学附属図書館</jpcoar:contributorName>
+            <jpcoar:contributorName xml:lang="en">Kobe University Library</jpcoar:contributorName>
+          </jpcoar:contributor>
+          <dcterms:accessRights rdf:resource="http://purl.org/coar/access_right/c_abf2">open access</dcterms:accessRights>
+          <jpcoar:subject xml:lang="ja" subjectScheme="Other">教育</jpcoar:subject>
+          <datacite:description xml:lang="ja" descriptionType="Abstract">神戸大学経済経営研究所によって作成された明治末から昭和46年までの新聞切抜資料集成「新聞記事文庫」の資料</datacite:description>
+          <datacite:description xml:lang="ja" descriptionType="Other">出版物: テキスト</datacite:description>
+          <datacite:description xml:lang="en" descriptionType="Other">publication: text</datacite:description>
+          <datacite:date dateType="pubdate">2026-05-12</datacite:date>
+          <dc:language>jpn</dc:language>
+          <jpcoar:identifier identifierType="URI">https://hdl.handle.net/20.500.14094/0100360436</jpcoar:identifier>
+          <jpcoar:relation>
+            <jpcoar:relatedIdentifier identifierType="Local">0100360436</jpcoar:relatedIdentifier>
+          </jpcoar:relation>
+          <jpcoar:relation>
+            <jpcoar:relatedIdentifier identifierType="DOI">https://doi.org/10.24546/0100360436</jpcoar:relatedIdentifier>
+          </jpcoar:relation>
+          <dcterms:temporal xml:lang="en">1942-12-13</dcterms:temporal>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>日本</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <jpcoar:file/>
+          <system_file/>
+        </jpcoar:jpcoar>
+      </metadata>
+    </record>
+  </GetRecord>
+</OAI-PMH>

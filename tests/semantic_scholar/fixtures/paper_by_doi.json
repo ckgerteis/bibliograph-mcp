@@ -1,0 +1,51 @@
+{
+ "paperId": "4a8522aab83e9fb20af2176ca20eed392477ed42",
+ "externalIds": {
+  "MAG": "2105123711",
+  "DOI": "10.1017/S0026749X10000156",
+  "CorpusId": 145216086
+ },
+ "publicationVenue": {
+  "id": "4b52ba34-a72e-4336-963a-88cd8cd1645b",
+  "name": "Modern Asian Studies",
+  "type": "journal",
+  "alternate_names": [
+   "Mod Asian Stud"
+  ],
+  "issn": "0026-749X",
+  "url": "http://journals.cambridge.org/action/displayJournal?jid=ASS",
+  "alternate_urls": [
+   "https://www.jstor.org/journal/modeasiastud"
+  ]
+ },
+ "url": "https://www.semanticscholar.org/paper/4a8522aab83e9fb20af2176ca20eed392477ed42",
+ "title": "Syed Ahmad and His Two Books Called ‘Asar-al-Sanadid’",
+ "year": 2010,
+ "referenceCount": 5,
+ "citationCount": 14,
+ "influentialCitationCount": 0,
+ "isOpenAccess": false,
+ "openAccessPdf": {
+  "url": "",
+  "status": "CLOSED",
+  "license": null,
+  "disclaimer": "Notice: The following paper fields have been elided by the publisher: {'abstract'}. Paper or abstract available at https://api.unpaywall.org/v2/10.1017/S0026749X10000156?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1017/S0026749X10000156, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+ },
+ "fieldsOfStudy": [
+  "History"
+ ],
+ "tldr": null,
+ "publicationDate": "2010-09-03",
+ "journal": {
+  "name": "Modern Asian Studies",
+  "pages": "669 - 708",
+  "volume": "45"
+ },
+ "authors": [
+  {
+   "authorId": "84163573",
+   "name": "C. M. Naim"
+  }
+ ],
+ "abstract": null
+}

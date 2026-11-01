@@ -1,0 +1,121 @@
+{
+  "$schema": "https://raw.githubusercontent.com/anthropics/mcpb/main/schemas/mcpb-manifest-v0.4.schema.json",
+  "manifest_version": "0.4",
+  "name": "bibliograph-mcp",
+  "display_name": "bibliograph (Japan studies)",
+  "version": "2.0.0",
+  "description": "Japan-studies bibliographic and archival search: NDL, WARP, CiNii Research, J-STAGE, JDCat, OpenAlex, Semantic Scholar and Japanese name/authority lookup, plus open-access PDF fetch with provenance, with typed envelopes and query receipts.",
+  "long_description": "One MCP server gathering the sources a Japan-studies search needs: the National Diet Library's catalogue, national bibliography, magazine index and Digital Collections (metadata and OCR full text), the WARP web archive, CiNii Research (articles, books, dissertations, KAKEN, researchers), J-STAGE, the JDCat humanities and social-science data catalogue, OpenAlex and the Semantic Scholar Academic Graph, plus Japanese name and authority resolution. Every tool answers with one typed JSON envelope: the term actually sent and its script, how the source matched it, how broad the set is, typed diagnostics, a receipt hash and the provider's attribution. Receipts can be deposited to an append-only, hash-chained ledger so a search behind a footnote can be named and re-run. Load a subset with the BIBLIOGRAPH_ONLY setting below. Needs no Python of its own: Claude Desktop builds the bundle's environment with uv (one on the PATH if present, otherwise a copy the app downloads) when the extension is installed (a Python 3.10 or later already on the machine is used; one is downloaded only if there is none), and every launch reuses it and takes under a second.",
+  "author": {
+    "name": "Christopher Gerteis",
+    "email": "christopher.gerteis@gmail.com",
+    "url": "https://www.christophergerteis.net"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ckgerteis/bibliograph-mcp.git"
+  },
+  "homepage": "https://github.com/ckgerteis/bibliograph-mcp",
+  "documentation": "https://github.com/ckgerteis/bibliograph-mcp#readme",
+  "support": "https://github.com/ckgerteis/bibliograph-mcp/issues",
+  "license": "MIT",
+  "keywords": [
+    "bibliographic-search",
+    "japan-studies",
+    "digital-humanities",
+    "mcp",
+    "model-context-protocol",
+    "query-receipts",
+    "scholarly-metadata",
+    "national-diet-library",
+    "cinii"
+  ],
+  "server": {
+    "type": "uv",
+    "entry_point": "main.py",
+    "mcp_config": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${__dirname}",
+        "--frozen",
+        "main.py"
+      ],
+      "env": {
+        "CINII_APPID": "${user_config.cinii_appid}",
+        "OPENALEX_API_KEY": "${user_config.openalex_api_key}",
+        "OPENALEX_EMAIL": "${user_config.openalex_email}",
+        "SEMANTIC_SCHOLAR_API_KEY": "${user_config.semantic_scholar_api_key}",
+        "MCP_RECEIPT_DIR": "${user_config.receipts_dir}",
+        "MCP_RECEIPT_SESSION": "${user_config.receipt_session}",
+        "BIBLIOGRAPH_ONLY": "${user_config.bibliograph_only}",
+        "BIBLIOGRAPH_DOWNLOAD_DIR": "${user_config.download_dir}"
+      }
+    }
+  },
+  "user_config": {
+    "cinii_appid": {
+      "type": "string",
+      "title": "CiNii application ID",
+      "description": "Your own NII CiNii/NRID application id. Enables the researcher-number (NRID) step; other CiNii Research calls run without it.",
+      "sensitive": true,
+      "required": false
+    },
+    "openalex_api_key": {
+      "type": "string",
+      "title": "OpenAlex API key",
+      "description": "Optional. OpenAlex works without a key.",
+      "sensitive": true,
+      "required": false
+    },
+    "openalex_email": {
+      "type": "string",
+      "title": "Contact email (Crossref polite pool)",
+      "description": "Optional but recommended: a contact address. Crossref uses it to place requests in its faster 'polite pool'; OpenAlex no longer reads it.",
+      "required": false
+    },
+    "semantic_scholar_api_key": {
+      "type": "string",
+      "title": "Semantic Scholar API key",
+      "description": "Optional but recommended: free from semanticscholar.org. Keyless calls share one throttled pool.",
+      "sensitive": true,
+      "required": false
+    },
+    "receipts_dir": {
+      "type": "directory",
+      "title": "Receipts folder",
+      "description": "Where this server deposits its append-only, hash-chained query receipts (one <source>.jsonl per source). Leave empty to run without receipts; the envelope will then say RECEIPT_NOT_DEPOSITED.",
+      "required": false
+    },
+    "receipt_session": {
+      "type": "string",
+      "title": "Receipt session slug",
+      "description": "A project or article slug stamped on every receipt, e.g. my-article-2026. Optional.",
+      "required": false
+    },
+    "download_dir": {
+      "type": "directory",
+      "title": "Download folder",
+      "description": "Where fetch_pdf saves open-access PDFs, each with a provenance file beside it. Leave empty and fetch_pdf and fetch_pdf_text refuse with DOWNLOAD_DIR_NOT_SET; nothing is written anywhere.",
+      "required": false
+    },
+    "bibliograph_only": {
+      "type": "string",
+      "title": "Sources to load (optional)",
+      "description": "Comma-separated source keys to load instead of all of them, e.g. ndl,cinii,jstage. Leave empty to load every source. See the README for the full list of keys.",
+      "required": false
+    }
+  },
+  "compatibility": {
+    "claude_desktop": ">=0.10.0",
+    "platforms": [
+      "darwin",
+      "linux",
+      "win32"
+    ],
+    "runtimes": {
+      "python": ">=3.10"
+    }
+  }
+}

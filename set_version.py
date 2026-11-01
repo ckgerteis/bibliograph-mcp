@@ -1,19 +1,22 @@
 #!/usr/bin/env python3
 """Set the release version in every file that carries one.
 
-    python set_version.py 1.2.2
-    python set_version.py 1.2.2 --date 2026-09-15   # default is today, UTC
+    python set_version.py 1.0.1
+    python set_version.py 1.0.1 --date 2026-10-01   # default is today, UTC
     python set_version.py --check                   # report, change nothing
 
-Five places carry a version number and they must agree: pyproject.toml, which is
-the source; mcpb/manifest.template.json, which mcpb/build.py refuses to build
+Six files carry the release version and they must agree: pyproject.toml, which
+is the source; mcpb/manifest.template.json, which mcpb/build.py refuses to build
 against a mismatch; .zenodo.json, which Zenodo reads at the tagged commit when
 it mints the DOI; CITATION.cff, which GitHub parses for the "Cite this
-repository" button; and `__version__` in the package under src/, which the
-server reports when a client connects. Editing them by hand is how ndl-mcp
-v1.2.1 shipped with a CITATION.cff naming a release that did not exist; leaving
-`__version__` out is how the 12 October 2026 bumps failed the bundle handshake,
-whose server answered with the old version.
+repository" button; src/bibliograph/__init__.py, whose __version__ is what the
+running server reports; and README.md, whose two pinned install lines name the
+tag a reader installs. Editing them by hand is how ndl-mcp v1.2.1 shipped with a
+CITATION.cff naming a release that did not exist, and how bibliograph 1.4.0 nearly
+shipped reporting itself as 1.3.0: until 9 Oct 2026 this script covered only the
+first four. The sources under src/bibliograph/sources/ keep their own versions and
+are not touched. CHANGELOG.md is written by hand; tests/test_release_metadata.py
+fails until it has a section for the version.
 
 Run this, read the diff, commit, then tag. The tag is what fires the release
 workflow, so the metadata must already be right in the commit the tag points at
@@ -41,20 +44,12 @@ TARGETS = [
     ("mcpb/manifest.template.json", "the bundle manifest", r'(?m)^(\s*"version"\s*:\s*")([^"]+)(")'),
     (".zenodo.json", "the Zenodo deposit", r'(?m)^(\s*"version"\s*:\s*")([^"]+)(")'),
     ("CITATION.cff", "the citation file", r'(?m)^(version:\s*"?)([^"\n]+?)("?\s*)$'),
+    ("src/bibliograph/__init__.py", "the package __version__", r'(?m)^(__version__\s*=\s*")([^"]+)(")'),
+    ("README.md", "the pinned install line", r'(bibliograph-mcp@v)([^"\s`]+)(")'),
+    ("README.md", "the pinned install line, names extra", r'(git\+\.\.\.@v)([^"\s`]+)(")'),
 ]
 
 DATE_TARGET = ("CITATION.cff", r'(?m)^(date-released:\s*")([^"]+)("\s*)$')
-
-SOURCE_PATTERN = r'(?m)^(__version__\s*=\s*")([^"]+)(")'
-
-
-def _source_targets() -> list[tuple[str, str, str]]:
-    """The module under src/ that declares __version__. Found rather than named,
-    because the package name differs in each repository."""
-    found = [p for p in sorted((ROOT / "src").glob("*/*.py"))
-             if re.search(SOURCE_PATTERN, p.read_text(encoding="utf-8"))]
-    return [(p.relative_to(ROOT).as_posix(), "the version the server reports", SOURCE_PATTERN)
-            for p in found]
 
 
 def _sub_once(path: Path, pattern: str, value: str) -> tuple[str, str]:
@@ -78,13 +73,12 @@ def _read_once(path: Path, pattern: str) -> str:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("version", nargs="?", help="the new version, e.g. 1.2.2")
+    ap.add_argument("version", nargs="?", help="the new version, e.g. 1.0.1")
     ap.add_argument("--date", help="release date as YYYY-MM-DD (default: today, UTC)")
     ap.add_argument("--check", action="store_true", help="report the current values and exit")
     args = ap.parse_args()
 
     present = [(name, why, pat) for name, why, pat in TARGETS if (ROOT / name).is_file()]
-    present += _source_targets()
     missing = [name for name, _, _ in TARGETS if not (ROOT / name).is_file()]
 
     if args.check:

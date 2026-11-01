@@ -1,61 +1,140 @@
-"""The `bibliograph` command.
+"""The `bibliograph` command (public distribution only).
 
-    bibliograph install [--servers a,b] [--receipts-dir DIR] [--session SLUG] [--dry-run]
+    bibliograph install [--name bibliograph] [--receipts-dir DIR] [--session SLUG] [--dry-run] [--yes]
     bibliograph status
     bibliograph doctor
-    bibliograph receipts verify-dir DIR | manifest DIR
+    bibliograph receipts verify FILE | verify-dir DIR | manifest DIR
 
-`install` registers the servers that this environment already contains (they
-are dependencies of this package) in Claude Desktop, with one receipts folder
-and one session slug, asking for each credential once. It does not create a
-second virtual environment: whatever interpreter runs `bibliograph` is the one
-Claude Desktop will be pointed at. To build a fresh environment first, use
-`install.py --all` from any of the six repositories, which this module wraps.
+Since 2.0.0 bibliograph is one MCP server (`bibliograph-mcp`) gathering every
+source in one process. `install` registers that one server in Claude Desktop,
+pointed at the interpreter running this command, with one receipts folder and
+one session slug, asking once for each credential and keeping any value
+already registered. It backs the config up first and never removes another
+entry: servers registered by bibliograph 1.x (cinii, jstage, ndl, ...) are
+named so they can be removed by hand, because leaving them doubles every tool.
 """
 from __future__ import annotations
 
 import argparse
-import importlib
 import json
+import os
+import platform
 import shutil
 import subprocess
 import sys
+import threading
 import time
 from pathlib import Path
+from typing import Optional
 
 from . import __version__
-from . import installer as I
 
-SERVERS = I.SERVERS
+SERVER_CMD = "bibliograph-mcp"
+# Keys bibliograph 1.x wrote; their tools are all inside bibliograph-mcp now.
+LEGACY_KEYS = ("cinii", "jstage", "ndl", "korea_scholarship", "openalex", "semantic_scholar")
+# (variable, prompt, required)
+CREDENTIALS = [
+    ("CINII_APPID", "CiNii application id (free, https://support.nii.ac.jp/en/cinii/api/developer); "
+                    "needed only for researcher-number lookups", False),
+    ("OPENALEX_API_KEY", "OpenAlex API key (free, https://openalex.org/settings/api); without one, "
+                         "everyone on your network shares $0.10 of OpenAlex use a day", False),
+    ("SEMANTIC_SCHOLAR_API_KEY", "Semantic Scholar API key (free on request); without one, calls share "
+                                 "a throttled pool", False),
+    ("CROSSREF_MAILTO", "Contact email for Crossref's faster polite pool", False),
+    ("KCI_API_KEY", "KCI Open API key, for the Korean citation index's REST tools", False),
+]
 
 
-# ---------------------------------------------------------------- helpers
+def config_path() -> Path:
+    system = platform.system()
+    if system == "Windows":
+        appdata = os.environ.get("APPDATA")
+        if not appdata:
+            raise SystemExit("APPDATA is not set; cannot find Claude Desktop's config.")
+        return Path(appdata) / "Claude" / "claude_desktop_config.json"
+    if system == "Darwin":
+        return Path.home() / "Library" / "Application Support" / "Claude" / "claude_desktop_config.json"
+    return Path.home() / ".config" / "Claude" / "claude_desktop_config.json"
 
-def _scripts_dir() -> Path:
-    """Where this interpreter's console scripts live. Not the interpreter's own
-    folder: a Windows install outside a venv keeps them in Scripts\\."""
+
+def server_exe() -> Path:
     import sysconfig
-    p = sysconfig.get_path("scripts")
-    return Path(p) if p else Path(sys.executable).parent
+    scripts = Path(sysconfig.get_path("scripts") or Path(sys.executable).parent)
+    exe = scripts / (SERVER_CMD + (".exe" if sys.platform == "win32" else ""))
+    if not exe.exists():
+        found = shutil.which(SERVER_CMD)
+        if found:
+            return Path(found)
+    return exe
 
 
-def _installed() -> dict[str, dict]:
-    """Which of the six are importable from this interpreter, with versions."""
-    out = {}
-    for name, m in SERVERS.items():
-        try:
-            mod = importlib.import_module(m["pkg"])
-            out[name] = {"version": getattr(mod, "__version__", "?"),
-                         "exe": str(_scripts_dir() / (m["cmd"] + (".exe" if sys.platform == "win32" else "")))}
-        except Exception as exc:  # noqa: BLE001 — a missing server is a report, not a crash
-            out[name] = {"error": f"{type(exc).__name__}: {exc}"}
-    return out
+def load_config(path: Path) -> dict:
+    if not path.exists():
+        return {}
+    try:
+        data = json.loads(path.read_text(encoding="utf-8") or "{}")
+    except ValueError as exc:
+        raise SystemExit(f"{path} is not valid JSON ({exc}); fix or move it, then rerun.")
+    return data if isinstance(data, dict) else {}
 
 
-def _handshake(exe: str, timeout: float = 20.0) -> tuple[dict, list[str], str]:
-    """initialize + tools/list over stdio. Returns (serverInfo, tool names, stderr)."""
-    import threading
+def build_entry(existing: dict, answers: dict) -> dict:
+    """The one mcpServers entry. Existing env values are kept unless answered anew."""
+    env = dict((existing or {}).get("env") or {})
+    for k, v in answers.items():
+        if v:
+            env[k] = v
+    env.setdefault("PYTHONIOENCODING", "utf-8")
+    return {"command": str(server_exe()), "args": [], "env": env}
 
+
+def _ask(prompt: str, current: Optional[str], assume_yes: bool) -> Optional[str]:
+    if assume_yes or not sys.stdin.isatty():
+        return current
+    shown = " [already set: keep]" if current else " [blank to skip]"
+    got = input(f"{prompt}{shown}: ").strip()
+    return got or current
+
+
+def cmd_install(a: argparse.Namespace) -> int:
+    path = config_path()
+    cfg = load_config(path)
+    servers = cfg.setdefault("mcpServers", {})
+    old = servers.get(a.name) if isinstance(servers.get(a.name), dict) else {}
+    old_env = old.get("env") or {}
+    answers: dict = {}
+    for var, prompt, _req in CREDENTIALS:
+        answers[var] = _ask(prompt, old_env.get(var), a.yes)
+    answers["MCP_RECEIPT_DIR"] = a.receipts_dir or _ask(
+        "Receipts folder (a hash-chained record of every query; blank for none)",
+        old_env.get("MCP_RECEIPT_DIR"), a.yes)
+    answers["MCP_RECEIPT_SESSION"] = a.session or _ask(
+        "Session slug for the receipts (e.g. a project name)", old_env.get("MCP_RECEIPT_SESSION"), a.yes)
+    entry = build_entry(old, answers)
+    legacy = [k for k in LEGACY_KEYS if k in servers]
+    if a.dry_run:
+        shown = dict(entry, env={k: ("<set>" if v else v) for k, v in entry["env"].items()})
+        print(json.dumps({a.name: shown}, indent=2))
+    else:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        if path.exists():
+            backup = path.with_name(f"{path.name}.bak-{time.strftime('%Y%m%d-%H%M%S')}")
+            shutil.copy2(path, backup)
+            print(f"Backed up {path.name} to {backup.name}")
+        servers[a.name] = entry
+        path.write_text(json.dumps(cfg, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        print(f"Registered '{a.name}' -> {entry['command']}")
+    if not entry["command"] or not Path(entry["command"]).exists():
+        print(f"warning: {SERVER_CMD} was not found next to this interpreter; is bibliograph-mcp installed here?")
+    if legacy:
+        print("\nbibliograph 1.x entries are still registered: " + ", ".join(legacy) + ".\n"
+              "Their tools are all inside bibliograph-mcp now; remove those entries from\n"
+              f"{path} so Claude Desktop does not list every tool twice.")
+    print("\nRestart Claude Desktop to load it.")
+    return 0
+
+
+def handshake(exe: str, timeout: float = 30.0) -> tuple[dict, list[str], str]:
     msgs = [
         {"jsonrpc": "2.0", "id": 1, "method": "initialize",
          "params": {"protocolVersion": "2024-11-05", "capabilities": {},
@@ -65,7 +144,7 @@ def _handshake(exe: str, timeout: float = 20.0) -> tuple[dict, list[str], str]:
     ]
     proc = subprocess.Popen([exe], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE, text=True, encoding="utf-8")
-    got: dict[int, dict] = {}
+    got: dict = {}
     done = threading.Event()
 
     def reader():
@@ -79,8 +158,7 @@ def _handshake(exe: str, timeout: float = 20.0) -> tuple[dict, list[str], str]:
                 if d.get("id") in (1, 2):
                     got[d["id"]] = d
                     if len(got) == 2:
-                        done.set()
-                        return
+                        break
         done.set()
 
     threading.Thread(target=reader, daemon=True).start()
@@ -99,179 +177,70 @@ def _handshake(exe: str, timeout: float = 20.0) -> tuple[dict, list[str], str]:
     return info, tools, err
 
 
-# ---------------------------------------------------------------- commands
-
-def cmd_status(args: argparse.Namespace) -> int:
-    cfg_path = I.config_path()
-    cfg = I.load_config(cfg_path) if cfg_path.exists() else {}
-    registered = cfg.get("mcpServers", {}) if isinstance(cfg, dict) else {}
+def cmd_status(a: argparse.Namespace) -> int:
+    path = config_path()
+    entry = load_config(path).get("mcpServers", {}).get(a.name)
     print(f"bibliograph {__version__}  python {sys.version.split()[0]}  {sys.executable}")
-    print(f"Claude Desktop config: {cfg_path}{'' if cfg_path.exists() else '  (absent)'}")
-    print()
-    for name, m in SERVERS.items():
-        inst = _installed()[name]
-        reg = registered.get(name)
-        v = inst.get("version", "-")
-        where = "registered" if reg else "not registered"
-        if reg and isinstance(reg, dict):
-            env = reg.get("env") or {}
-            where += f"; receipts {'on: ' + env['MCP_RECEIPT_DIR'] if env.get('MCP_RECEIPT_DIR') else 'off'}"
-            if env.get("MCP_RECEIPT_SESSION"):
-                where += f"; session {env['MCP_RECEIPT_SESSION']}"
-        print(f"  {name:<18} {v:<8} {where}" + (f"  [{inst['error']}]" if "error" in inst else ""))
+    print(f"Claude Desktop config: {path}{'' if path.exists() else '  (absent)'}")
+    if isinstance(entry, dict):
+        env = entry.get("env") or {}
+        print(f"  '{a.name}' registered -> {entry.get('command')}")
+        print(f"  receipts {'on: ' + env['MCP_RECEIPT_DIR'] if env.get('MCP_RECEIPT_DIR') else 'off'}"
+              + (f"; session {env['MCP_RECEIPT_SESSION']}" if env.get("MCP_RECEIPT_SESSION") else ""))
+    else:
+        print(f"  '{a.name}' not registered; run `bibliograph install`")
     return 0
 
 
-def cmd_doctor(args: argparse.Namespace) -> int:
-    ok = True
-    inst = _installed()
-    print("Handshake over stdio, one server at a time:")
-    for name, m in SERVERS.items():
-        if "error" in inst[name]:
-            print(f"  FAIL {name}: not importable ({inst[name]['error']})")
-            ok = False
-            continue
-        exe = inst[name]["exe"]
-        if not Path(exe).exists():
-            found = shutil.which(m["cmd"])
-            if found:
-                exe = inst[name]["exe"] = found
-        if not Path(exe).exists():
-            print(f"  FAIL {name}: console script missing at {exe}")
-            ok = False
-            continue
-        t0 = time.monotonic()
-        info, tools, err = _handshake(exe)
-        dt = time.monotonic() - t0
-        if not info:
-            print(f"  FAIL {name}: no initialize reply in {dt:.1f}s" + (f"; stderr: {err.strip()[:200]}" if err.strip() else ""))
-            ok = False
-        else:
-            print(f"  ok   {name:<18} {info.get('name')} {info.get('version')}  {len(tools)} tools  ({dt:.1f}s)")
-    print()
-    print("Vendored modules byte-identical across the installed family:")
-    try:
-        I.verify_identity(Path(sys.executable), [n for n in SERVERS if "error" not in inst[n]])
-    except I.InstallError as exc:
-        print(f"  FAIL {exc}")
-        ok = False
-    print()
-    print("PASS" if ok else "FAIL")
-    return 0 if ok else 1
-
-
-def cmd_install(args: argparse.Namespace) -> int:
-    inst = _installed()
-    missing = [n for n in SERVERS if "error" in inst[n]]
-    if args.servers:
-        names = [s.strip() for s in args.servers.split(",") if s.strip()]
-        bad = [n for n in names if n not in SERVERS]
-        if bad:
-            print(f"error: unknown server(s) {', '.join(bad)}; known: {', '.join(SERVERS)}", file=sys.stderr)
-            return 2
-    else:
-        names = [n for n in SERVERS if n not in missing]
-    absent = [n for n in names if n in missing]
-    if absent:
-        print(f"error: not importable from {sys.executable}: {', '.join(absent)}. "
-              f"pip install bibliograph-mcp into this interpreter first.", file=sys.stderr)
+def cmd_doctor(a: argparse.Namespace) -> int:
+    exe = server_exe()
+    if not exe.exists():
+        print(f"FAIL: {SERVER_CMD} not found at {exe}")
         return 1
-
-    # Reuse install.py's planning for config, receipts and credentials, but
-    # with this environment as the venv and no pip step.
-    ns = argparse.Namespace(
-        servers=",".join(names), all=False, from_pypi=False, venv=str(sys.prefix),
-        receipts_dir=args.receipts_dir, session=args.session, no_receipts=args.no_receipts,
-        force_receipts_dir=args.force_receipts_dir, notification_filed=None,
-        python_version=None, config_path=args.config_path, dry_run=args.dry_run, print_config=False,
-    )
-    try:
-        plan_ = I.plan(ns, Path.cwd())
-        plan_.python_exe = Path(sys.executable)
-        installed = {n: {"exe": inst[n]["exe"], "version": inst[n]["version"]} for n in names}
-        if not args.dry_run:
-            I.verify_identity(plan_.python_exe, names)
-        if plan_.chosen_dir and not args.dry_run:
-            plan_.chosen_dir.mkdir(parents=True, exist_ok=True)
-            I.write_receipts_readme(plan_.chosen_dir, names)
-        servers_now = I.register(plan_, installed, dry_run=args.dry_run)
-    except I.InstallError as exc:
-        print(f"error: {exc}", file=sys.stderr)
+    info, tools, err = handshake(str(exe))
+    if not tools:
+        print(f"FAIL: {SERVER_CMD} did not answer initialize and tools/list.\n{err[-2000:]}")
         return 1
-    print()
-    print("Registered in Claude Desktop:" if not args.dry_run else "Would register:")
-    for n in names:
-        print(f"  {n:<18} {installed[n]['version']:<8} {installed[n]['exe']}")
-    if plan_.chosen_dir:
-        print(f"Receipts: {plan_.chosen_dir}" + (f"  session {plan_.chosen_session}" if plan_.chosen_session else ""))
-    others = sorted(set(servers_now) - set(names))
-    if others:
-        print(f"Left untouched: {', '.join(others)}")
-    if not args.dry_run:
-        print("Restart Claude Desktop to load them.")
+    print(f"OK: {info.get('name')} {info.get('version')} answered with {len(tools)} tools.")
+    skipped = [l for l in err.splitlines() if "skipped" in l]
+    for l in skipped:
+        print("  " + l)
     return 0
 
 
-def cmd_receipts(args: argparse.Namespace) -> int:
-    # Every server vendors the same ledger; use the first importable one.
-    for m in SERVERS.values():
-        try:
-            ledger = importlib.import_module(m["pkg"] + ".ledger")
-            break
-        except Exception:  # noqa: BLE001
-            continue
-    else:
-        print("error: no server package importable; nothing to verify with", file=sys.stderr)
-        return 1
-    if args.action == "verify-dir":
-        res = ledger.verify_dir(args.dir)
-        print(json.dumps(res, indent=2, ensure_ascii=False))
-        return 0 if res.get("ok", False) else 1
-    if args.action == "manifest":
-        res = ledger.verify_dir(args.dir)
-        out = Path(args.dir) / "manifest.json"
-        out.write_text(json.dumps(res, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-        print(f"wrote {out}")
-        return 0 if res.get("ok", False) else 1
-    return 2
+def cmd_receipts(a: argparse.Namespace) -> int:
+    from . import ledger
+    sys.argv = ["bibliograph receipts", *a.rest]
+    ledger._cli()
+    return 0
 
-
-# ---------------------------------------------------------------- entry
 
 def build_parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(prog="bibliograph", description=__doc__,
-                                formatter_class=argparse.RawDescriptionHelpFormatter)
+    p = argparse.ArgumentParser(prog="bibliograph", description="Register and check the bibliograph MCP server.")
     p.add_argument("--version", action="version", version=f"bibliograph {__version__}")
     sub = p.add_subparsers(dest="cmd", required=True)
-
-    i = sub.add_parser("install", help="register the installed servers in Claude Desktop")
-    i.add_argument("--servers", help="comma-separated subset (default: every server importable here)")
-    i.add_argument("--receipts-dir", help="folder for the hash-chained receipts (asked for if omitted)")
-    i.add_argument("--force-receipts-dir", action="store_true",
-                   help="allow --receipts-dir to differ from the folder already-registered servers use")
-    i.add_argument("--session", help="project or article slug stamped on every receipt")
-    i.add_argument("--no-receipts", action="store_true")
-    i.add_argument("--config-path", help="claude_desktop_config.json to write (default: the platform's)")
-    i.add_argument("--dry-run", action="store_true")
+    i = sub.add_parser("install", help="register bibliograph-mcp in Claude Desktop")
+    i.add_argument("--name", default="bibliograph", help="the mcpServers key (default: bibliograph)")
+    i.add_argument("--receipts-dir")
+    i.add_argument("--session")
+    i.add_argument("--dry-run", action="store_true", help="print the entry; write nothing")
+    i.add_argument("--yes", action="store_true", help="ask nothing; keep registered values")
     i.set_defaults(fn=cmd_install)
-
-    s = sub.add_parser("status", help="versions and registration state of the six")
+    s = sub.add_parser("status", help="what is registered")
+    s.add_argument("--name", default="bibliograph")
     s.set_defaults(fn=cmd_status)
-
-    d = sub.add_parser("doctor", help="stdio handshake with each server; vendored-file identity")
+    d = sub.add_parser("doctor", help="start bibliograph-mcp and list its tools")
     d.set_defaults(fn=cmd_doctor)
-
-    r = sub.add_parser("receipts", help="verify a receipts folder as one deposit")
-    r.add_argument("action", choices=["verify-dir", "manifest"])
-    r.add_argument("dir")
+    r = sub.add_parser("receipts", help="verify or summarise a receipts folder")
+    r.add_argument("rest", nargs=argparse.REMAINDER)
     r.set_defaults(fn=cmd_receipts)
     return p
 
 
-def main(argv: list[str] | None = None) -> int:
-    args = build_parser().parse_args(argv)
-    return args.fn(args)
+def main(argv: Optional[list[str]] = None) -> int:
+    a = build_parser().parse_args(argv)
+    return a.fn(a)
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    raise SystemExit(main())

@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+  <responseDate>2026-10-07T07:04:44Z</responseDate>
+  <request metadataPrefix="jpcoar_2.0" verb="GetRecord" identifier="oai:jdcat.jsps.go.jp:00211390">https://jdcat.jsps.go.jp/oai</request>
+  <GetRecord>
+    <record>
+      <header>
+        <identifier>oai:jdcat.jsps.go.jp:00211390</identifier>
+        <datestamp>2026-07-21T01:53:23Z</datestamp>
+        <setSpec>1613031614318</setSpec>
+      </header>
+      <metadata>
+        <jpcoar:jpcoar xmlns:datacite="https://schema.datacite.org/meta/kernel-4/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcndl="http://ndl.go.jp/dcndl/terms/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:jpcoar="https://github.com/JPCOAR/schema/blob/master/2.0/" xmlns:oaire="http://namespace.openaire.eu/schema/oaire/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rioxxterms="http://www.rioxx.net/schema/v2.0/rioxxterms/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="https://github.com/JPCOAR/schema/blob/master/2.0/" xsi:schemaLocation="https://github.com/JPCOAR/schema/blob/master/2.0/jpcoar_scm.xsd">
+          <dc:title xml:lang="ja">モノグラフ高校生　定時制高校生の生活と意識，1995</dc:title>
+          <jpcoar:creator>
+            <jpcoar:creatorName xml:lang="ja">ベネッセコーポレーション</jpcoar:creatorName>
+          </jpcoar:creator>
+          <jpcoar:contributor contributorType="Distributor">
+            <jpcoar:contributorName xml:lang="ja">SSJ データアーカイブ</jpcoar:contributorName>
+            <jpcoar:affiliation>
+              <jpcoar:affiliationName>Institute of Social Science, The University of Tokyo</jpcoar:affiliationName>
+            </jpcoar:affiliation>
+          </jpcoar:contributor>
+          <dcterms:accessRights>制約付きアクセス</dcterms:accessRights>
+          <dc:rights>https://csrda.iss.u-tokyo.ac.jp/access/condition/</dc:rights>
+          <dc:rights xml:lang="ja">二次分析にあたり、東京大学社会科学研究所附属社会調査データアーカイブ研究センターSSJデータアーカイブから「モノグラフ高校生　定時制高校生の生活と意識，1995」(ベネッセコーポレーション)の個票データの提供を受けました。https://doi.org/10.34500/SSJDA.c045</dc:rights>
+          <jpcoar:subject xml:lang="ja" subjectURI="https://vocabularies.cessda.eu/urn/urn:ddi:int.cessda.cv:TopicClassification">義務教育と就学前教育</jpcoar:subject>
+          <jpcoar:subject xml:lang="ja" subjectURI="https://vocabularies.cessda.eu/urn/urn:ddi:int.cessda.cv:TopicClassification">社会と文化</jpcoar:subject>
+          <jpcoar:subject xml:lang="ja" subjectURI="https://vocabularies.cessda.eu/urn/urn:ddi:int.cessda.cv:TopicClassification">社会行動と社会的態度</jpcoar:subject>
+          <jpcoar:subject xml:lang="ja" subjectURI="https://vocabularies.cessda.eu/urn/urn:ddi:int.cessda.cv:TopicClassification">社会階層と社会集団</jpcoar:subject>
+          <datacite:description xml:lang="ja" descriptionType="Abstract">かつての働きながら学ぶ勤労青少年の教育の場という定時制のイメージと実態の差を，定時制高校生の日常生活・学校生活や自己像・将来像を調べるとともに，定時制高校に対する意識や評価から明らかにしようと，本調査が実施された。調査項目は，生徒の属性項目，日常生活や授業などの学校生活に関する項目，定時制高校を選んだ理由や学校の現状評価，進路や将来像，自己像などである。</datacite:description>
+          <datacite:description xml:lang="ja" descriptionType="Methods">個人</datacite:description>
+          <datacite:description xml:lang="ja" descriptionType="Methods">首都圏定時制高校の生徒</datacite:description>
+          <datacite:description xml:lang="ja" descriptionType="Methods">サンプル数 612名</datacite:description>
+          <datacite:description xml:lang="ja" descriptionType="Other">量的調査: ミクロデータ</datacite:description>
+          <dc:publisher xml:lang="ja">SSJデータアーカイブ</dc:publisher>
+          <datacite:date>2005-06-16</datacite:date>
+          <datacite:date dateType="pubdate">2026-07-16</datacite:date>
+          <dc:language>jpn</dc:language>
+          <dc:type>dataset</dc:type>
+          <datacite:version>1</datacite:version>
+          <jpcoar:identifier identifierType="URI">https://jdcat.jsps.go.jp/records/211390</jpcoar:identifier>
+          <jpcoar:relation>
+            <jpcoar:relatedIdentifier identifierType="Local">c045</jpcoar:relatedIdentifier>
+          </jpcoar:relation>
+          <jpcoar:relation>
+            <jpcoar:relatedIdentifier identifierType="Local">10.34500/SSJDA.c045</jpcoar:relatedIdentifier>
+          </jpcoar:relation>
+          <jpcoar:relation/>
+          <jpcoar:relation/>
+          <dcterms:temporal xml:lang="ja">1995</dcterms:temporal>
+          <dcterms:temporal xml:lang="ja">1995</dcterms:temporal>
+          <datacite:geoLocation>
+            <datacite:geoLocationPlace>神奈川県</datacite:geoLocationPlace>
+          </datacite:geoLocation>
+          <jpcoar:file/>
+          <system_file/>
+        </jpcoar:jpcoar>
+      </metadata>
+    </record>
+  </GetRecord>
+</OAI-PMH>

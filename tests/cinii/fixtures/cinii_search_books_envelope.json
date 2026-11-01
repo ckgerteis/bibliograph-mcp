@@ -1,0 +1,216 @@
+{
+  "server": "cinii",
+  "schema_version": "2.3.0",
+  "operation": "search_books",
+  "searched_for": {
+    "term": "大江健三郎 水死",
+    "script": "han",
+    "matching": "metadata_conjunction"
+  },
+  "query": {
+    "input_terms": "大江健三郎 水死",
+    "normalized": "大江健三郎 水死",
+    "script": "han",
+    "params": {
+      "q": "大江健三郎 水死",
+      "count": 5,
+      "start": 1,
+      "lang": "en"
+    }
+  },
+  "matching_mode": "metadata_conjunction",
+  "result": {
+    "total": 14,
+    "returned": 5,
+    "start": 1,
+    "breadth": "narrow"
+  },
+  "items": [
+    {
+      "title": { "ko": null, "ja": "水死", "en": null, "romanized": null },
+      "authors": [
+        { "ja": "大江, 健三郎", "en": null },
+        { "ja": "许, 金龙", "en": null }
+      ],
+      "source": {
+        "journal_ko": null,
+        "journal_ja": "人民文学出版社",
+        "journal_en": null,
+        "volume": null,
+        "issue": null,
+        "pages": null,
+        "year": 2023,
+        "holding_org": null
+      },
+      "ids": {
+        "doi": null,
+        "crid": "1970867909854296069",
+        "naid": null,
+        "kci_id": null,
+        "uci": null,
+        "issn": null,
+        "oai_id": null,
+        "url_ko": null,
+        "url_ja": "https://cir.nii.ac.jp/crid/1970867909854296069",
+        "url_en": null,
+        "fulltext_url": null
+      },
+      "matched_in": "metadata",
+      "record_type": "book",
+      "extra": {}
+    },
+    {
+      "title": { "ko": null, "ja": "水死", "en": null, "romanized": null },
+      "authors": [ { "ja": "大江, 健三郎", "en": null } ],
+      "source": {
+        "journal_ko": null,
+        "journal_ja": "講談社",
+        "journal_en": null,
+        "volume": null,
+        "issue": null,
+        "pages": null,
+        "year": 2009,
+        "holding_org": null
+      },
+      "ids": {
+        "doi": null,
+        "crid": "1970023484956437390",
+        "naid": null,
+        "kci_id": null,
+        "uci": null,
+        "issn": null,
+        "oai_id": null,
+        "url_ko": null,
+        "url_ja": "https://cir.nii.ac.jp/crid/1970023484956437390",
+        "url_en": null,
+        "fulltext_url": null
+      },
+      "matched_in": "metadata",
+      "record_type": "book",
+      "extra": {}
+    },
+    {
+      "title": { "ko": null, "ja": null, "en": "익사 : 오에 겐자부로 장편소설", "romanized": null },
+      "authors": [
+        { "ja": "大江, 健三郎", "en": null },
+        { "ja": null, "en": "박, 유하" }
+      ],
+      "source": {
+        "journal_ko": null,
+        "journal_ja": null,
+        "journal_en": "문학동네",
+        "volume": null,
+        "issue": null,
+        "pages": null,
+        "year": 2015,
+        "holding_org": null
+      },
+      "ids": {
+        "doi": null,
+        "crid": "1971430859807394094",
+        "naid": null,
+        "kci_id": null,
+        "uci": null,
+        "issn": null,
+        "oai_id": null,
+        "url_ko": null,
+        "url_ja": "https://cir.nii.ac.jp/crid/1971430859807394094",
+        "url_en": null,
+        "fulltext_url": null
+      },
+      "matched_in": "metadata",
+      "record_type": "book",
+      "extra": {}
+    },
+    {
+      "title": { "ko": null, "ja": "水死", "en": null, "romanized": null },
+      "authors": [ { "ja": "大江, 健三郎", "en": null } ],
+      "source": {
+        "journal_ko": null,
+        "journal_ja": "講談社",
+        "journal_en": null,
+        "volume": null,
+        "issue": null,
+        "pages": null,
+        "year": 2012,
+        "holding_org": null
+      },
+      "ids": {
+        "doi": null,
+        "crid": "1970867909874791832",
+        "naid": null,
+        "kci_id": null,
+        "uci": null,
+        "issn": null,
+        "oai_id": null,
+        "url_ko": null,
+        "url_ja": "https://cir.nii.ac.jp/crid/1970867909874791832",
+        "url_en": null,
+        "fulltext_url": null
+      },
+      "matched_in": "metadata",
+      "record_type": "book",
+      "extra": {}
+    },
+    {
+      "title": { "ko": null, "ja": null, "en": "La foresta d'acqua", "romanized": null },
+      "authors": [
+        { "ja": "大江, 健三郎", "en": null },
+        { "ja": null, "en": "Coci, Gianluca" }
+      ],
+      "source": {
+        "journal_ko": null,
+        "journal_ja": null,
+        "journal_en": "Garzanti",
+        "volume": null,
+        "issue": null,
+        "pages": null,
+        "year": 2019,
+        "holding_org": null
+      },
+      "ids": {
+        "doi": null,
+        "crid": "1970867909854297102",
+        "naid": null,
+        "kci_id": null,
+        "uci": null,
+        "issn": null,
+        "oai_id": null,
+        "url_ko": null,
+        "url_ja": "https://cir.nii.ac.jp/crid/1970867909854297102",
+        "url_en": null,
+        "fulltext_url": null
+      },
+      "matched_in": "metadata",
+      "record_type": "book",
+      "extra": {}
+    }
+  ],
+  "diagnostics": [
+    {
+      "level": "info",
+      "code": "OK",
+      "message": "14 record(s) on metadata match.",
+      "hint": null
+    },
+    {
+      "level": "info",
+      "code": "RECEIPT_NOT_DEPOSITED",
+      "message": "This response was not written to the query ledger, so no receipt survives the conversation it was issued in. No receipts destination is configured, so no deposit was attempted.",
+      "hint": "Set MCP_RECEIPT_DIR to a receipts folder before any session whose queries are meant to be citable evidence; an append-only log cannot be written backwards."
+    }
+  ],
+  "coverage_note": null,
+  "receipt": {
+    "issued_at": "2026-09-24T14:11:46+01:00",
+    "query_hash": "sha256:658d753802f0b6ed3f7dceea61f08df37840517b76d52423e2f8cdf91c256af6",
+    "result_ids": [
+      "1970867909854296069",
+      "1970023484956437390",
+      "1971430859807394094",
+      "1970867909874791832",
+      "1970867909854297102"
+    ]
+  },
+  "attribution": "Data via CiNii Research (https://cir.nii.ac.jp/), National Institute of Informatics (NII)."
+}

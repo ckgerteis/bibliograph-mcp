@@ -1,0 +1,23 @@
+{
+ "offset": 0,
+ "next": 2,
+ "data": [
+  {
+   "paperId": "514d905124fa8fd1ceddd64e6aae29cc8e098001",
+   "externalIds": {
+    "DOI": "10.67228/30715717/ijdeic-2022pi2d4m",
+    "CorpusId": 290680816
+   },
+   "title": "Federated Learning and Blockchain for Secure Edge Computing: Opportunities and Challenges",
+   "year": 2022
+  },
+  {
+   "paperId": "5d10faffeae5e9f2ae868626b29e6e9b8047cecb",
+   "externalIds": {
+    "CorpusId": 251848799
+   },
+   "title": "Dystopian or Utopian? Two Images of Alan Turing",
+   "year": 2022
+  }
+ ]
+}

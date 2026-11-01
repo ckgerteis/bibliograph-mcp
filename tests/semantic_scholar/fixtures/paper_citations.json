@@ -1,0 +1,59 @@
+{
+ "offset": 0,
+ "next": 2,
+ "data": [
+  {
+   "citingPaper": {
+    "paperId": "e785cef0a2f93a98dc3f44adc00982e0115c743a",
+    "externalIds": {
+     "DOI": "10.1215/1089201x-12354745",
+     "CorpusId": 284797973
+    },
+    "url": "https://www.semanticscholar.org/paper/e785cef0a2f93a98dc3f44adc00982e0115c743a",
+    "title": "Genealogies of Din, Archaeologies of Iman",
+    "year": 2026,
+    "citationCount": 2,
+    "openAccessPdf": {
+     "url": "",
+     "status": "CLOSED",
+     "license": null,
+     "disclaimer": "Notice: Paper or abstract available at https://api.unpaywall.org/v2/10.1215/1089201x-12354745?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1215/1089201x-12354745, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+    },
+    "authors": [
+     {
+      "authorId": "114882330",
+      "name": "Mudit Trivedi"
+     }
+    ],
+    "abstract": "Abstract:This article reconsiders \"conversion\" or \"Islamization\" as the embodied and affective grasping and embrace of din, foregrounding the docility, disciplines, and dependence upon others crucial to converts' quests of learning their new faith. Where textual accounts of converts are few and adversarial, this article turns to the recently documented archaeological assemblages of a qasba, Indor, built by the newly faithful and inhabited from the fourteenth century AD onward in Mewat, India. It follows the provocations of ordinary artifacts that emerge as conspicuously related to women's pursuit of iman at Indor: glass bangles. Revisiting akhlaqi languages of the ornamented self, this article performs an archaeology of ethical life to provide an exegesis of how these bangles effect reeducations of the gaze central to converts' avoidance of hasad (envy), a precondition for their striving for virtue. The bangles raise questions of text and artifact, discourse and embodiment, gender and ensoulment, the enigmatic and the normative. Learning from the bangle, this article argues that our accounts of (especially premodern) Muslim life can be transformed if we attend to distinct genealogies of din, to the formations of iman that join bangle maker and patron, and to the bangle as a collective act of material tafsir."
+   }
+  },
+  {
+   "citingPaper": {
+    "paperId": "6b10850064e2b1c71142a50163e6d1eae287b449",
+    "externalIds": {
+     "MAG": "3081416429",
+     "DOI": "10.1177/0019464620948416",
+     "CorpusId": 225294716
+    },
+    "url": "https://www.semanticscholar.org/paper/6b10850064e2b1c71142a50163e6d1eae287b449",
+    "title": "On the road: The novice munshi’s view of inter-imperial North India",
+    "year": 2020,
+    "citationCount": 3,
+    "openAccessPdf": {
+     "url": "",
+     "status": "CLOSED",
+     "license": null,
+     "disclaimer": "Notice: Paper or abstract available at https://api.unpaywall.org/v2/10.1177/0019464620948416?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1177/0019464620948416, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+    },
+    "authors": [
+     {
+      "authorId": "2005642145",
+      "name": "Naveena Naqvi"
+     }
+    ],
+    "abstract": "This article analyses the diary entries made by a Persographic secretary (munshī), Aḥmad ʿAlī, who was employed by a retiring East India Company official to write an account of the journey they made together in 1780 across North India from Lucknow to the Mughal imperial capital in Delhi and back. Much of the landscape that they traversed—including a cluster of qasbahs, river passes, forests and fields—was formerly governed by a confederacy of Rohilla Afghans from 1737 to 1774. By 1780, however, this region was marked by the absence of well-defined, enduring state structures and witnessed an abundance of overlapping political claims. Under such conditions, Aḥmad ʿAlī, a novice secretary from this region who lacked access to major scholarly networks or courtly circles, found himself uniquely placed to observe and document the micro-level political and historical changes that he had lived through. Unlike his courtly counterparts, he witnessed transformations at a remove from both imperial politics and the regional courts that had developed through the eighteenth century. Rather than to a state or a single political project, his locus of service was aligned with the world of independent military entrepreneurs and their households, which were strewn across a region that he knew well. Questioning the view that secretaries were primarily cyphers of courtly culture or bureaucratic imperatives, the following pages demonstrate that while Aḥmad ʿAlī served his individual employer, he could imagine politics and history outside the constraints that came with corporate political affiliations, as a figure who was new to the work of secretarial penmanship and a seasoned bearer of textured regional knowledge."
+   }
+  }
+ ]
+}

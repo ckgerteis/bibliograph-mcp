@@ -1,0 +1,303 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+  <version>1.2</version>
+  <numberOfRecords>69</numberOfRecords>
+  <nextRecordPosition>3</nextRecordPosition>
+  <extraResponseData>
+    <facets>
+      <lst name="REPOSITORY_NO">
+        <int name="R100000002">69</int>
+      </lst>
+      <lst name="NDC">
+        <int name="1">4</int>
+        <int name="2">15</int>
+        <int name="3">13</int>
+        <int name="4">3</int>
+        <int name="5">5</int>
+        <int name="6">2</int>
+        <int name="7">5</int>
+        <int name="9">4</int>
+      </lst>
+      <lst name="ISSUED_DATE">
+        <int name="1932">1</int>
+        <int name="1966">1</int>
+        <int name="2014">1</int>
+        <int name="2018">1</int>
+        <int name="2020">1</int>
+        <int name="2021">4</int>
+        <int name="2022">3</int>
+        <int name="2023">1</int>
+        <int name="2024">5</int>
+        <int name="2025">5</int>
+        <int name="2026">46</int>
+      </lst>
+      <lst name="LIBRARY">
+        <int name="国立国会図書館">69</int>
+        <int name="大阪府立中央図書館">16</int>
+        <int name="滋賀県立図書館">13</int>
+        <int name="東京都立中央図書館">10</int>
+        <int name="岡山県立図書館">9</int>
+        <int name="横浜市立図書館">9</int>
+        <int name="鳥取県立図書館">9</int>
+        <int name="石川県立図書館">8</int>
+        <int name="さいたま市立中央図書館">7</int>
+        <int name="堺市立中央図書館">7</int>
+        <int name="栃木県立図書館">7</int>
+        <int name="京都府立図書館">6</int>
+        <int name="和歌山県立図書館">6</int>
+        <int name="大阪市立図書館">6</int>
+        <int name="富山県立図書館">6</int>
+        <int name="山口県立山口図書館">6</int>
+        <int name="徳島県立図書館">6</int>
+        <int name="県立長野図書館">6</int>
+        <int name="神奈川県立図書館">6</int>
+        <int name="長崎県立長崎図書館">6</int>
+        <int name="香川県立図書館">6</int>
+        <int name="埼玉県立熊谷図書館">5</int>
+        <int name="大分県立図書館">5</int>
+        <int name="山梨県立図書館">5</int>
+        <int name="北海道立図書館">4</int>
+        <int name="奈良県立図書情報館">4</int>
+        <int name="山形県立図書館">4</int>
+        <int name="岐阜県図書館">4</int>
+        <int name="島根県立図書館">4</int>
+        <int name="川崎市立図書館">4</int>
+        <int name="福井県立図書館">4</int>
+        <int name="秋田県立図書館">4</int>
+        <int name="群馬県立図書館">4</int>
+        <int name="静岡県立中央図書館">4</int>
+        <int name="千葉県立西部図書館">3</int>
+        <int name="広島市立中央図書館">3</int>
+        <int name="広島県立図書館">3</int>
+        <int name="愛媛県立図書館">3</int>
+        <int name="愛知県図書館">3</int>
+        <int name="新潟県立図書館">3</int>
+        <int name="福岡県立図書館">3</int>
+        <int name="茨城県立図書館">3</int>
+        <int name="静岡市立中央図書館">3</int>
+        <int name="高知県立図書館">3</int>
+        <int name="三重県立図書館">2</int>
+        <int name="京都市右京中央図書館">2</int>
+        <int name="佐賀県立図書館">2</int>
+        <int name="兵庫県立図書館">2</int>
+        <int name="千葉県立中央図書館">2</int>
+        <int name="千葉県立東部図書館">2</int>
+      </lst>
+    </facets>
+  </extraResponseData>
+  <records>
+    <record>
+      <recordSchema>info:srw/schema/1/dc-v1.1</recordSchema>
+      <recordPacking>xml</recordPacking>
+      <recordData>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcndl="http://ndl.go.jp/dcndl/terms/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#">
+          <dcndl:BibAdminResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000002-I034908752">
+            <dcndl:catalogingStatus>C3</dcndl:catalogingStatus>
+            <dcndl:catalogingRule>ncr/2018</dcndl:catalogingRule>
+            <dcterms:description>type : book</dcterms:description>
+            <dcndl:bibRecordCategory>R100000002</dcndl:bibRecordCategory>
+            <dcndl:bibRecordSubCategory>111</dcndl:bibRecordSubCategory>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000002-I034908752#material"/>
+          </dcndl:BibAdminResource>
+          <dcndl:BibResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000002-I034908752#material">
+            <rdfs:seeAlso rdf:resource="http://id.ndl.go.jp/bib/034908752"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLBibID">034908752</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/TOHANMARCNO">34906802</dcterms:identifier>
+            <rdfs:seeAlso rdf:resource="http://iss.ndl.go.jp/isbn/9784642048071"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/ISBN">978-4-642-04807-1</dcterms:identifier>
+            <dcterms:title>朝河貫一の歴史学 : 日欧比較史からの問い</dcterms:title>
+            <dc:title>
+              <rdf:Description>
+                <rdf:value>朝河貫一の歴史学 : 日欧比較史からの問い</rdf:value>
+                <dcndl:transcription>アサカワ カンイチ ノ レキシガク : ニチオウ ヒカクシ カラ ノ トイ</dcndl:transcription>
+              </rdf:Description>
+            </dc:title>
+            <dcterms:creator>
+              <foaf:Agent>
+                <foaf:name>甚野, 尚志</foaf:name>
+              </foaf:Agent>
+            </dcterms:creator>
+            <dc:creator>甚野尚志 著</dc:creator>
+            <dcterms:publisher>
+              <foaf:Agent>
+                <foaf:name>吉川弘文館</foaf:name>
+                <dcndl:transcription>ヨシカワコウブンカン</dcndl:transcription>
+                <dcndl:location>東京</dcndl:location>
+              </foaf:Agent>
+            </dcterms:publisher>
+            <dcndl:publicationPlace rdf:datatype="http://purl.org/dc/terms/ISO3166">JP</dcndl:publicationPlace>
+            <dcterms:date>2026.9</dcterms:date>
+            <dcterms:issued rdf:datatype="http://purl.org/dc/terms/W3CDTF">2026</dcterms:issued>
+            <dcndl:partInformation>
+              <rdf:Description>
+                <dcterms:title>福島から東京へ</dcterms:title>
+              </rdf:Description>
+            </dcndl:partInformation>
+            <dcndl:partInformation>
+              <rdf:Description>
+                <dcterms:title>父・正澄からの影響</dcterms:title>
+              </rdf:Description>
+            </dcndl:partInformation>
+            <dcndl:partInformation>
+              <rdf:Description>
+                <dcterms:title>歴史学への開眼</dcterms:title>
+              </rdf:Description>
+            </dcndl:partInformation>
+            <dcndl:partInformation>
+              <rdf:Description>
+                <dcterms:title>日本封建制の見取り図</dcterms:title>
+              </rdf:Description>
+            </dcndl:partInformation>
+            <dcndl:partInformation>
+              <rdf:Description>
+                <dcterms:title>オットー・ヒンツェによる『入来文書』の書評</dcterms:title>
+              </rdf:Description>
+            </dcndl:partInformation>
+            <dcndl:partInformation>
+              <rdf:Description>
+                <dcterms:title>マルク・ブロックによる『入来文書』の書評</dcterms:title>
+              </rdf:Description>
+            </dcndl:partInformation>
+            <dcndl:partInformation>
+              <rdf:Description>
+                <dcterms:title>比較封建制論の著作の試み</dcterms:title>
+              </rdf:Description>
+            </dcndl:partInformation>
+            <dcndl:partInformation>
+              <rdf:Description>
+                <dcterms:title>西洋中世史の研究と教育活動</dcterms:title>
+              </rdf:Description>
+            </dcndl:partInformation>
+            <dcndl:partInformation>
+              <rdf:Description>
+                <dcterms:title>一九三〇年代以降の歴史研究</dcterms:title>
+              </rdf:Description>
+            </dcndl:partInformation>
+            <dcndl:partInformation>
+              <rdf:Description>
+                <dcterms:title>グレッチェン・ウォレンとの文通</dcterms:title>
+              </rdf:Description>
+            </dcndl:partInformation>
+            <dcndl:partInformation>
+              <rdf:Description>
+                <dcterms:title>戦後の日記を読む</dcterms:title>
+              </rdf:Description>
+            </dcndl:partInformation>
+            <dcndl:partInformation>
+              <rdf:Description>
+                <dcterms:title>朝河貫一の日欧比較史研究の意義</dcterms:title>
+              </rdf:Description>
+            </dcndl:partInformation>
+            <dcterms:description>表現種別 : テキスト</dcterms:description>
+            <dcterms:description>機器種別 : 機器不用</dcterms:description>
+            <dcterms:description>キャリア種別 : 冊子</dcterms:description>
+            <dcterms:description>年譜あり 索引あり</dcterms:description>
+            <dcterms:subject>
+              <rdf:Description>
+                <rdf:value>朝河, 貫一</rdf:value>
+              </rdf:Description>
+            </dcterms:subject>
+            <dcterms:subject>
+              <rdf:Description>
+                <rdf:value>歴史学</rdf:value>
+              </rdf:Description>
+            </dcterms:subject>
+            <dcterms:subject rdf:resource="http://id.ndl.go.jp/class/ndc10/289.1"/>
+            <dcterms:language rdf:datatype="http://purl.org/dc/terms/ISO639-2">jpn</dcterms:language>
+            <dcndl:price>11000円</dcndl:price>
+            <dcterms:extent>335,3p ; 22cm</dcterms:extent>
+            <dcndl:materialType rdf:resource="http://ndl.go.jp/ndltype/Book" rdfs:label="図書"/>
+            <dcterms:audience>一般</dcterms:audience>
+            <rdfs:seeAlso rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000002-I034908752"/>
+          </dcndl:BibResource>
+          <dcndl:BibResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000002-I034908752#material">
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000002-I034908752#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000137-I9784642048071#item"/>
+          </dcndl:BibResource>
+        </rdf:RDF>
+      </recordData>
+      <recordPosition>1</recordPosition>
+    </record>
+    <record>
+      <recordSchema>info:srw/schema/1/dc-v1.1</recordSchema>
+      <recordPacking>xml</recordPacking>
+      <recordData>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcndl="http://ndl.go.jp/dcndl/terms/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#">
+          <dcndl:BibAdminResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000002-I034906407">
+            <dcndl:catalogingStatus>C3</dcndl:catalogingStatus>
+            <dcndl:catalogingRule>ncr/2018</dcndl:catalogingRule>
+            <dcterms:description>type : book</dcterms:description>
+            <dcndl:bibRecordCategory>R100000002</dcndl:bibRecordCategory>
+            <dcndl:bibRecordSubCategory>111</dcndl:bibRecordSubCategory>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000002-I034906407#material"/>
+          </dcndl:BibAdminResource>
+          <dcndl:BibResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000002-I034906407#material">
+            <rdfs:seeAlso rdf:resource="http://id.ndl.go.jp/bib/034906407"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLBibID">034906407</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/TOHANMARCNO">34906485</dcterms:identifier>
+            <rdfs:seeAlso rdf:resource="http://iss.ndl.go.jp/isbn/9784866419749"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/ISBN">978-4-86641-974-9</dcterms:identifier>
+            <dcterms:title>芦屋いろは俳句 : 芦屋の歴史、日本語と英語で見る、読む</dcterms:title>
+            <dc:title>
+              <rdf:Description>
+                <rdf:value>芦屋いろは俳句 : 芦屋の歴史、日本語と英語で見る、読む</rdf:value>
+                <dcndl:transcription>アシヤ イロハ ハイク : アシヤ ノ レキシ ニホンゴ ト エイゴ デ ミル ヨム</dcndl:transcription>
+              </rdf:Description>
+            </dc:title>
+            <dcterms:creator>
+              <foaf:Agent>
+                <foaf:name>水田, 和生</foaf:name>
+              </foaf:Agent>
+            </dcterms:creator>
+            <dc:creator>水田和生 著</dc:creator>
+            <dcterms:publisher>
+              <foaf:Agent>
+                <foaf:name>東京図書出版</foaf:name>
+                <dcndl:transcription>トウキョウトショシュッパン</dcndl:transcription>
+                <dcndl:location>[東京]</dcndl:location>
+              </foaf:Agent>
+            </dcterms:publisher>
+            <dcterms:publisher>
+              <foaf:Agent>
+                <foaf:name>リフレ出版</foaf:name>
+                <dcndl:transcription>リフレシュッパン</dcndl:transcription>
+                <dcterms:description>頒布</dcterms:description>
+                <dcndl:location>東京</dcndl:location>
+              </foaf:Agent>
+            </dcterms:publisher>
+            <dcndl:publicationPlace rdf:datatype="http://purl.org/dc/terms/ISO3166">JP</dcndl:publicationPlace>
+            <dcterms:date>2026.9</dcterms:date>
+            <dcterms:issued rdf:datatype="http://purl.org/dc/terms/W3CDTF">2026</dcterms:issued>
+            <dcterms:description>英語併記</dcterms:description>
+            <dcterms:description>表現種別 : テキスト</dcterms:description>
+            <dcterms:description>機器種別 : 機器不用</dcterms:description>
+            <dcterms:description>キャリア種別 : 冊子</dcterms:description>
+            <dcterms:description>文献あり</dcterms:description>
+            <dcterms:subject>
+              <rdf:Description>
+                <rdf:value>芦屋市--歴史</rdf:value>
+              </rdf:Description>
+            </dcterms:subject>
+            <dcterms:subject>
+              <rdf:Description>
+                <rdf:value>いろはかるた</rdf:value>
+              </rdf:Description>
+            </dcterms:subject>
+            <dcterms:subject rdf:resource="http://id.ndl.go.jp/class/ndc10/216.4"/>
+            <dcterms:language rdf:datatype="http://purl.org/dc/terms/ISO639-2">jpn</dcterms:language>
+            <dcterms:language rdf:datatype="http://purl.org/dc/terms/ISO639-2">eng</dcterms:language>
+            <dcndl:price>1800円</dcndl:price>
+            <dcterms:extent>130p ; 22cm</dcterms:extent>
+            <dcndl:materialType rdf:resource="http://ndl.go.jp/ndltype/Book" rdfs:label="図書"/>
+            <dcterms:audience>一般</dcterms:audience>
+            <rdfs:seeAlso rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000002-I034906407"/>
+          </dcndl:BibResource>
+          <dcndl:BibResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000002-I034906407#material">
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000002-I034906407#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000137-I9784866419749#item"/>
+          </dcndl:BibResource>
+        </rdf:RDF>
+      </recordData>
+      <recordPosition>2</recordPosition>
+    </record>
+  </records>
+</searchRetrieveResponse>

@@ -2,143 +2,304 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22307233.svg)](https://doi.org/10.5281/zenodo.22307233)
 
-Six MCP servers for scholarly search, installed and registered as one suite. Each answers with the same typed JSON envelope — the term actually sent and its script, how the source matched it, how broad the set is, typed diagnostics, a receipt hash, the provider's attribution — and each can deposit its receipts to one append-only, hash-chained ledger, so a search standing behind a footnote can be named, cited, and run again by someone else.
+bibliograph is one Model Context Protocol server for scholarly search, Japan
+and Korea first. It gathers Japan-studies bibliographic and archival search: the National Diet Library's catalogue,
+national bibliography, magazine index and Digital Collections (metadata and
+OCR full text), the WARP web archive, CiNii Research (articles, books,
+dissertations, KAKEN and researchers), J-STAGE, the JDCat humanities and
+social-science data catalogue, OpenAlex, Semantic Scholar, Crossref, and Japanese name
+and authority resolution; and, through korea-scholarship-mcp, the Korea Citation
+Index (KCI) and Open Access Korea.
 
-| Server | Source | Coverage |
-| --- | --- | --- |
-| [cinii-mcp](https://github.com/ckgerteis/cinii-mcp) | CiNii Research (NII) | Japanese articles, books, dissertations, KAKEN projects, researchers |
-| [jstage-mcp](https://github.com/ckgerteis/jstage-mcp) | J-STAGE (JST) | Full text of Japanese learned-society journals |
-| [ndl-mcp](https://github.com/ckgerteis/ndl-mcp) | NDL Search (National Diet Library) | Books, articles, the national bibliography, open digital collections |
-| [korea-scholarship-mcp](https://github.com/ckgerteis/korea-scholarship-mcp) | KCI and Open Access Korea | Korean articles, references, journal metrics, OAI-PMH harvests |
-| [openalex-mcp](https://github.com/ckgerteis/openalex-mcp) | OpenAlex | Works, authors, sources, institutions, citation relations, worldwide |
-| [semantic-scholar-mcp](https://github.com/ckgerteis/semantic-scholar-mcp) | Semantic Scholar Academic Graph | Papers, citations, authors, recommendations, worldwide |
+**New to this, and using Claude Desktop?** Start with
+[docs/GETTING-STARTED.md](docs/GETTING-STARTED.md): install from one file,
+no command line. The rest of this README is the technical reference.
 
-Six repositories, six packages, six independent releases. This seventh repository holds nothing but the suite: a package whose dependencies are the six at pinned release tags, and a `bibliograph` command that registers them in Claude Desktop together, checks that the module they all vendor is byte-identical across the install, and verifies a receipts folder as one deposit.
+## One server since 2.0.0
+
+Until 1.x, bibliograph-mcp was a suite: a package pinning six separate servers
+(cinii-mcp, jstage-mcp, ndl-mcp, korea-scholarship-mcp, openalex-mcp,
+semantic-scholar-mcp), each registered in Claude Desktop on its own. From 2.0.0
+it is one server, `bibliograph-mcp`, that holds every source in one process,
+including sources that never had a repository of their own: NDL Digital
+Collections full text, the WARP web archive, JDCat, Crossref, Japanese name
+resolution and open-access PDF fetching. korea-scholarship-mcp is a dependency
+and is loaded by default. The six separate repositories stay published and
+citable at their own releases, but they are no longer what this package installs.
+
+Moving from 1.x: install 2.0.0, run `bibliograph install`, and remove the six
+old entries (`cinii`, `jstage`, `ndl`, `korea_scholarship`, `openalex`,
+`semantic_scholar`) from Claude Desktop's config, which the installer names but
+does not delete. Tool names are unchanged.
+
+### The family, by language
+
+bibliograph is developed in the open from a Japan-studies core, alongside
+area-studies servers for other languages:
+
+| Name | Area | Status |
+|---|---|---|
+| 書誌 bibliograph | Japan studies | this repository |
+| 서지 seoji | Korean studies | `korea-scholarship-mcp`, loaded here by default |
+| 书志 shuzhi | Chinese studies | planned |
+
+Each keeps its own sources and its own rate limits and credit lines, and
+each answers in the same typed envelope so a client or a receipts folder
+spanning several of them does not have to reconcile different shapes. See
+`docs/CONTRACT.md` for what an outside package must honour to be loaded
+with `--with`.
+
+## Why this exists
+
+> A search you cannot re-run is a claim your reader cannot check.
+
+When a footnote rests on a database query — that no article in an index
+uses a term before a certain year, that a name returns no researcher
+record — the reader is normally asked to take the search on trust: which
+term, in which script, on what date, against which index and which version
+of it, how far down the results the author went. Ordinary searching leaves
+none of that behind.
+
+Every tool in bibliograph answers with the query as actually sent (term and
+script), how the source matched it, typed diagnostics rather than prose
+standing in for an error, and a receipt hash fixing the whole exchange.
+With a receipts folder named (`MCP_RECEIPT_DIR`), that receipt is appended
+to a per-source, hash-chained ledger file: a line cannot be altered,
+removed or reordered afterwards without the verifier saying so. That gives:
+
+- **A citable search.** Name the receipt in a footnote (session slug,
+  source, date, line hash) and a reader can see exactly what was asked and
+  run it again against the same release.
+- **Negative findings that carry weight.** "Not found" is evidence only if
+  the search that produced it is on record, with its term, script and
+  breadth.
+- **A method section drawn from the record.** `bibliograph-mcp-ledger manifest
+  <folder>` summarises every query a project made, by source, script and
+  session.
+- **A record of AI-mediated research.** When an assistant chose the search
+  term, the receipt shows the term it chose and what came back — the thing
+  to disclose about work done with one.
+- **Nothing interpreted.** The receipt is a source's own answer with
+  credentials removed. bibliograph does not summarise, rank by relevance of its
+  own, or invent; it reports what a source returned and how it matched.
+
+## Sources
+
+| Key | Provider | What it searches | Tools |
+|---|---|---|---|
+| `ndl` | National Diet Library, NDL Search | General holdings catalogue, the Japanese National Bibliography, the magazine/periodicals article index, the ISSN register of online journals, WARP's own catalogue of archived sites, and Digital Collections metadata | `ndl_search_books`, `ndl_search_national_bibliography`, `ndl_search_articles`, `ndl_search_online_journals`, `ndl_search_digital`, `ndl_search_digital_open`, `ndl_search_warp`, `ndl_search_all`, `ndl_get_record` |
+| `ndl_dl` | NDL Digital Collections, via NDL Lab | OCR full text of the NDL's public-domain digitised holdings (次世代デジタルライブラリー), with located snippets and page images | `ndl_dl_fulltext_search`, `ndl_dl_book_fulltext`, `ndl_dl_page_image` |
+| `warp` | NDL Web Archiving Project | Captures of Japanese government, public-corporation and national-university websites, by exact URL | `warp_list_captures`, `warp_nearest_capture`, `warp_read_capture` |
+| `cinii` | National Institute of Informatics, CiNii Research | Japanese-language journal articles, books and monographs, doctoral dissertations, research data, KAKEN grant projects, and researcher profiles (with Researcher Numbers where available); NACSIS-CAT library holdings by NCID | `cinii_search_articles`, `cinii_search_books`, `cinii_search_dissertations`, `cinii_search_kaken`, `cinii_search_all`, `cinii_search_data`, `cinii_search_projects_and_products`, `cinii_search_researchers`, `cinii_get_record`, `cinii_get_holdings`, `cinii_search_libraries` |
+| `jstage` | Japan Science and Technology Agency, J-STAGE | Full text of journals published by Japanese learned societies | `jstage_search_articles`, `jstage_get_article_by_doi`, `jstage_list_issues` |
+| `jdcat` | JSPS and NII, JDCat 人文学・社会科学総合データカタログ | Metadata for humanities and social-science research data: Kobe's 新聞記事文庫 clippings, Hitotsubashi's imperial statistical-yearbook tables, SSJDA survey studies, 史料編纂所 materials and Nara mokkan, with facet counts by distributor, data type, topic, place and period | `jdcat_search`, `jdcat_get_record` |
+| `openalex` | OurResearch, OpenAlex | The worldwide scholarly citation graph: works, authors, sources and institutions | `oa_search_works`, `oa_get_work`, `oa_search_authors`, `oa_get_author`, `oa_search_sources`, `oa_search_institutions`, `oa_cited_by`, `oa_author_works` |
+| `semantic_scholar` | Allen Institute for AI, Semantic Scholar | The worldwide Academic Graph: papers, authors, citations and references, batch lookup, recommendations | `s2_search_papers`, `s2_get_paper`, `s2_batch_papers`, `s2_citations`, `s2_search_authors`, `s2_get_author`, `s2_author_papers`, `s2_recommend_single`, `s2_recommend_multi` |
+| `crossref` | Crossref | Metadata publishers deposit when registering DOIs: mainly English-language journals and press books; free, no key. Search, DOI lookup, and matching a reference as written to candidate records | `cr_search_works`, `cr_get_work`, `cr_match_citation` |
+| `names` | EDRDG (JMnedict/JMdict/KANJIDIC2), National Diet Library (Web NDL Authorities) | Japanese name and term resolution from a locally built index, plus catalogue-verified personal-name headings | `name_query_variants`, `resolve_name_readings`, `resolve_name_kanji`, `infer_name_order`, `gloss_term`, `gloss_archaic`, `kanji_by_radical`, `kanji_info`, `name_authority`, `names_index` |
+| `fetch` | The open-access copy a source names, or an address you supply | Downloads one open-access PDF into a folder you name, with a provenance file and a receipt carrying the file's SHA-256, and reads its text layer by page; pages without one, and scans carrying someone else's OCR, are named for an OCR server | `fetch_pdf`, `fetch_pdf_text` |
+
+Plus `bibliograph_status`, added automatically, which reports which sources
+loaded, each with its own version and tool list, and any source that was
+skipped with the reason.
+
+The `names` source needs a locally built dictionary index — see
+"Configuration" below and `src/bibliograph/sources/names/build_index.py --help`.
+`ndl` and `ndl_dl` need a usage notification filed with the NDL — see
+"Usage notices" below.
 
 ## Install
 
-### Getting Python
-
-The Claude Desktop bundle needs no Python of your own. The other routes need Python 3.10 to 3.14
-and its `venv` module, which the official installers include.
-
-- **Windows.** Download the 64-bit installer from [python.org/downloads](https://www.python.org/downloads/)
-  and run it; tick "Add python.exe to PATH" on the first screen. Afterwards `py --version` (the
-  launcher the installer adds) or `python --version` in a new terminal should print 3.1x. If typing
-  `python` opens the Microsoft Store instead, Windows has no Python yet: that Store page is a stub,
-  and it is also what "'python' is not recognized" usually means.
-- **macOS.** The [python.org installer](https://www.python.org/downloads/macos/), or
-  `brew install python@3.13` with [Homebrew](https://brew.sh). The `/usr/bin/python3` that Xcode's
-  command-line tools provide may be older than 3.10; `python3 --version` says.
-- **Linux.** Your distribution's package: `sudo apt install python3 python3-venv` on Debian and
-  Ubuntu, `sudo dnf install python3` on Fedora. Or let uv provide one (next line).
-- **Any platform, with uv.** [uv](https://docs.astral.sh/uv/getting-started/installation/)
-  installs Python itself: `uv python install 3.13`, then `uv venv` or the `uvx` route below.
-
-### The suite
-
-```bash
-python3 -m venv ~/bibliograph
-~/bibliograph/bin/pip install "git+https://github.com/ckgerteis/bibliograph-mcp@v1.0.6"
-~/bibliograph/bin/bibliograph install
-```
-
-On Windows, `py -3 -m venv %USERPROFILE%\bibliograph`, then `%USERPROFILE%\bibliograph\Scripts\pip install "git+https://github.com/ckgerteis/bibliograph-mcp@v1.0.6"` and `…\Scripts\bibliograph install`. Git must be on PATH: the suite's dependencies are the six repositories at their release tags, fetched by pip from GitHub. Nothing is on a package index; the tag is the thing to cite.
-
-`bibliograph install` registers every server the interpreter can import, asks once for a receipts folder and a session slug, asks once for each credential a server needs (CiNii application ID; the others are optional), backs up `claude_desktop_config.json`, and writes the entries. Servers already registered under other names are left alone. Restart Claude Desktop afterwards.
-
-Or `uvx --from "git+https://github.com/ckgerteis/bibliograph-mcp@v1.0.6" bibliograph install` for a throwaway environment; note that Claude Desktop will then be pointed at uv's cache, which uv may prune.
-
-### One server
-
-Each repository's README gives three routes for that server alone: a Claude Desktop `.mcpb` bundle from its GitHub release, `pip install "git+https://github.com/ckgerteis/<repo>@vX.Y.Z"`, and `python install.py` from a checkout. The six `install.py` files are byte-identical and are the same code this package ships as `bibliograph.installer`; `python install.py --all` from any checkout builds a fresh environment with all six, which is the route to take when the machine has no environment yet.
-
-### Credentials
-
-| Server | Variable | Needed? |
-| --- | --- | --- |
-| cinii | `CINII_APPID` | Required; free from https://api.ci.nii.ac.jp/en/ |
-| korea_scholarship | `KCI_API_KEY` | Optional; four KCI REST tools need it, OAK does not |
-| openalex | `OPENALEX_API_KEY` | Optional but recommended; keyless access is metered per IP per day |
-| semantic_scholar | `SEMANTIC_SCHOLAR_API_KEY` | Optional but recommended; keyless calls share one throttled pool |
-| jstage, ndl | — | None |
-
-### Any other MCP client
-
-Nothing in the six servers is specific to Claude: each is a Model Context Protocol server over
-stdio, usable from Claude Code, Cursor, VS Code, Zed or any client that can start a process and
-speak JSON-RPC to it. `bibliograph install` writes Claude Desktop's configuration file because that
-is the client with no command line; for any other client, point it at the console scripts this
-package installs (`cinii-mcp`, `jstage-mcp`, `ndl-mcp`, `korea-scholarship-mcp`, `openalex-mcp`,
-`semantic-scholar-mcp`, in the environment's `bin/` or `Scripts\`) with `MCP_RECEIPT_DIR` and
-`MCP_RECEIPT_SESSION` in the environment. Each server's own README shows the JSON and the
-`claude mcp add` line.
-
-## What the receipts are for
-
-A search you cannot re-run is a claim you cannot check. When a footnote rests on a database
-query, say that no article in this index uses a term before a certain year, the reader is asked to
-take the search on trust: which term, in which script, on what date, against which index and which
-version of it, and how far down the results the author went. Ordinary searching leaves none of
-that behind. Each of these servers leaves all of it. Every
-query-answering tool returns its envelope through the ledger, which appends one line to an
-append-only file: the term actually sent and its script, how the source matched it, how many
-records existed and how many came back, the diagnostics, the tool and its parameters, the server
-version, a timestamp, and the hash of the previous line. The hash makes the file a chain: a line
-cannot be altered, removed or reordered afterwards without the verifier saying so.
-
-What that gives a researcher:
-
-- **A citable search.** Name the receipt in the footnote (session slug, server, date, line hash)
-  and a reader can see exactly what was asked and run it again against the same version.
-- **Negative findings that carry weight.** "Not found" is evidence only if the search that
-  produced it is on record, with its term, its script and its breadth.
-- **A method section that writes itself.** the server's `<name>-ledger` command `manifest <folder>` summarises every
-  query a project made, by server, script and session: the disclosure a journal, a
-  data-availability statement or a research-integrity review asks for.
-- **A record of AI-mediated research.** When a model chose the term, the receipt shows the term
-  it chose and what came back, which is the thing to disclose about work done with an assistant.
-- **Nothing interpreted.** The receipt is the source's own answer with credentials removed. The
-  server does not summarise, rank or paraphrase, so the record is of the source, not of the tool.
-
-Receipts are off until you name a folder (`MCP_RECEIPT_DIR`); each server then writes its own
-`<server>.jsonl` inside it, and `MCP_RECEIPT_SESSION` stamps a project or article slug on every
-line so one folder can serve several projects. the server's `<name>-ledger` command `verify-dir <folder>` checks the chains.
-The mechanics, the variables and what the envelope says when nothing is deposited are in the
-receipts section below.
-
-## The command
+Pinned to a tag (recommended: a citable, reproducible install):
 
 ```
-bibliograph status                 versions, registration, receipts folder and session per server
-bibliograph doctor                 stdio handshake with each server; vendored-module identity check
-bibliograph install [--servers a,b] [--receipts-dir DIR] [--session SLUG] [--no-receipts] [--dry-run]
-bibliograph receipts verify-dir DIR
-bibliograph receipts manifest DIR  writes DIR/manifest.json — the object a disclosure cites
+pip install "bibliograph-mcp @ git+https://github.com/ckgerteis/bibliograph-mcp@v2.0.0"
 ```
 
-`doctor` is the check to run before a session whose searches are meant to be citable evidence, and again before writing them up: it starts each server over stdio exactly as Claude Desktop does and reports the version each answers with, then asserts that `ledger.py` and `mediation.py` are byte-identical across everything installed, so two envelope versions cannot sit in one environment unnoticed.
+This installs the console scripts `bibliograph-mcp` (the server), `bibliograph`
+(the installer), `bibliograph-mcp-ledger` and `bibliograph-build-names`. Then
+`bibliograph install` registers the server in Claude Desktop, asking once for
+each credential and for a receipts folder; `bibliograph doctor` starts it and
+lists its tools. For the `names` source also install the `names`
+extra: `pip install "bibliograph-mcp[names] @ git+...@v2.0.0"`.
 
-## Receipts
+Or, from a release's assets: the `.mcpb` bundle for Claude Desktop
+(Extensions → Install from file), which builds its own environment with
+`uv` at install time and needs no Python of your own.
 
-Every server writes its own `<server>.jsonl` into the one folder `bibliograph install` registered (`MCP_RECEIPT_DIR`), each line hash-chained to the last. One writer per file is the design: appending is read-the-last-hash-then-write, and six servers are six processes, so a shared file forks. `bibliograph receipts verify-dir` walks the folder and reports, per file, whether the chain verifies and, if not, which kind of break it found — a **fork** (concurrent writers; a configuration fault), a **missing** line, a **reordering**, or **tamper** (a line that does not hash to its own content). Only the last is a claim about honesty. `manifest` writes one description of the whole deposit: per-file counts, first and last timestamps, terminal hashes, totals by server, script and session.
+### Claude Desktop config (pip install)
 
-## Versioning
-
-The suite has its own version and its own DOI. Its dependency pins name the release tag of each server; moving a pin is a suite release. A count produced under one pin set is not reproducible under another, so a disclosure should cite the suite version actually installed (`bibliograph status` prints it) or the six server versions individually.
-
-## Tests
-
-```bash
-pip install "bibliograph-mcp[test] @ git+https://github.com/ckgerteis/bibliograph-mcp" && python -m pytest -q tests
+```json
+{
+  "mcpServers": {
+    "bibliograph": {
+      "command": "<venv>\\Scripts\\bibliograph-mcp.exe",
+      "env": {
+        "CINII_APPID": "<your NII appid>",
+        "OPENALEX_API_KEY": "<free key; strongly recommended>",
+        "SEMANTIC_SCHOLAR_API_KEY": "<optional>",
+        "CROSSREF_MAILTO": "<you@example.org>",
+        "JMNEDICT_DATA_DIR": "C:\\Tools\\jmnedict-data",
+        "MCP_RECEIPT_DIR": "<receipts folder>",
+        "MCP_RECEIPT_SESSION": "<project slug>",
+        "BIBLIOGRAPH_DOWNLOAD_DIR": "<download folder>"
+      }
+    }
+  }
+}
 ```
 
-The suite's own tests cover the CLI against a temporary Claude Desktop config; each server's tests live in its own repository and run in its own CI.
+Load a subset with `--only` in `args` (or `BIBLIOGRAPH_ONLY` in `env`) — e.g.
+`"args": ["--only", "ndl,ndl_dl,cinii"]` for a Japan-studies session that
+does not need the two worldwide indexes.
 
-## License
+### Building the names index
 
-MIT © 2026 Christopher Gerteis. Covers this package and the six servers' code only; the data each server returns remains governed by its provider's terms, and every envelope carries the attribution line that provider requires.
+The `names` tools read a dictionary index built on your own machine from
+EDRDG data (see NOTICE). Nothing is bundled. Until it is built they answer
+`INDEX_MISSING`.
 
-## Author
+**From Claude (no command line).** Ask Claude to check the names index. It
+calls `names_index`, which reports where the index would be stored and what
+it would download, and builds it in the background once you agree: about
+25 MB downloaded, about 185 MB on disk, one to two minutes on a typical
+connection (95 seconds when measured on 25 September 2026). Claude then
+checks progress with the same tool.
 
-[Dr Christopher Gerteis](https://www.christophergerteis.net), SOAS University of London.
+**From a shell.**
+
+```
+set JMNEDICT_DATA_DIR=C:\Tools\jmnedict-data     (optional; see below)
+bibliograph-build-names --all                          # names + JMdict + KANJIDIC2 + KRAD/RADK
+bibliograph-build-names --wiktionary raw\kaikki-japanese.jsonl   # optional, archaic glosses
+```
+
+Without `JMNEDICT_DATA_DIR` the index goes to a per-user folder:
+`%LOCALAPPDATA%\bibliograph-names` on Windows, `~/Library/Application
+Support/bibliograph-names` on macOS, `~/.local/share/bibliograph-names` on Linux. An
+index already built under the older `jmnedict-mcp` folder is found and used.
+`gloss_archaic` needs the Wiktionary table, which only the shell route builds.
+
+## Configuration
+
+| Variable | Source(s) | Notes |
+|---|---|---|
+| `CINII_APPID` | `cinii` | Your own NII CiNii/NRID application id. Enables the researcher-number (NRID) step; every other CiNii Research call runs without it. |
+| `OPENALEX_API_KEY` | `openalex` | Strongly recommended. Since 2026 OpenAlex meters use in dollars: a free key has its own $1 a day; without one, everyone on the same network address shares $0.10 a day. `bibliograph_status` reports the day's balance. |
+| `OPENALEX_EMAIL` | `openalex`, `crossref` | OpenAlex no longer reads it (its polite pool was retired in February 2026). `crossref` uses it as its contact address when `CROSSREF_MAILTO` is unset. |
+| `CROSSREF_MAILTO` | `crossref` | Optional but recommended: a contact address moves requests to Crossref's faster polite pool. |
+| `CROSSREF_PLUS_TOKEN` | `crossref` | Optional Crossref Metadata Plus token (a paid service). |
+| `SEMANTIC_SCHOLAR_API_KEY` | `semantic_scholar` | Optional but recommended; keyless calls share one throttled pool. |
+| `JMNEDICT_DATA_DIR` | `names` | Where the locally built index lives. Optional: without it the index goes to the per-user `bibliograph-names` folder (see *Building the names index*). |
+| `MCP_RECEIPT_DIR` | all | Folder to deposit an append-only, hash-chained receipt per source (`<dir>/<source>.jsonl`) for every query-answering tool call. |
+| `MCP_RECEIPT_SESSION` | all | An optional session/project slug recorded in each receipt. |
+| `MCP_RECEIPT_STRICT` | all | `1` makes a receipt write failure raise instead of passing silently. |
+| `BIBLIOGRAPH_ONLY` | server | Comma-separated source keys to load instead of all of them (same as `--only`). |
+| `BIBLIOGRAPH_DOWNLOAD_DIR` | `fetch` | Folder `fetch_pdf` saves PDFs to and `fetch_pdf_text` reads from. Unset, both refuse and nothing is written. |
+| `BIBLIOGRAPH_WITH` | server | Comma-separated outside modules to also load (same as `--with`); see `docs/CONTRACT.md`. |
+| `BIBLIOGRAPH_NOTICES_DIR` | `ndl`, `ndl_dl` | Where usage-notification marker files are looked for; see "Usage notices" below. |
+
+## Usage notices
+
+The NDL asks continuous users of its Search API to tell it who they are and
+how they use the service (section 17 of the NDL Search API help, covering
+`ndl`). That obligation falls on each user, not on this package, so bibliograph
+cannot file it for anyone — but it will not hide whether a filing is on record.
+
+A filing is recorded by placing a marker file, after you file it yourself,
+holding the date and what you declared:
+
+```
+BIBLIOGRAPH_NOTICES_DIR\NDL-API-NOTIFICATION.txt
+```
+
+`BIBLIOGRAPH_NOTICES_DIR` defaults to `%APPDATA%\bibliograph\notices` on Windows or
+`~/.config/bibliograph/notices` elsewhere; `BIBLIOGRAPH_NDL_NOTIFICATION_FILE` can name
+the marker file directly instead. Until a marker exists, `ndl` responses carry
+`NOTIFICATION_NOT_RECORDED`; the searches still run. The check touches only
+`ndl`, so a missing marker never affects any other source.
+
+NDL Lab's full-text service (`ndl_dl`) asks for no application for
+non-commercial use (its ご利用に当たって section: 営利目的かつ継続的な利用を除き、
+申請不要), so `ndl_dl` has no notice and no marker. Commercial, continuous use of
+it should be raised with NDL Lab directly.
+
+## WARP terms
+
+WARP's own FAQ says it offers no API and no bulk download — browser
+viewing is the expected way to use it — and asks users to refrain from
+large-scale automated access, which the NDL may block. Its site policy
+says archived content stays under its original publisher's copyright: reuse
+needs that rights holder's permission, not WARP's or this server's.
+
+`warp` is built to those terms: one URL at a time, requests serialised and
+spaced at least three seconds apart, no tool that takes more than one URL,
+nothing listed across many URLs, nothing harvested or stored beyond the
+optional receipt line. Finding a site by subject is a separate, explicitly
+licensed route through `ndl_search_warp` (NDL Search's own catalogue of
+archived sites, covered by the `ndl` usage filing), not through `warp`
+itself. See `docs/sources/warp/README.md` for the full terms and the
+`warp` diagnostic-code registry.
+
+## JDCat access
+
+JDCat asks for no application and publishes its metadata under CC0, but its
+robots.txt disallows `/api/` and `/oai` to automated agents. `jdcat` is
+therefore built on the `warp` model: person-initiated queries only, serial
+requests at least three seconds apart, at most 50 records a search, no
+auto-pagination and no harvest tool, with the robots.txt position stated in
+every envelope's coverage note. See `docs/sources/jdcat/README.md`.
+
+## Response format
+
+Every tool answers with one typed JSON envelope (`src/bibliograph/mediation.py`):
+the query as given, `matching_mode`, graduated `result.breadth`, `items[]`
+with per-item `matched_in`, typed `diagnostics[]`, a `receipt`, and an
+`attribution` line naming the provider. Search tools also carry
+`searched_for`, the term actually sent and its script.
+
+- **`name_match`.** Where a result's identity with the name searched for is
+  inferred rather than exact — a reading match, a fuzzy match — the item
+  says so under `extra.name_match` instead of being silently dropped or
+  silently treated as certain.
+- **Diagnostic codes** are typed (`{level, code, message, hint}`), never
+  free prose standing in for an error: `ZERO_RESULTS`, `NOT_FOUND`,
+  `PARTIAL_NOT_FOUND`, `RATE_LIMITED`, `API_ERROR`, `TRANSPORT_ERROR`,
+  `INDEX_MISSING` (names), `NOTIFICATION_NOT_RECORDED` (`ndl`/`ndl_dl`),
+  `NRID_NOT_IN_SEARCH_RESULT` (cinii), and the `warp`-specific codes listed
+  in `docs/sources/warp/README.md`, among others — see
+  `tests/response-schema.json` for the full registry.
+- **Receipts.** `RECEIPT_NOT_DEPOSITED` (no `MCP_RECEIPT_DIR` set) and
+  `RECEIPT_WRITE_FAILED` (the folder was set but the write failed) report
+  the deposit outcome inside the same envelope. Verify a chain with
+  `bibliograph-mcp-ledger verify <file>`.
+
+See `docs/sources/<source>/README.md` for each source's own field mapping
+and diagnostic registry, and `tests/response-schema.json` for the shared
+schema.
+
+## Outside packages
+
+`bibliograph-mcp --with PKG.MODULE` (or `BIBLIOGRAPH_WITH`) loads a server that ships
+in a separate package into the same process. korea-scholarship-mcp is loaded
+this way by default (set `BIBLIOGRAPH_NO_DEFAULT_WITH=1` to leave it out). An
+outside package is loaded provided it
+honours the contract in `docs/CONTRACT.md`: one MCP server object, a
+declared `__version__`, tool names that do not collide with a built-in
+source's prefix, the shared envelope and ledger versions, and typed
+diagnostics.
+
+## Citing
+
+Cite the release actually used, by its version DOI once one is minted (see
+`CITATION.cff`); the repository's concept DOI resolves to the latest
+version. Name each loaded source's own version too — `bibliograph_status`
+reports them, and a count is reproducible only against the release that
+made it.
+
+## Licence and NOTICE
+
+Code: MIT (see `LICENSE`). bibliograph speaks to several providers under their
+own terms and, for the `names` source, builds a local index from
+third-party dictionary data it does not distribute — see `NOTICE` for the
+licence of each source's data and services.

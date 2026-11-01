@@ -1,0 +1,1 @@
+{"@context":{"@vocab":"https://cir.nii.ac.jp/schema/1.0/","foaf":"http://xmlns.com/foaf/0.1/"},"@id":"https://cir.nii.ac.jp/crid/1030003658443272706.json","@type":"Researcher","foaf:name":[{"@language":"ja","@value":"姜 尚中"},{"@language":"en","@value":"Kang, Sangjung"}],"personIdentifier":[{"@type":"NRID","@value":"9000408628758"},{"@type":"e-Rad","@value":"10204794"}]}

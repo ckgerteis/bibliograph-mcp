@@ -1,8 +1,42 @@
 # Changelog
 
-Versions are the thing to cite. The suite version fixes a set of six server
-release tags through its dependency pins; a count produced under one set is not
+Versions are the thing to cite. From 2.0.0 one release fixes every source's
+code; `bibliograph_status` names each source's own version, which should be
+cited with it. Before 2.0.0 the suite version fixed a set of six server release
+tags through its dependency pins. A count produced under one release is not
 reproducible under another.
+
+## 2.0.0 — 2026-11-01
+
+**One server.** bibliograph-mcp is no longer a suite pinning six separate
+servers: it is one MCP server, `bibliograph-mcp`, holding every source in one
+process, built from the same code as the author's development platform (shoshi
+1.7.0) under the public name. This is a breaking change in how it installs, not
+in what the tools are called.
+
+- **Sources.** NDL Search (`ndl_*`), NDL Digital Collections full text via NDL
+  Lab (`ndl_dl_*`), the WARP web archive (`warp_*`), CiNii Research (`cinii_*`),
+  J-STAGE (`jstage_*`), JDCat (`jdcat_*`), OpenAlex (`oa_*`), Semantic Scholar
+  (`s2_*`), Crossref (`cr_*`, new), Japanese name and authority resolution
+  (`name_*`, `resolve_*`, `gloss_*`, `kanji_*`), and open-access PDF fetching
+  (`fetch_*`); korea-scholarship-mcp v0.7.0 (`kci_*`, `oak_*`, `dbpia_links`) is
+  a dependency loaded by default. `bibliograph_status` reports what loaded,
+  each source's version, and the day's OpenAlex budget.
+- **Each shared source is ahead of its separate repository**: cinii 3.3.1,
+  jstage 3.2.2, ndl 1.5.2, openalex 2.1.5, semantic_scholar 2.1.4. The source
+  CHANGELOGs under `docs/sources/` record what changed.
+- **Installing.** `pip install "bibliograph-mcp @ git+https://github.com/ckgerteis/bibliograph-mcp@v2.0.0"`,
+  then `bibliograph install`, which registers the one server, keeps any
+  credential already registered, backs up the config, and names (without
+  deleting) the six 1.x entries to remove. Or the `.mcpb` bundle from the
+  release, which needs no Python. `bibliograph doctor` starts the server and
+  lists its tools; `bibliograph receipts verify-dir DIR` checks a receipts
+  folder.
+- **Removed**: the six-server installer (`install.py`, `bibliograph.installer`)
+  and `VENDORED.sha256`, which checked that the six vendored identical modules;
+  in one package there is one copy.
+- The six separate repositories stay published and citable at their own
+  releases.
 
 ## 1.0.6 — 2026-10-30
 

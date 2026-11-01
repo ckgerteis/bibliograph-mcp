@@ -1,0 +1,268 @@
+{
+  "facets": [
+    {
+      "counts": {
+        "false": 17761,
+        "true": 3
+      },
+      "field": "isClassic"
+    }
+  ],
+  "list": [
+    {
+      "id": "1130482",
+      "version": 12,
+      "title": "青年団叢書",
+      "volume": "第1編 (青年団と青年学校)",
+      "responsibility": "大日本聯合青年団 編",
+      "publisher": "日本青年館",
+      "published": "1935",
+      "publishyear": 1935,
+      "ndc": "379",
+      "bibId": "000000757837",
+      "callNo": "279.5-117",
+      "autoTOCFlag": false,
+      "leftopen": false,
+      "index": [],
+      "autoTOCindex": [],
+      "graphictagmetrics": [
+        {
+          "tagname": "other",
+          "count": 6
+        },
+        {
+          "tagname": "stamp",
+          "count": 2
+        },
+        {
+          "tagname": "graphic_graph",
+          "count": 1
+        },
+        {
+          "tagname": "graphic",
+          "count": 1
+        }
+      ],
+      "page": 25,
+      "isClassic": false,
+      "width": 3686,
+      "height": 2510,
+      "highlights": [
+        "四、　男女<em>青年團</em>等との關係&#x2F;11  (0011.jp2)",
+        "青年學校と<em>青年團</em>との關係・福島繁三  (0012.jp2)",
+        "二、　<em>青年團</em>の性質&#x2F;14  (0014.jp2)"
+      ],
+      "keywordsmetrics": []
+    },
+    {
+      "id": "1443650",
+      "version": 8,
+      "title": "都市青年団の栞",
+      "volume": "",
+      "responsibility": "大日本聯合青年団 編",
+      "publisher": "大日本聯合青年団",
+      "published": "1934",
+      "publishyear": 1934,
+      "ndc": "379",
+      "bibId": "000000765553",
+      "callNo": "279.5-104",
+      "autoTOCFlag": false,
+      "leftopen": false,
+      "index": [],
+      "autoTOCindex": [],
+      "graphictagmetrics": [
+        {
+          "tagname": "other",
+          "count": 5
+        },
+        {
+          "tagname": "graphic_illust",
+          "count": 1
+        },
+        {
+          "tagname": "stamp",
+          "count": 2
+        },
+        {
+          "tagname": "graphic_graph",
+          "count": 5
+        },
+        {
+          "tagname": "graphic",
+          "count": 6
+        },
+        {
+          "tagname": "picture",
+          "count": 1
+        }
+      ],
+      "page": 70,
+      "isClassic": false,
+      "width": 5440,
+      "height": 4191,
+      "highlights": [
+        "<em>靑年團</em>綱領  (0005.jp2)",
+        "都市<em>靑年團</em>と農村<em>靑年團</em>&#x2F;12  (0015.jp2)",
+        "都市に於ける聯合<em>靑年團</em>並に單位<em>靑年團</em>の任務&#x2F;15  (0016.jp2)"
+      ],
+      "keywordsmetrics": []
+    },
+    {
+      "id": "1437217",
+      "version": 8,
+      "title": "青年団創立二十年誌",
+      "volume": "",
+      "responsibility": "稲葉郡青年団 編",
+      "publisher": "岐阜県稲葉郡青年団",
+      "published": "1937",
+      "publishyear": 1937,
+      "ndc": "379",
+      "bibId": "000000627757",
+      "callNo": "特248-501",
+      "autoTOCFlag": false,
+      "leftopen": false,
+      "index": [],
+      "autoTOCindex": [],
+      "graphictagmetrics": [
+        {
+          "tagname": "other",
+          "count": 2
+        },
+        {
+          "tagname": "graphic_illust",
+          "count": 1
+        },
+        {
+          "tagname": "picture_person",
+          "count": 14
+        },
+        {
+          "tagname": "stamp",
+          "count": 2
+        },
+        {
+          "tagname": "graphic_graph",
+          "count": 2
+        },
+        {
+          "tagname": "graphic",
+          "count": 3
+        },
+        {
+          "tagname": "picture",
+          "count": 16
+        }
+      ],
+      "page": 36,
+      "isClassic": false,
+      "width": 6039,
+      "height": 4510,
+      "highlights": [
+        "2　稻葉郡<em>靑年團</em>旗並事務所  (0005.jp2)",
+        "六　<em>靑年團</em>幹部講習會&#x2F;20  (0018.jp2)",
+        "一四　稻葉郡<em>靑年團</em>團則&#x2F;35  (0023.jp2)"
+      ],
+      "keywordsmetrics": []
+    },
+    {
+      "id": "1130776",
+      "version": 10,
+      "title": "青年団指導講座",
+      "volume": "",
+      "responsibility": "東京市聯合青年団 編",
+      "publisher": "文録社",
+      "published": "1929",
+      "publishyear": 1929,
+      "ndc": "379",
+      "bibId": "000000758107",
+      "callNo": "279.5-75",
+      "autoTOCFlag": false,
+      "leftopen": false,
+      "index": [],
+      "autoTOCindex": [],
+      "graphictagmetrics": [
+        {
+          "tagname": "other",
+          "count": 5
+        },
+        {
+          "tagname": "graphic_illust",
+          "count": 3
+        },
+        {
+          "tagname": "picture_person",
+          "count": 2
+        },
+        {
+          "tagname": "stamp",
+          "count": 2
+        },
+        {
+          "tagname": "graphic",
+          "count": 3
+        },
+        {
+          "tagname": "picture",
+          "count": 2
+        }
+      ],
+      "page": 138,
+      "isClassic": false,
+      "width": 3513,
+      "height": 2452,
+      "highlights": [
+        "都市<em>青年團</em>の指導と管理・東京市聯合<em>青年團</em>常務理事　東京市社會教育課長　池園哲太郎&#x2F;1  (0016.jp2)",
+        "我國<em>青年團</em>運動の歴史・東京市聯合<em>青年團</em>主事　東京府<em>青年團</em>聯合會理事　奈須千万彦&#x2F;169  (0100.jp2)",
+        "<em>青年團</em>體操・東京市講師兼視學　三橋義雄&#x2F;223  (0127.jp2)"
+      ],
+      "keywordsmetrics": []
+    },
+    {
+      "id": "940142",
+      "version": 9,
+      "title": "青年団とは何ぞや",
+      "volume": "",
+      "responsibility": "日本青年団研究会 編",
+      "publisher": "日本魂社",
+      "published": "1924",
+      "publishyear": 1924,
+      "ndc": "379",
+      "bibId": "000000557571",
+      "callNo": "279.5-47-(1)",
+      "autoTOCFlag": false,
+      "leftopen": false,
+      "index": [],
+      "autoTOCindex": [],
+      "graphictagmetrics": [
+        {
+          "tagname": "other",
+          "count": 3
+        },
+        {
+          "tagname": "graphic_illust",
+          "count": 1
+        },
+        {
+          "tagname": "stamp",
+          "count": 2
+        },
+        {
+          "tagname": "graphic",
+          "count": 2
+        }
+      ],
+      "page": 65,
+      "isClassic": false,
+      "width": 0,
+      "height": 0,
+      "highlights": [
+        "一、　<em>靑年團</em>の槪觀 &#x2F; 2 (0012.jp2)",
+        "二、　時局と<em>靑年團</em> &#x2F; 5 (0014.jp2)",
+        "一、　<em>靑年團</em>の要旨 &#x2F; 24 (0024.jp2)"
+      ],
+      "keywordsmetrics": []
+    }
+  ],
+  "hit": 10000,
+  "from": 0
+}

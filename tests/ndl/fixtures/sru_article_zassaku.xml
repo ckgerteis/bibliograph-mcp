@@ -1,0 +1,82 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+  <version>1.2</version>
+  <numberOfRecords>1</numberOfRecords>
+  <extraResponseData>
+    <facets>
+      <lst name="REPOSITORY_NO">
+        <int name="R000000004">1</int>
+      </lst>
+      <lst name="NDC">
+      </lst>
+      <lst name="ISSUED_DATE">
+        <int name="1951">1</int>
+      </lst>
+      <lst name="LIBRARY">
+        <int name="国立国会図書館">1</int>
+      </lst>
+    </facets>
+  </extraResponseData>
+  <records>
+    <record>
+      <recordSchema>info:srw/schema/1/dc-v1.1</recordSchema>
+      <recordPacking>xml</recordPacking>
+      <recordData>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcndl="http://ndl.go.jp/dcndl/terms/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#">
+          <dcndl:BibAdminResource rdf:about="https://ndlsearch.ndl.go.jp/books/R000000004-I5173508">
+            <dcndl:catalogingStatus>C7</dcndl:catalogingStatus>
+            <dcterms:description>type : article</dcterms:description>
+            <dcndl:bibRecordCategory>R000000004</dcndl:bibRecordCategory>
+            <dcndl:bibRecordSubCategory>632</dcndl:bibRecordSubCategory>
+            <dcndl:bibRecordSubCategory>A00002</dcndl:bibRecordSubCategory>
+            <dcndl:bibRecordSubCategory>A00000</dcndl:bibRecordSubCategory>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R000000004-I5173508#material"/>
+          </dcndl:BibAdminResource>
+          <dcndl:BibResource rdf:about="https://ndlsearch.ndl.go.jp/books/R000000004-I5173508#material">
+            <rdfs:seeAlso rdf:resource="http://id.ndl.go.jp/bib/5173508"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLBibID">5173508</dcterms:identifier>
+            <dcterms:title>愛国的労働運動の波紋</dcterms:title>
+            <dc:title>
+              <rdf:Description>
+                <rdf:value>愛国的労働運動の波紋</rdf:value>
+                <dcndl:transcription>アイコクテキ ロウドウ ウンドウ ノ ハモン</dcndl:transcription>
+              </rdf:Description>
+            </dc:title>
+            <dcterms:creator>
+              <foaf:Agent>
+                <foaf:name>上別府 親志</foaf:name>
+              </foaf:Agent>
+            </dcterms:creator>
+            <dc:creator>上別府 親志</dc:creator>
+            <dcterms:publisher>
+              <foaf:Agent>
+                <foaf:name>東京 : 社会運動通信社</foaf:name>
+              </foaf:Agent>
+            </dcterms:publisher>
+            <dcndl:publicationPlace rdf:datatype="http://purl.org/dc/terms/ISO3166">JP</dcndl:publicationPlace>
+            <dcterms:date>(通号 285) 1951</dcterms:date>
+            <dcterms:issued rdf:datatype="http://purl.org/dc/terms/W3CDTF">1951</dcterms:issued>
+            <dcterms:description>資料形態 : テキストデータ プレーンテキスト</dcterms:description>
+            <dcterms:description>コレクション : 国立国会図書館デジタルコレクション &gt; デジタル化資料 &gt; 雑誌</dcterms:description>
+            <dcterms:subject rdf:resource="http://id.ndl.go.jp/class/ndlc/ZE12"/>
+            <dcterms:language rdf:datatype="http://purl.org/dc/terms/ISO639-2">jpn</dcterms:language>
+            <dcndl:materialType rdf:resource="http://ndl.go.jp/ndltype/Article" rdfs:label="記事・論文"/>
+            <dcndl:publicationName>社会運動通信</dcndl:publicationName>
+            <dcndl:issue>285</dcndl:issue>
+            <dcndl:pageRange>1～2</dcndl:pageRange>
+            <dcterms:accessRights>国立国会図書館内限定公開</dcterms:accessRights>
+            <dcterms:accessRights>図書館・個人送信対象</dcterms:accessRights>
+            <dcterms:audience>一般</dcterms:audience>
+            <rdfs:seeAlso rdf:resource="https://ndlsearch.ndl.go.jp/books/R000000004-I5173508"/>
+            <dcterms:isPartOf rdf:resource="https://id.ndl.go.jp/bib/000000010479"/>
+            <dcterms:isPartOf rdf:resource="https://dl.ndl.go.jp/pid/1838461"/>
+          </dcndl:BibResource>
+          <dcndl:BibResource rdf:about="https://ndlsearch.ndl.go.jp/books/R000000004-I5173508#material">
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R000000004-I5173508#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000136-I1521136280842064640#item"/>
+          </dcndl:BibResource>
+        </rdf:RDF>
+      </recordData>
+      <recordPosition>1</recordPosition>
+    </record>
+  </records>
+</searchRetrieveResponse>
