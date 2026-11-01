@@ -54,6 +54,10 @@ SOURCES: dict[str, str] = {
 }
 
 
+# Sources loaded only on request in the public build: key -> enabling variable.
+OPT_IN: dict[str, str] = {"jdcat": "BIBLIOGRAPH_ENABLE_JDCAT"}
+
+
 def _split(v: Optional[str]) -> list[str]:
     return [x.strip() for x in (v or "").split(",") if x.strip()]
 
@@ -86,7 +90,13 @@ class Suite:
         unknown = [k for k in only if k not in SOURCES]
         for k in unknown:
             self.skipped.append({"source": k, "reason": "unknown source key; see --list"})
-        keys = [k for k in SOURCES if not only or k in only]
+        keys = [k for k in SOURCES if k in only] if only else []
+        for k in ([] if only else SOURCES):
+            gate = OPT_IN.get(k)
+            if gate and os.environ.get(gate, "").strip().lower() not in ("1", "true", "yes", "on"):
+                self.skipped.append({"source": k, "reason": f"opt-in; set {gate}=1 to load (see README, JDCat access)"})
+            else:
+                keys.append(k)
         for key in keys:
             self._load(key, SOURCES[key])
         for module in extra:

@@ -243,6 +243,13 @@ itself. See `docs/sources/warp/README.md` for the full terms and the
 
 ## JDCat access
 
+**Off by default in bibliograph.** The `jdcat` tools load only when you name
+the source (`--only jdcat,...`) or set `BIBLIOGRAPH_ENABLE_JDCAT=1` (in the
+Claude Desktop bundle: *Enable JDCat*). `bibliograph_status` lists it as
+skipped otherwise, with the reason. The decision to send requests JDCat's
+robots.txt asks automated agents not to send is the user's to make, not
+this package's.
+
 JDCat asks for no application and publishes its metadata under CC0, but its
 robots.txt disallows `/api/` and `/oai` to automated agents. `jdcat` is
 therefore built on the `warp` model: person-initiated queries only, serial

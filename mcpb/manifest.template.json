@@ -50,11 +50,27 @@
         "MCP_RECEIPT_DIR": "${user_config.receipts_dir}",
         "MCP_RECEIPT_SESSION": "${user_config.receipt_session}",
         "BIBLIOGRAPH_ONLY": "${user_config.bibliograph_only}",
+        "BIBLIOGRAPH_ENABLE_JDCAT": "${user_config.enable_jdcat}",
+        "KCI_API_KEY": "${user_config.kci_api_key}",
         "BIBLIOGRAPH_DOWNLOAD_DIR": "${user_config.download_dir}"
       }
     }
   },
   "user_config": {
+    "kci_api_key": {
+      "type": "string",
+      "title": "KCI Open API key (optional)",
+      "description": "For the Korea Citation Index REST tools (kci_search, kci_article, kci_references, kci_journal_metrics). Issued by KCI to registered users. The OAI-PMH tools (kci_harvest, oak_harvest, oak_record) need no key.",
+      "sensitive": true,
+      "required": false
+    },
+    "enable_jdcat": {
+      "type": "boolean",
+      "title": "Enable JDCat (off by default)",
+      "description": "Loads the JDCat research-data catalogue tools. JDCat's robots.txt asks automated agents to stay out of its API; the tools send only searches you ask for, three seconds apart, at most 50 records, never a harvest. Turn this on only if you accept that, or have JDCat's permission.",
+      "default": false,
+      "required": false
+    },
     "cinii_appid": {
       "type": "string",
       "title": "CiNii application ID",
