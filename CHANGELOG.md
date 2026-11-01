@@ -20,8 +20,17 @@ in what the tools are called.
   (`s2_*`), Crossref (`cr_*`, new), Japanese name and authority resolution
   (`name_*`, `resolve_*`, `gloss_*`, `kanji_*`), and open-access PDF fetching
   (`fetch_*`); korea-scholarship-mcp v0.7.0 (`kci_*`, `oak_*`, `dbpia_links`) is
-  a dependency loaded by default. `bibliograph_status` reports what loaded,
+  a dependency loaded by default; 71 tools load by default, 73 with JDCat.
+  `bibliograph_status` reports what loaded,
   each source's version, and the day's OpenAlex budget.
+- **JDCat is opt-in.** JDCat's robots.txt asks automated agents to stay out of
+  its API. The `jdcat` tools are built never to crawl (searches a person asks
+  for, three seconds apart, at most 50 records, no harvest), but whether to use
+  them is each user's decision: they load only when named in `--only` or when
+  `BIBLIOGRAPH_ENABLE_JDCAT=1` is set (in the bundle, *Enable JDCat*, off by
+  default), and `bibliograph_status` lists the source as skipped otherwise.
+- **The bundle has a KCI key field** (`KCI_API_KEY`) for korea-scholarship-mcp's
+  REST tools; its OAI-PMH tools need none.
 - **Each shared source is ahead of its separate repository**: cinii 3.3.1,
   jstage 3.2.2, ndl 1.5.2, openalex 2.1.5, semantic_scholar 2.1.4. The source
   CHANGELOGs under `docs/sources/` record what changed.
